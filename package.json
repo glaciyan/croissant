@@ -1,0 +1,11 @@
+{
+    "private": true,
+    "workspaces": [
+        "web",
+        "glacuu-components"
+    ],
+    "scripts": {
+        "web": "yarn workspace components run build && yarn workspace web run dev",
+        "api": "dotnet watch run --project server/Croissant.Api"
+    }
+}
