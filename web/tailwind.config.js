@@ -1,6 +1,6 @@
 module.exports = {
     mode: "jit",
-    purge: ["./pages/**/*.tsx", "./components/**/*.tsx", "../glacuu/src/**/*.tsx"],
+    purge: ["./pages/**/*.tsx", "./components/**/*.tsx", "../glacuu-components/src/**/*.tsx"],
     darkMode: "class", // or 'media' or 'class'
     theme: {
         extend: {},
