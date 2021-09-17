@@ -17,6 +17,7 @@ namespace Croissant.Data.Repository
 
         public async Task SaveAsync()
         {
+            // TODO look into how i could update UpdatedAt and CreatedAt here automatically
             await _context.SaveChangesAsync();
         }
     }
