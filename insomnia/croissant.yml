@@ -1,0 +1,81 @@
+_type: export
+__export_format: 4
+__export_date: 2021-09-17T17:48:42.842Z
+__export_source: insomnia.desktop.app:v2021.5.3
+resources:
+  - _id: req_cdb4c0d56092466a8bd70ea605212e59
+    parentId: wrk_ad47eac231e04060bf3a0576f9c117b6
+    modified: 1631900589501
+    created: 1631900581088
+    url: "{{ _.base_url }}/post"
+    name: Get all posts
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1631900581132
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: wrk_ad47eac231e04060bf3a0576f9c117b6
+    parentId: null
+    modified: 1631900442479
+    created: 1631900442479
+    name: croissant
+    description: ""
+    scope: design
+    _type: workspace
+  - _id: env_f9da91cd57978ac170388931a4e35e8998a7e7ed
+    parentId: wrk_ad47eac231e04060bf3a0576f9c117b6
+    modified: 1631900477562
+    created: 1631900442493
+    name: Base Environment
+    data:
+      base_url: "{{ _.default_scheme }}://{{ _.default_host }}{{ _.default_path }}"
+    dataPropertyOrder:
+      "&":
+        - base_url
+    color: null
+    isPrivate: false
+    metaSortKey: 1631900442493
+    _type: environment
+  - _id: jar_f9da91cd57978ac170388931a4e35e8998a7e7ed
+    parentId: wrk_ad47eac231e04060bf3a0576f9c117b6
+    modified: 1631900442496
+    created: 1631900442496
+    name: Default Jar
+    cookies: []
+    _type: cookie_jar
+  - _id: spc_a3a0b15e8a5f4643bee4510b4a31c776
+    parentId: wrk_ad47eac231e04060bf3a0576f9c117b6
+    modified: 1631900828936
+    created: 1631900442484
+    fileName: Croissant Api
+    contents: ""
+    contentType: yaml
+    _type: api_spec
+  - _id: env_9cc76ffd1f1044eb9a93e5f56963169c
+    parentId: env_f9da91cd57978ac170388931a4e35e8998a7e7ed
+    modified: 1631900455677
+    created: 1631900451075
+    name: Dev
+    data:
+      default_scheme: https
+      default_host: localhost:5001
+      default_path: /api
+    dataPropertyOrder:
+      "&":
+        - default_scheme
+        - default_host
+        - default_path
+    color: null
+    isPrivate: false
+    metaSortKey: 1631900451075
+    _type: environment
