@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Croissant.Logging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Croissant.Controllers
 {
@@ -20,7 +22,12 @@ namespace Croissant.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            _logger.LogWarning("Someone is getting the weather endpoint");
+            _logger.LogInformation("Someone is trying to access the weather");
+            _logger.LogDebug("Someone is trying to access the weather");
+            _logger.LogCritical("Someone is trying to access the weather");
+            _logger.LogError("Someone is trying to access the weather");
+            _logger.LogWarning("Someone is trying to access the weather");
+            
             return Ok(new[] {"value1", "value2"});
         }
     }
