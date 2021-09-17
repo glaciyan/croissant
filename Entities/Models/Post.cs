@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Entities.Models
 {
-    public class Post : ITimestamped
+    public class Post : ITimeStamped
     {
         [Key] public Guid Id { get; set; }
 

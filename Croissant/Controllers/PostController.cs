@@ -17,7 +17,7 @@ namespace Croissant.Controllers
             _logger = logger;
             _repo = repo;
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> GetPosts()
         {

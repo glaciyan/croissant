@@ -1,5 +1,4 @@
 using Croissant.Extensions;
-using Croissant.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -38,7 +37,7 @@ namespace Croissant
                 app.UseSwagger();
                 app.UseSwaggerUI(s => { s.SwaggerEndpoint("/swagger/v1/swagger.json", "Croissant Api V1"); });
             }
-            
+
             app.UseSerilogRequestLogging();
 
             app.UseHttpsRedirection();

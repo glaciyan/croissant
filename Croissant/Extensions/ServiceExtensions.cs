@@ -10,30 +10,35 @@ namespace Croissant.Extensions
 {
     public static class ServiceExtensions
     {
-        public static void ConfigureCors(this IServiceCollection services) => services.AddCors(options =>
-            options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
-
-
-        public static void ConfigureSwagger(this IServiceCollection services) => services.AddSwaggerGen(options =>
+        public static void ConfigureCors(this IServiceCollection services)
         {
-            options.SwaggerDoc("v1", new OpenApiInfo()
+            services.AddCors(options =>
+                options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+        }
+
+
+        public static void ConfigureSwagger(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(options =>
             {
-                Version = "v1",
-                Title = "Croissant Api",
-                Contact = new OpenApiContact()
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Name = "glaciyan",
-                    Url = new Uri("https://twitter.com/glaciyandev")
-                }
+                    Version = "v1",
+                    Title = "Croissant Api",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "glaciyan",
+                        Url = new Uri("https://twitter.com/glaciyandev")
+                    }
+                });
             });
-        });
+        }
 
         public static void ConfigureDatabaseConnection(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<DatabaseContext>(options =>
             {
                 options.UseNpgsql(configuration.GetConnectionString("pgConnection")).UseSnakeCaseNamingConvention();
-
             });
         }
 

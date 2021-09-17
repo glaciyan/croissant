@@ -2,7 +2,7 @@ using System;
 
 namespace Entities
 {
-    public interface ITimestamped
+    public interface ITimeStamped
     {
         DateTime CreatedAt { get; set; }
         DateTime UpdatedAt { get; set; }
