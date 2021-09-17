@@ -1,3 +1,4 @@
+using Croissant.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,7 @@ namespace Croissant
 
             services.ConfigureSwagger();
             services.ConfigureCors();
+            services.ConfigureDatabaseConnection(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -31,14 +33,14 @@ namespace Croissant
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSerilogRequestLogging();
-
                 app.UseSwagger();
                 app.UseSwaggerUI(s => { s.SwaggerEndpoint("/swagger/v1/swagger.json", "Croissant Api V1"); });
             }
+            
+            app.UseSerilogRequestLogging();
 
             app.UseHttpsRedirection();
-            
+
             app.UseRouting();
 
             app.UseAuthorization();

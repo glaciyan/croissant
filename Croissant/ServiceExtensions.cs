@@ -1,4 +1,7 @@
 using System;
+using Croissant.Database;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
@@ -23,5 +26,13 @@ namespace Croissant
                 }
             });
         });
+
+        public static void ConfigureDatabaseConnection(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext<DatabaseContext>(options =>
+            {
+                options.UseNpgsql(configuration.GetConnectionString("pgConnection"));
+            });
+        }
     }
 }
