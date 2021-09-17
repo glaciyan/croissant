@@ -21,6 +21,7 @@ namespace Croissant
         {
             services.AddControllers();
 
+            services.ConfigureSwagger();
             services.ConfigureCors();
         }
 
@@ -31,10 +32,13 @@ namespace Croissant
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSerilogRequestLogging();
+
+                app.UseSwagger();
+                app.UseSwaggerUI(s => { s.SwaggerEndpoint("/swagger/v1/swagger.json", "Croissant Api V1"); });
             }
 
             app.UseHttpsRedirection();
-
+            
             app.UseRouting();
 
             app.UseAuthorization();
