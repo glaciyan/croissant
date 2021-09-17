@@ -1,5 +1,5 @@
 using System;
-using Croissant.Database;
+using Croissant.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

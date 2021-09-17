@@ -1,8 +1,8 @@
-using Croissant.Database.Configurations;
+using Croissant.Data.Configurations;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Croissant.Database
+namespace Croissant.Data
 {
     public class DatabaseContext : DbContext
     {

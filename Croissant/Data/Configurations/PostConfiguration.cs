@@ -3,7 +3,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Croissant.Database.Configurations
+namespace Croissant.Data.Configurations
 {
     public class PostConfiguration : IEntityTypeConfiguration<Post>
     {
