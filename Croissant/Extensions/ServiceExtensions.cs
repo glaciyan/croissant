@@ -1,11 +1,12 @@
 using System;
 using Croissant.Data;
+using Croissant.Data.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
-namespace Croissant
+namespace Croissant.Extensions
 {
     public static class ServiceExtensions
     {
@@ -31,8 +32,14 @@ namespace Croissant
         {
             services.AddDbContext<DatabaseContext>(options =>
             {
-                options.UseNpgsql(configuration.GetConnectionString("pgConnection"));
+                options.UseNpgsql(configuration.GetConnectionString("pgConnection")).UseSnakeCaseNamingConvention();
+
             });
+        }
+
+        public static void ConfigureRepository(this IServiceCollection services)
+        {
+            services.AddScoped<IRepositoryManager, RepositoryManager>();
         }
     }
 }
