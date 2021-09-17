@@ -1,5 +1,6 @@
 using Croissant.Data.Configurations;
 using Entities;
+using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Croissant.Data
