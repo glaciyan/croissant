@@ -11,12 +11,13 @@ namespace Croissant
         public static int Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
                 .WriteTo.Console()
-                .CreateLogger();
+                .CreateBootstrapLogger();
 
             try
             {
-                Log.Information("Starting Web Host");
+                Log.Information("Starting web host");
                 CreateHostBuilder(args).Build().Run();
                 return 0;
             }
