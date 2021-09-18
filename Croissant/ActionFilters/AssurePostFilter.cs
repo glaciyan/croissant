@@ -25,7 +25,8 @@ namespace Croissant.ActionFilters
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var id = (Guid) context.ActionArguments["postId"];
-            var post = await _repo.Posts.GetByIdAsync(id);
+            var post = await _repo.Posts.GetPostAsync(id);
+            
             if (post == null)
             {
                 _logger.LogWarning("Post with id {@Id} was not found", id);

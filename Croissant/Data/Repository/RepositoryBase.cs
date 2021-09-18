@@ -27,8 +27,6 @@ namespace Croissant.Data.Repository
                 : _context.Set<T>().Where(expression);
         }
         
-        public async Task<T> GetByIdAsync(Guid id) => await _context.Set<T>().FindAsync(id);
-
         public void Create(T entity) => _context.Set<T>().Add(entity);
 
         public void Update(T entity) => _context.Set<T>().Update(entity);
