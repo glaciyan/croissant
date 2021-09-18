@@ -2,21 +2,18 @@ using System;
 using System.Threading.Tasks;
 using Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Croissant.Data.Repository
 {
     public class RepositoryManager : IRepositoryManager
     {
         private readonly DatabaseContext _context;
-        private readonly ILogger<RepositoryManager> _logger;
 
         private PostRepository _postRepository;
 
-        public RepositoryManager(DatabaseContext context, ILogger<RepositoryManager> logger)
+        public RepositoryManager(DatabaseContext context)
         {
             _context = context;
-            _logger = logger;
         }
 
         public PostRepository Posts => _postRepository ??= new PostRepository(_context);
