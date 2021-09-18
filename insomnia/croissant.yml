@@ -1,11 +1,11 @@
 _type: export
 __export_format: 4
-__export_date: 2021-09-17T17:48:42.842Z
+__export_date: 2021-09-18T10:15:18.218Z
 __export_source: insomnia.desktop.app:v2021.5.3
 resources:
   - _id: req_cdb4c0d56092466a8bd70ea605212e59
-    parentId: wrk_ad47eac231e04060bf3a0576f9c117b6
-    modified: 1631900589501
+    parentId: fld_9f0aa6a7ee4741f2b14237fd1e0e2570
+    modified: 1631954187095
     created: 1631900581088
     url: "{{ _.base_url }}/post"
     name: Get all posts
@@ -24,6 +24,16 @@ resources:
     settingRebuildPath: true
     settingFollowRedirects: global
     _type: request
+  - _id: fld_9f0aa6a7ee4741f2b14237fd1e0e2570
+    parentId: wrk_ad47eac231e04060bf3a0576f9c117b6
+    modified: 1631954185971
+    created: 1631954185971
+    name: Posts
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1631954185971
+    _type: request_group
   - _id: wrk_ad47eac231e04060bf3a0576f9c117b6
     parentId: null
     modified: 1631900442479
@@ -32,6 +42,87 @@ resources:
     description: ""
     scope: design
     _type: workspace
+  - _id: req_90e767d8b3af4cd19ac11f15bde0af84
+    parentId: fld_9f0aa6a7ee4741f2b14237fd1e0e2570
+    modified: 1631955670438
+    created: 1631954197872
+    url: "{{ _.base_url }}/post/62eb1990-b49f-4c03-bcef-d0639c36810e"
+    name: Get post by id
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1631954197872
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_1e23e5f8aab94dca946d86a047d65468
+    parentId: fld_9f0aa6a7ee4741f2b14237fd1e0e2570
+    modified: 1631958432748
+    created: 1631956317284
+    url: "{{ _.base_url }}/post"
+    name: Create Post
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"title": "This is my first post",
+        	"content": "Hello my first post"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_1456ee2f312d4cb3bff39dd2311b2033
+    authentication: {}
+    metaSortKey: -1631956317284
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_1f8fa5c79917444f8291eb8f709332aa
+    parentId: fld_9f0aa6a7ee4741f2b14237fd1e0e2570
+    modified: 1631960116351
+    created: 1631959891273
+    url: "{{ _.base_url }}/post/f5ea3807-0d32-41bd-ba76-62044d82f677"
+    name: Update post
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"title": "This is my updated first post",
+        	"content": "Updated content"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_f0a5228c711848b1b6749e5f6bfc2205
+    authentication: {}
+    metaSortKey: -1631900581082
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
   - _id: env_f9da91cd57978ac170388931a4e35e8998a7e7ed
     parentId: wrk_ad47eac231e04060bf3a0576f9c117b6
     modified: 1631900477562
