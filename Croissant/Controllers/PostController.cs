@@ -48,6 +48,7 @@ namespace Croissant.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePost([FromBody] PostForCreationDto postForCreation)
         {
+            // TODO write filter for this
             if (postForCreation == null)
             {
                 _logger.LogWarning("{Function}: Got an object of null", nameof(CreatePost));
@@ -68,6 +69,32 @@ namespace Croissant.Controllers
             var postToReturn = _mapper.Map<PostDto>(post);
 
             return CreatedAtRoute("GetPostById", new {postId = postToReturn.Id}, postToReturn);
+        }
+
+        [HttpPut("{postId:guid}")]
+        [ServiceFilter(typeof(AssurePostFilter))]
+        public async Task<IActionResult> UpdatePost(Guid postId, [FromBody] PostForUpdateDto postForUpdate)
+        {
+            // TODO write filter for this
+            if (postForUpdate == null)
+            {
+                _logger.LogWarning("{Function}: Got an object of null", nameof(CreatePost));
+                return BadRequest("Post was null");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("Model state in {Function} was invalid for {@PostDto} {@ModelState}", nameof(CreatePost),
+                    postForUpdate, ModelState);
+                return UnprocessableEntity(ModelState);
+            }
+            
+            var postEntity = AssurePostFilter.GetPostFromContext(HttpContext);
+
+            _mapper.Map(postForUpdate, postEntity);
+            await _repo.SaveAsync();
+
+            return NoContent();
         }
     }
 }
