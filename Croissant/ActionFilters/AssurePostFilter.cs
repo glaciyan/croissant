@@ -24,8 +24,9 @@ namespace Croissant.ActionFilters
         
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
+            var trackChanges = HttpMethods.IsPut(context.HttpContext.Request.Method);
             var id = (Guid) context.ActionArguments["postId"];
-            var post = await _repo.Posts.GetPostAsync(id);
+            var post = await _repo.Posts.GetPostAsync(id, trackChanges);
             
             if (post == null)
             {
