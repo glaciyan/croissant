@@ -20,9 +20,6 @@ namespace Croissant.Data.Repository
 
         public void CreatePost(Post post)
         {
-            post.CreatedAt = DateTime.UtcNow;
-            post.UpdatedAt = DateTime.UtcNow;
-            
             Create(post);
         }
 
