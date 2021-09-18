@@ -9,9 +9,9 @@ function _typeof(obj) {
     } else {
         _typeof = function _typeof(obj) {
             return obj &&
-                typeof Symbol === "function" &&
-                obj.constructor === Symbol &&
-                obj !== Symbol.prototype
+            typeof Symbol === "function" &&
+            obj.constructor === Symbol &&
+            obj !== Symbol.prototype
                 ? "symbol"
                 : typeof obj;
         };
@@ -33,7 +33,7 @@ var _Moon = _interopRequireDefault(require("./Icons/Moon"));
 var _Sun = _interopRequireDefault(require("./Icons/Sun"));
 
 function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : { default: obj };
+    return obj && obj.__esModule ? obj : {default: obj};
 }
 
 function _getRequireWildcardCache() {
@@ -50,7 +50,7 @@ function _interopRequireWildcard(obj) {
         return obj;
     }
     if (obj === null || (_typeof(obj) !== "object" && typeof obj !== "function")) {
-        return { default: obj };
+        return {default: obj};
     }
     var cache = _getRequireWildcardCache();
     if (cache && cache.has(obj)) {

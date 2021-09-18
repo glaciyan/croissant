@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Pane, Text, majorScale } from "evergreen-ui";
+import {Button, majorScale, Pane, Text} from "evergreen-ui";
 
 export default function Home() {
     return (
