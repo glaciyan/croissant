@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Croissant.ActionFilters;
 using Croissant.Data.Repository;
 using Entities.DataTransferObject;
+using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -30,6 +33,41 @@ namespace Croissant.Controllers
             var post = await _repo.Posts.GetPostsAsync();
             var postDto = _mapper.Map<IEnumerable<PostDto>>(post);
             return Ok(postDto);
+        }
+
+        [HttpGet("{postId:guid}", Name = "GetPostById")]
+        [ServiceFilter(typeof(AssurePostFilter))]
+        public IActionResult GetPostById(Guid postId)
+        {
+            var post = AssurePostFilter.GetPostFromContext(HttpContext);
+            var postDto = _mapper.Map<PostDto>(post);
+
+            return Ok(postDto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreatePost([FromBody] PostForCreationDto postForCreation)
+        {
+            if (postForCreation == null)
+            {
+                _logger.LogWarning("{Function}: Got an object of null", nameof(CreatePost));
+                return BadRequest("Post was null");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("Model state in {Function} was invalid for {@PostDto} {@ModelState}", nameof(CreatePost),
+                    postForCreation, ModelState);
+                return UnprocessableEntity(ModelState);
+            }
+
+            var post = _mapper.Map<Post>(postForCreation);
+            _repo.Posts.CreatePost(post);
+            await _repo.SaveAsync();
+
+            var postToReturn = _mapper.Map<PostDto>(post);
+
+            return CreatedAtRoute("GetPostById", new {postId = postToReturn.Id}, postToReturn);
         }
     }
 }
