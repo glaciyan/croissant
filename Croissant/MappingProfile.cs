@@ -9,6 +9,7 @@ namespace Croissant
         public MappingProfile()
         {
             CreateMap<Post, PostDto>();
+            CreateMap<PostForCreationDto, Post>();
         }
     }
 }

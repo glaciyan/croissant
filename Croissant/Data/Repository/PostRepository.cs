@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +16,14 @@ namespace Croissant.Data.Repository
         public async Task<IEnumerable<Post>> GetPostsAsync(bool trackChanges = false)
         {
             return await GetAll(trackChanges).OrderBy(post => post.Title).ToListAsync();
+        }
+
+        public void CreatePost(Post post)
+        {
+            post.CreatedAt = DateTime.UtcNow;
+            post.UpdatedAt = DateTime.UtcNow;
+            
+            Create(post);
         }
     }
 }
