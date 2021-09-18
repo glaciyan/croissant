@@ -27,12 +27,12 @@ namespace Croissant
 
             services.ConfigureSwagger();
             services.ConfigureCors();
-            
+
             services.ConfigureDatabaseConnection(Configuration);
             services.ConfigureRepository();
 
             services.AddAutoMapper(typeof(Startup));
-            
+
             services.ConfigureActionFilters();
         }
 
@@ -45,7 +45,7 @@ namespace Croissant
                 app.UseSwagger();
                 app.UseSwaggerUI(s => { s.SwaggerEndpoint("/swagger/v1/swagger.json", "Croissant Api V1"); });
             }
-            
+
             app.UseGlobalExceptionHandler();
 
             app.UseSerilogRequestLogging();

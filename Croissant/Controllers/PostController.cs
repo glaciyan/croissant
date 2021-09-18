@@ -16,8 +16,8 @@ namespace Croissant.Controllers
     public class PostController : ControllerBase
     {
         private readonly ILogger<PostController> _logger;
-        private readonly IRepositoryManager _repo;
         private readonly IMapper _mapper;
+        private readonly IRepositoryManager _repo;
 
         public PostController(ILogger<PostController> logger, IRepositoryManager repo, IMapper mapper)
         {
@@ -57,7 +57,8 @@ namespace Croissant.Controllers
 
             if (!ModelState.IsValid)
             {
-                _logger.LogWarning("Model state in {Function} was invalid for {@PostDto} {@ModelState}", nameof(CreatePost),
+                _logger.LogWarning("Model state in {Function} was invalid for {@PostDto} {@ModelState}",
+                    nameof(CreatePost),
                     postForCreation, ModelState);
                 return UnprocessableEntity(ModelState);
             }
@@ -84,11 +85,12 @@ namespace Croissant.Controllers
 
             if (!ModelState.IsValid)
             {
-                _logger.LogWarning("Model state in {Function} was invalid for {@PostDto} {@ModelState}", nameof(CreatePost),
+                _logger.LogWarning("Model state in {Function} was invalid for {@PostDto} {@ModelState}",
+                    nameof(CreatePost),
                     postForUpdate, ModelState);
                 return UnprocessableEntity(ModelState);
             }
-            
+
             var postEntity = AssurePostFilter.GetPostFromContext(HttpContext);
 
             _mapper.Map(postForUpdate, postEntity);

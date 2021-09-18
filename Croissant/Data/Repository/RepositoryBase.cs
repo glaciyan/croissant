@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace Croissant.Data.Repository
@@ -26,11 +25,20 @@ namespace Croissant.Data.Repository
                 ? _context.Set<T>().Where(expression).AsNoTracking()
                 : _context.Set<T>().Where(expression);
         }
-        
-        public void Create(T entity) => _context.Set<T>().Add(entity);
 
-        public void Update(T entity) => _context.Set<T>().Update(entity);
+        public void Create(T entity)
+        {
+            _context.Set<T>().Add(entity);
+        }
 
-        public void Delete(T entity) => _context.Set<T>().Remove(entity);
+        public void Update(T entity)
+        {
+            _context.Set<T>().Update(entity);
+        }
+
+        public void Delete(T entity)
+        {
+            _context.Set<T>().Remove(entity);
+        }
     }
 }

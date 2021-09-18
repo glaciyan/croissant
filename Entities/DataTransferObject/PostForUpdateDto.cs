@@ -4,6 +4,5 @@ namespace Entities.DataTransferObject
 {
     public class PostForUpdateDto : PostBase
     {
-        
     }
 }
