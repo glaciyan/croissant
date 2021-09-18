@@ -1,4 +1,5 @@
 using System;
+using Croissant.ActionFilters;
 using Croissant.Data;
 using Croissant.Data.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,11 @@ namespace Croissant.Extensions
         public static void ConfigureRepository(this IServiceCollection services)
         {
             services.AddScoped<IRepositoryManager, RepositoryManager>();
+        }
+
+        public static void ConfigureActionFilters(this IServiceCollection services)
+        {
+            services.AddScoped<AssurePostFilter>();
         }
     }
 }

@@ -29,6 +29,8 @@ namespace Croissant
             services.ConfigureRepository();
 
             services.AddAutoMapper(typeof(Startup));
+            
+            services.ConfigureActionFilters();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +42,8 @@ namespace Croissant
                 app.UseSwagger();
                 app.UseSwaggerUI(s => { s.SwaggerEndpoint("/swagger/v1/swagger.json", "Croissant Api V1"); });
             }
+            
+            app.UseGlobalExceptionHandler();
 
             app.UseSerilogRequestLogging();
 
