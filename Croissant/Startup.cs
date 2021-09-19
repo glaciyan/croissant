@@ -34,6 +34,9 @@ namespace Croissant
             services.AddAutoMapper(typeof(Startup));
 
             services.ConfigureActionFilters();
+
+            services.AddAuthentication();
+            services.ConfigureIdentity();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +57,7 @@ namespace Croissant
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
