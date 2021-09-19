@@ -39,7 +39,7 @@ namespace Croissant.Controllers
 
             if (registerResult.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, "GeneralUser");
+                // await _userManager.AddToRoleAsync(user, "GeneralUser");
                 return StatusCode(Status201Created);
             }
 
