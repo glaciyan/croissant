@@ -1,6 +1,6 @@
 _type: export
 __export_format: 4
-__export_date: 2021-09-18T10:15:18.218Z
+__export_date: 2021-09-19T13:56:18.898Z
 __export_source: insomnia.desktop.app:v2021.5.3
 resources:
   - _id: req_cdb4c0d56092466a8bd70ea605212e59
@@ -65,7 +65,7 @@ resources:
     _type: request
   - _id: req_1e23e5f8aab94dca946d86a047d65468
     parentId: fld_9f0aa6a7ee4741f2b14237fd1e0e2570
-    modified: 1631958432748
+    modified: 1632057492502
     created: 1631956317284
     url: "{{ _.base_url }}/post"
     name: Create Post
@@ -75,8 +75,8 @@ resources:
       mimeType: application/json
       text: |-
         {
-        	"title": "This is my first post",
-        	"content": "Hello my first post"
+        	"title": "Super title",
+        	"content": "content"
         }
     parameters: []
     headers:
@@ -95,7 +95,7 @@ resources:
     _type: request
   - _id: req_1f8fa5c79917444f8291eb8f709332aa
     parentId: fld_9f0aa6a7ee4741f2b14237fd1e0e2570
-    modified: 1631960116351
+    modified: 1631963510091
     created: 1631959891273
     url: "{{ _.base_url }}/post/f5ea3807-0d32-41bd-ba76-62044d82f677"
     name: Update post
@@ -105,7 +105,7 @@ resources:
       mimeType: application/json
       text: |-
         {
-        	"title": "This is my updated first post",
+        	"title": "",
         	"content": "Updated content"
         }
     parameters: []
@@ -154,9 +154,9 @@ resources:
     _type: api_spec
   - _id: env_9cc76ffd1f1044eb9a93e5f56963169c
     parentId: env_f9da91cd57978ac170388931a4e35e8998a7e7ed
-    modified: 1631900455677
+    modified: 1632055058145
     created: 1631900451075
-    name: Dev
+    name: Development
     data:
       default_scheme: https
       default_host: localhost:5001
