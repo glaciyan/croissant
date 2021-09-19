@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Croissant.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210919144834_RoleSeed")]
-    partial class RoleSeed
+    [Migration("20210919181748_PostsAndIdentity")]
+    partial class PostsAndIdentity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -163,15 +163,6 @@ namespace Croissant.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "899133c1-2cfd-4512-b834-8c6de3588b6f",
-                            ConcurrencyStamp = "65a3a970-d815-44fa-9269-3dd040d14d6c",
-                            Name = "GeneralUser",
-                            NormalizedName = "GENERAL_USER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

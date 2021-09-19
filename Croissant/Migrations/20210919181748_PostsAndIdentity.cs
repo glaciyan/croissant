@@ -4,22 +4,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Croissant.Migrations
 {
-    public partial class Identity : Migration
+    public partial class PostsAndIdentity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "content",
-                table: "posts",
-                type: "character varying(200)",
-                maxLength: 200,
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "character varying(200)",
-                oldMaxLength: 200,
-                oldNullable: true);
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -57,6 +45,21 @@ namespace Croissant.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_asp_net_users", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "posts",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    title = table.Column<string>(type: "character varying(70)", maxLength: 70, nullable: false),
+                    content = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_posts", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -165,20 +168,6 @@ namespace Croissant.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.UpdateData(
-                table: "posts",
-                keyColumn: "id",
-                keyValue: new Guid("267cec85-dcdb-4253-97fb-014563794ebb"),
-                columns: new[] { "created_at", "updated_at" },
-                values: new object[] { new DateTime(2021, 9, 19, 16, 8, 17, 537, DateTimeKind.Local).AddTicks(1348), new DateTime(2021, 9, 19, 16, 8, 17, 539, DateTimeKind.Local).AddTicks(7326) });
-
-            migrationBuilder.UpdateData(
-                table: "posts",
-                keyColumn: "id",
-                keyValue: new Guid("62eb1990-b49f-4c03-bcef-d0639c36810e"),
-                columns: new[] { "created_at", "updated_at" },
-                values: new object[] { new DateTime(2021, 9, 19, 16, 8, 17, 539, DateTimeKind.Local).AddTicks(7715), new DateTime(2021, 9, 19, 16, 8, 17, 539, DateTimeKind.Local).AddTicks(7727) });
-
             migrationBuilder.CreateIndex(
                 name: "ix_asp_net_role_claims_role_id",
                 table: "AspNetRoleClaims",
@@ -235,34 +224,13 @@ namespace Croissant.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "posts");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "content",
-                table: "posts",
-                type: "character varying(200)",
-                maxLength: 200,
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "character varying(200)",
-                oldMaxLength: 200);
-
-            migrationBuilder.UpdateData(
-                table: "posts",
-                keyColumn: "id",
-                keyValue: new Guid("267cec85-dcdb-4253-97fb-014563794ebb"),
-                columns: new[] { "created_at", "updated_at" },
-                values: new object[] { new DateTime(2021, 9, 17, 15, 13, 8, 315, DateTimeKind.Local).AddTicks(5432), new DateTime(2021, 9, 17, 15, 13, 8, 318, DateTimeKind.Local).AddTicks(2779) });
-
-            migrationBuilder.UpdateData(
-                table: "posts",
-                keyColumn: "id",
-                keyValue: new Guid("62eb1990-b49f-4c03-bcef-d0639c36810e"),
-                columns: new[] { "created_at", "updated_at" },
-                values: new object[] { new DateTime(2021, 9, 17, 15, 13, 8, 318, DateTimeKind.Local).AddTicks(3192), new DateTime(2021, 9, 17, 15, 13, 8, 318, DateTimeKind.Local).AddTicks(3205) });
         }
     }
 }
