@@ -3,15 +3,17 @@ using System;
 using Croissant.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Croissant.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210919144834_RoleSeed")]
+    partial class RoleSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,24 +52,6 @@ namespace Croissant.Migrations
                         .HasName("pk_posts");
 
                     b.ToTable("posts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("267cec85-dcdb-4253-97fb-014563794ebb"),
-                            Content = "Testing Post Content",
-                            CreatedAt = new DateTime(2021, 9, 10, 12, 12, 12, 100, DateTimeKind.Unspecified),
-                            Title = "Testing Post",
-                            UpdatedAt = new DateTime(2021, 9, 10, 12, 12, 12, 100, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("62eb1990-b49f-4c03-bcef-d0639c36810e"),
-                            Content = "Content of the other testing Post",
-                            CreatedAt = new DateTime(2021, 9, 11, 12, 12, 12, 100, DateTimeKind.Unspecified),
-                            Title = "Another Testing Post",
-                            UpdatedAt = new DateTime(2021, 9, 11, 12, 12, 12, 100, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("Entities.Models.User", b =>
@@ -183,10 +167,10 @@ namespace Croissant.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6874C1E4-9CB2-413C-AECE-0EF6220417AE",
-                            ConcurrencyStamp = "664DF3CF-304D-4A9E-AE66-A3B4737A0060",
+                            Id = "899133c1-2cfd-4512-b834-8c6de3588b6f",
+                            ConcurrencyStamp = "65a3a970-d815-44fa-9269-3dd040d14d6c",
                             Name = "GeneralUser",
-                            NormalizedName = "GENERALUSER"
+                            NormalizedName = "GENERAL_USER"
                         });
                 });
 

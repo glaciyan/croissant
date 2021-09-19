@@ -18,6 +18,7 @@ namespace Croissant.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new PostConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
         }
     }
 }

@@ -11,6 +11,8 @@ namespace Croissant
             CreateMap<Post, PostDto>();
             CreateMap<PostForCreationDto, Post>();
             CreateMap<PostForUpdateDto, Post>();
+
+            CreateMap<UserForRegistrationDto, User>();
         }
     }
 }

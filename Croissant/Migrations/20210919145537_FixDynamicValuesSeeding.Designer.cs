@@ -3,15 +3,17 @@ using System;
 using Croissant.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Croissant.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210919145537_FixDynamicValuesSeeding")]
+    partial class FixDynamicValuesSeeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -186,7 +188,7 @@ namespace Croissant.Migrations
                             Id = "6874C1E4-9CB2-413C-AECE-0EF6220417AE",
                             ConcurrencyStamp = "664DF3CF-304D-4A9E-AE66-A3B4737A0060",
                             Name = "GeneralUser",
-                            NormalizedName = "GENERALUSER"
+                            NormalizedName = "GENERAL_USER"
                         });
                 });
 
