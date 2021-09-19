@@ -51,6 +51,7 @@ namespace Croissant.Extensions
         public static void ConfigureActionFilters(this IServiceCollection services)
         {
             services.AddScoped<AssurePostFilter>();
+            services.AddScoped<ValidateBodyFilter>();
         }
     }
 }

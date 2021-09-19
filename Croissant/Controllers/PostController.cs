@@ -7,7 +7,6 @@ using Croissant.Data.Repository;
 using Entities.DataTransferObject;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Croissant.Controllers
 {
@@ -15,13 +14,11 @@ namespace Croissant.Controllers
     [Route("api/post")]
     public class PostController : ControllerBase
     {
-        private readonly ILogger<PostController> _logger;
         private readonly IMapper _mapper;
         private readonly IRepositoryManager _repo;
 
-        public PostController(ILogger<PostController> logger, IRepositoryManager repo, IMapper mapper)
+        public PostController(IRepositoryManager repo, IMapper mapper)
         {
-            _logger = logger;
             _repo = repo;
             _mapper = mapper;
         }
@@ -46,23 +43,9 @@ namespace Croissant.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(ValidateBodyFilter))]
         public async Task<IActionResult> CreatePost([FromBody] PostForCreationDto postForCreation)
         {
-            // TODO write filter for this
-            if (postForCreation == null)
-            {
-                _logger.LogWarning("{Function}: Got an object of null", nameof(CreatePost));
-                return BadRequest("Post was null");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                _logger.LogWarning("Model state in {Function} was invalid for {@PostDto} {@ModelState}",
-                    nameof(CreatePost),
-                    postForCreation, ModelState);
-                return UnprocessableEntity(ModelState);
-            }
-
             var post = _mapper.Map<Post>(postForCreation);
             _repo.Posts.CreatePost(post);
             await _repo.SaveAsync();
@@ -73,24 +56,10 @@ namespace Croissant.Controllers
         }
 
         [HttpPut("{postId:guid}")]
+        [ServiceFilter(typeof(ValidateBodyFilter))]
         [ServiceFilter(typeof(AssurePostFilter))]
         public async Task<IActionResult> UpdatePost(Guid postId, [FromBody] PostForUpdateDto postForUpdate)
         {
-            // TODO write filter for this
-            if (postForUpdate == null)
-            {
-                _logger.LogWarning("{Function}: Got an object of null", nameof(CreatePost));
-                return BadRequest("Post was null");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                _logger.LogWarning("Model state in {Function} was invalid for {@PostDto} {@ModelState}",
-                    nameof(CreatePost),
-                    postForUpdate, ModelState);
-                return UnprocessableEntity(ModelState);
-            }
-
             var postEntity = AssurePostFilter.GetPostFromContext(HttpContext);
 
             _mapper.Map(postForUpdate, postEntity);
