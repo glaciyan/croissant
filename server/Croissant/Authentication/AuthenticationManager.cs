@@ -61,7 +61,13 @@ namespace Croissant.Authentication
             var expires = Convert.ToDouble(jwtSettings.GetSection("refreshExpires").Value);
 
             var credentials = GetSigningCredentials();
-            var claims = new List<Claim> {new Claim("uid", uid)};
+            
+            var claims = new List<Claim>
+            {
+                new("uid", uid),
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+            
             var tokenOptions = GenerateTokenOptions(credentials, claims, expires);
 
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
