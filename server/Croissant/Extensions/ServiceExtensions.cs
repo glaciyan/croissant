@@ -22,7 +22,7 @@ namespace Croissant.Extensions
             services.AddCors(options =>
                 options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
         }
-        
+
         public static void ConfigureSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(options =>
@@ -92,18 +92,10 @@ namespace Croissant.Extensions
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-
-                    ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
-                    ValidAudience = jwtSettings.GetSection("validAudience").Value,
-
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret!))
-                };
+                options.TokenValidationParameters = AuthenticationManager.TokenValidationParameters(
+                    jwtSettings.GetSection("validIssuer").Value,
+                    jwtSettings.GetSection("validAudience").Value,
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret!)));
             });
         }
     }

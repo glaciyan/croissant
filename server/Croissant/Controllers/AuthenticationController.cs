@@ -1,10 +1,14 @@
+using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using AutoMapper;
 using Croissant.ActionFilters;
 using Croissant.Authentication;
+using Croissant.Configurations;
 using Entities.DataTransferObject;
 using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -46,7 +50,7 @@ namespace Croissant.Controllers
             {
                 _logger.LogInformation("User registration was a success for: {Username} {Email}", user.UserName,
                     user.Email);
-                
+
                 return StatusCode(Status201Created);
             }
 
@@ -65,14 +69,48 @@ namespace Croissant.Controllers
             _logger.LogInformation("Login attempted with email: {Email}", userForLogin.Email);
 
             var user = await _authManager.AuthenticateUser(userForLogin);
-            
+
             if (user == null)
             {
                 _logger.LogWarning("User login failed for {Email}", userForLogin.Email);
                 return Unauthorized("Email or password incorrect");
             }
 
+            HttpContext.Response.Cookies.Append(CookieConfiguration.RefreshTokenCookieKey,
+                _authManager.CreateRefreshJwt(user.Id),
+                CookieConfiguration.RefreshTokenConfig);
+
             return Ok(await _authManager.CreateJwt(user));
+        }
+
+        [HttpGet("token")]
+        public async Task<IActionResult> GetToken()
+        {
+            var hasToken =
+                HttpContext.Request.Cookies.TryGetValue(CookieConfiguration.RefreshTokenCookieKey,
+                    out var refreshToken);
+            if (!hasToken || refreshToken == null) return BadRequest("No refresh token cookie");
+
+            var claims = _authManager.GetClaimsFromRefreshToken(refreshToken);
+
+            var userId = claims?.FindFirst("uid")?.Value;
+            if (userId == null)
+            {
+                _logger.LogWarning("An attempt to refresh a token has failed because userId was null");
+                return Unauthorized("Refresh token is invalid");
+            }
+
+            // TODO old refresh token invalidation
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            var newAccess = await _authManager.CreateJwt(user);
+
+            HttpContext.Response.Cookies.Append(CookieConfiguration.RefreshTokenCookieKey,
+                _authManager.CreateRefreshJwt(user.Id),
+                CookieConfiguration.RefreshTokenConfig);
+
+            return Ok(newAccess);
         }
     }
 }

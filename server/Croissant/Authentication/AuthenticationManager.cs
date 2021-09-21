@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Entities.DataTransferObject;
 using Entities.Models;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -31,7 +32,6 @@ namespace Croissant.Authentication
         /// <summary>
         /// Authenticates the user with email and password
         /// </summary>
-        /// <param name="userForLogin">User</param>
         /// <returns>Null if authentication failed otherwise the user</returns>
         public async Task<User> AuthenticateUser(UserForLoginDto userForLogin)
         {
@@ -45,17 +45,69 @@ namespace Croissant.Authentication
 
         public async Task<string> CreateJwt(User user)
         {
+            var jwtSettings = _configuration.GetSection("JwtSettings");
+            var expires = Convert.ToDouble(jwtSettings.GetSection("expires").Value);
+
             var credentials = GetSigningCredentials();
             var claims = await GetClaimsAsync(user);
-            var tokenOptions = GenerateTokenOptions(credentials, claims);
+            var tokenOptions = GenerateTokenOptions(credentials, claims, expires);
 
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
 
-        public Task<string> CreateRefreshJwt(string uid)
+        public string CreateRefreshJwt(string uid)
         {
-            throw new NotImplementedException();
+            var jwtSettings = _configuration.GetSection("JwtSettings");
+            var expires = Convert.ToDouble(jwtSettings.GetSection("refreshExpires").Value);
+
+            var credentials = GetSigningCredentials();
+            var claims = new List<Claim> {new Claim("uid", uid)};
+            var tokenOptions = GenerateTokenOptions(credentials, claims, expires);
+
+            return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
+
+        /// <summary>
+        /// Validates the refreshToken and returns the user id of the refreshToken
+        /// </summary>
+        /// <returns>Null if refresh token is invalid</returns>
+        [CanBeNull]
+        public ClaimsPrincipal GetClaimsFromRefreshToken(string refreshToken)
+        {
+            var jwtSettings = _configuration.GetSection("JwtSettings");
+
+            var issuer = jwtSettings.GetSection("validIssuer").Value;
+            var audience = jwtSettings.GetSection("validAudience").Value;
+
+            var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWTSECRET")!);
+            var secret = new SymmetricSecurityKey(key);
+
+            try
+            {
+                return new JwtSecurityTokenHandler().ValidateToken(refreshToken,
+                    TokenValidationParameters(issuer, audience, secret), out _);
+            }
+            catch (SecurityTokenValidationException ex)
+            {
+                _logger.LogWarning("Validating refresh token has failed {@Exception}", ex);
+                return null;
+            }
+        }
+
+        public static TokenValidationParameters TokenValidationParameters(string issuer, string audience,
+            SymmetricSecurityKey secret) =>
+            new()
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+
+                ValidIssuer = issuer,
+                ValidAudience = audience,
+
+                IssuerSigningKey = secret
+            };
 
         private SigningCredentials GetSigningCredentials()
         {
@@ -83,13 +135,13 @@ namespace Croissant.Authentication
             return claims;
         }
 
-        private JwtSecurityToken GenerateTokenOptions(SigningCredentials credentials, List<Claim> claims)
+        private JwtSecurityToken GenerateTokenOptions(SigningCredentials credentials, List<Claim> claims,
+            double expires)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
 
             var issuer = jwtSettings.GetSection("validIssuer").Value;
             var audience = jwtSettings.GetSection("validAudience").Value;
-            var expires = Convert.ToDouble(jwtSettings.GetSection("expires").Value);
 
             var tokenOptions = new JwtSecurityToken(issuer, audience, claims,
                 expires: DateTime.Now.AddMinutes(expires), signingCredentials: credentials);
