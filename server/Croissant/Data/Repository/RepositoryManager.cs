@@ -23,17 +23,21 @@ namespace Croissant.Data.Repository
             foreach (var entity in _context.ChangeTracker.Entries())
                 if (entity.Entity is ITimeStamped timeStamped &&
                     entity.State is EntityState.Added or EntityState.Modified)
+                {
+                    var now = DateTime.UtcNow;
+                    
                     switch (entity.State)
                     {
                         case EntityState.Added:
-                            timeStamped.CreatedAt = DateTime.UtcNow;
-                            timeStamped.UpdatedAt = DateTime.UtcNow;
+                            timeStamped.CreatedAt = now;
+                            timeStamped.UpdatedAt = null;
                             break;
 
                         case EntityState.Modified:
-                            timeStamped.UpdatedAt = DateTime.UtcNow;
+                            timeStamped.UpdatedAt = now;
                             break;
                     }
+                }
 
             await _context.SaveChangesAsync();
         }
