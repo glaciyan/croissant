@@ -75,15 +75,6 @@ namespace Croissant.Authentication
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
 
-        public void RotateRefreshToken(HttpContext httpContext, string oldToken, string newToken)
-        {
-            httpContext.Response.Cookies.Append(CookieConfiguration.RefreshTokenCookieKey,
-                newToken,
-                CookieConfiguration.RefreshTokenConfig);
-            
-            // TODO refresh token invalidation
-        }
-
         /// <summary>
         /// Validates the refreshToken and returns the user id of the refreshToken
         /// </summary>
@@ -91,6 +82,8 @@ namespace Croissant.Authentication
         [CanBeNull]
         public ClaimsPrincipal GetClaimsFromRefreshToken(string refreshToken)
         {
+            // TODO check if refreshToken has been invalidated
+            
             var jwtSettings = _configuration.GetSection("JwtSettings");
 
             var issuer = jwtSettings.GetSection("validIssuer").Value;
@@ -109,6 +102,16 @@ namespace Croissant.Authentication
                 _logger.LogWarning("Validating refresh token has failed {@Exception}", ex);
                 return null;
             }
+        }
+
+        public void RotateRefreshToken(HttpContext httpContext, string oldToken, string newToken)
+        {
+            httpContext.Response.Cookies.Append(CookieConfiguration.RefreshTokenCookieKey,
+                newToken,
+                CookieConfiguration.RefreshTokenConfig);
+            
+            // TODO refresh token invalidation
+            // save the oldToken to a redis database set to expire at the expiration date + a few hours just to be sure
         }
 
         public static TokenValidationParameters TokenValidationParameters(string issuer, string audience,
