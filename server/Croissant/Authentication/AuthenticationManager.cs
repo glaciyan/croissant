@@ -52,6 +52,11 @@ namespace Croissant.Authentication
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
 
+        public Task<string> CreateRefreshJwt(string uid)
+        {
+            throw new NotImplementedException();
+        }
+
         private SigningCredentials GetSigningCredentials()
         {
             var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWTSECRET")!);
@@ -84,10 +89,10 @@ namespace Croissant.Authentication
 
             var issuer = jwtSettings.GetSection("validIssuer").Value;
             var audience = jwtSettings.GetSection("validAudience").Value;
-            var expires = jwtSettings.GetSection("expires").Value;
+            var expires = Convert.ToDouble(jwtSettings.GetSection("expires").Value);
 
             var tokenOptions = new JwtSecurityToken(issuer, audience, claims,
-                expires: DateTime.Now.AddMinutes(Convert.ToDouble(expires)), signingCredentials: credentials);
+                expires: DateTime.Now.AddMinutes(expires), signingCredentials: credentials);
 
             return tokenOptions;
         }

@@ -8,5 +8,6 @@ namespace Croissant.Authentication
     {
         Task<User> AuthenticateUser(UserForLoginDto user);
         Task<string> CreateJwt(User user);
+        Task<string> CreateRefreshJwt(string uid);
     }
 }
