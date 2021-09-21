@@ -25,7 +25,6 @@ namespace Croissant.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetPosts()
         {
             // TODO paging

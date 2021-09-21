@@ -4,6 +4,7 @@ using Croissant.ActionFilters;
 using Croissant.Authentication;
 using Entities.DataTransferObject;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -29,6 +30,7 @@ namespace Croissant.Controllers
             _authManager = authManager;
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         [ServiceFilter(typeof(ValidateBodyFilter))]
         public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
@@ -56,6 +58,7 @@ namespace Croissant.Controllers
             return BadRequest(ModelState);
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         [ServiceFilter(typeof(ValidateBodyFilter))]
         public async Task<IActionResult> LoginUser([FromBody] UserForLoginDto userForLogin)
