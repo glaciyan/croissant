@@ -1,11 +1,11 @@
 _type: export
 __export_format: 4
-__export_date: 2021-09-21T14:12:32.796Z
+__export_date: 2021-09-21T17:04:27.472Z
 __export_source: insomnia.desktop.app:v2021.5.3
 resources:
   - _id: req_cdb4c0d56092466a8bd70ea605212e59
     parentId: fld_9f0aa6a7ee4741f2b14237fd1e0e2570
-    modified: 1632233515044
+    modified: 1632241343805
     created: 1631900581088
     url: "{{ _.base_url }}/post"
     name: Get all posts
@@ -16,8 +16,7 @@ resources:
     headers: []
     authentication:
       type: bearer
-      token: "{% response 'raw', 'req_1372789f735a414ba8c836d64bdcdb7b', '',
-        'when-expired', 180 %}"
+      token: "{{ _.bearer }}"
     metaSortKey: -1631900581132
     isPrivate: false
     settingStoreCookies: true
@@ -47,7 +46,7 @@ resources:
     _type: workspace
   - _id: req_90e767d8b3af4cd19ac11f15bde0af84
     parentId: fld_9f0aa6a7ee4741f2b14237fd1e0e2570
-    modified: 1632233472966
+    modified: 1632241339657
     created: 1631954197872
     url: "{{ _.base_url }}/post/0994bfd0-823f-4bf8-991f-691ddefc23dd"
     name: Get post by id
@@ -58,8 +57,7 @@ resources:
     headers: []
     authentication:
       type: bearer
-      token: "{% response 'raw', 'req_1372789f735a414ba8c836d64bdcdb7b', '',
-        'when-expired', 180 %}"
+      token: "{{ _.bearer }}"
     metaSortKey: -1631954197872
     isPrivate: false
     settingStoreCookies: true
@@ -71,7 +69,7 @@ resources:
     _type: request
   - _id: req_1e23e5f8aab94dca946d86a047d65468
     parentId: fld_9f0aa6a7ee4741f2b14237fd1e0e2570
-    modified: 1632233396538
+    modified: 1632241334519
     created: 1631956317284
     url: "{{ _.base_url }}/post"
     name: Create Post
@@ -91,8 +89,7 @@ resources:
         id: pair_1456ee2f312d4cb3bff39dd2311b2033
     authentication:
       type: bearer
-      token: "{% response 'raw', 'req_1372789f735a414ba8c836d64bdcdb7b', '',
-        'when-expired', 180 %}"
+      token: "{{ _.bearer }}"
     metaSortKey: -1631956317284
     isPrivate: false
     settingStoreCookies: true
@@ -104,7 +101,7 @@ resources:
     _type: request
   - _id: req_1f8fa5c79917444f8291eb8f709332aa
     parentId: fld_9f0aa6a7ee4741f2b14237fd1e0e2570
-    modified: 1632233500278
+    modified: 1632241349314
     created: 1631959891273
     url: "{{ _.base_url }}/post/0994bfd0-823f-4bf8-991f-691ddefc23dd"
     name: Update post
@@ -124,8 +121,7 @@ resources:
         id: pair_f0a5228c711848b1b6749e5f6bfc2205
     authentication:
       type: bearer
-      token: "{% response 'raw', 'req_1372789f735a414ba8c836d64bdcdb7b', '',
-        'when-expired', 180 %}"
+      token: "{{ _.bearer }}"
     metaSortKey: -1631900581082
     isPrivate: false
     settingStoreCookies: true
@@ -137,7 +133,7 @@ resources:
     _type: request
   - _id: req_527c638bf5344bc59e6d0944816cb068
     parentId: fld_95046833129c420c99fd093ad8eb6207
-    modified: 1632231725348
+    modified: 1632242522115
     created: 1632063849107
     url: "{{ _.base_url }}/auth/register"
     name: Register
@@ -147,8 +143,8 @@ resources:
       mimeType: application/json
       text: |-
         {
-        	"username": "jdOE",
-        	"email": "jdoe@mail.com",
+        	"username": "maxi",
+        	"email": "maxi@mail.com",
         	"password": "Password100"
         }
     parameters: []
@@ -178,7 +174,7 @@ resources:
     _type: request_group
   - _id: req_1372789f735a414ba8c836d64bdcdb7b
     parentId: fld_95046833129c420c99fd093ad8eb6207
-    modified: 1632231725995
+    modified: 1632242603555
     created: 1632219857629
     url: "{{ _.base_url }}/auth/login"
     name: Login
@@ -188,7 +184,7 @@ resources:
       mimeType: application/json
       text: |-
         {
-        	"email": "jdoe@mail.com",
+        	"email": "maxi@mail.com",
         	"password": "Password100"
         }
     parameters: []
@@ -208,7 +204,7 @@ resources:
     _type: request
   - _id: req_1279db9dfab1462a85fc3d7bbe07ed05
     parentId: fld_95046833129c420c99fd093ad8eb6207
-    modified: 1632233417039
+    modified: 1632242627887
     created: 1632230572454
     url: "{{ _.base_url }}/user/me"
     name: Me
@@ -219,9 +215,29 @@ resources:
     headers: []
     authentication:
       type: bearer
-      token: "{% response 'raw', 'req_1372789f735a414ba8c836d64bdcdb7b', '',
-        'when-expired', 180 %}"
+      token: "{{ _.bearer }}"
     metaSortKey: -1632230572454
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_eb2cb5933a83477cb8eafdb0b64b5af2
+    parentId: fld_95046833129c420c99fd093ad8eb6207
+    modified: 1632237036515
+    created: 1632237025151
+    url: "{{ _.base_url }}/auth/token"
+    name: Refresh Token
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1632230572466.5
     isPrivate: false
     settingStoreCookies: true
     settingSendCookies: true
@@ -232,24 +248,40 @@ resources:
     _type: request
   - _id: env_f9da91cd57978ac170388931a4e35e8998a7e7ed
     parentId: wrk_ad47eac231e04060bf3a0576f9c117b6
-    modified: 1631900477562
+    modified: 1632242461502
     created: 1631900442493
     name: Base Environment
     data:
       base_url: "{{ _.default_scheme }}://{{ _.default_host }}{{ _.default_path }}"
+      bearer: "{% response 'body', 'req_eb2cb5933a83477cb8eafdb0b64b5af2',
+        'b64::JC50b2tlbg==::46b', 'when-expired', _.token_expiry %}"
+      token_expiry: 1800
     dataPropertyOrder:
       "&":
         - base_url
+        - bearer
+        - token_expiry
     color: null
     isPrivate: false
     metaSortKey: 1631900442493
     _type: environment
   - _id: jar_f9da91cd57978ac170388931a4e35e8998a7e7ed
     parentId: wrk_ad47eac231e04060bf3a0576f9c117b6
-    modified: 1631900442496
+    modified: 1632242839006
     created: 1631900442496
     name: Default Jar
-    cookies: []
+    cookies:
+      - key: refresh_token
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJjZDM1MmFlNC0yYzViLTRlOTctOGY4ZC04YjUyMjQ0ZDViYTAiLCJqdGkiOiIzYTViODNmZi0xNDUxLTQ4NTEtYjFkMi1hZTVhMDgxOGI4ZjMiLCJleHAiOjE2MzI2NzQ4MzksImlzcyI6IkNyb2lzc2FudEFwaSIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjUwMDEifQ.8hmz0RMphi6ZOJOyxwGxQV7f2nVzG_0I4YqLiJ8xYD8
+        maxAge: 432000
+        domain: localhost
+        path: /
+        secure: true
+        httpOnly: true
+        hostOnly: false
+        creation: 2021-09-21T15:07:11.686Z
+        lastAccessed: 2021-09-21T16:47:19.005Z
+        id: "5683073912377665"
     _type: cookie_jar
   - _id: spc_a3a0b15e8a5f4643bee4510b4a31c776
     parentId: wrk_ad47eac231e04060bf3a0576f9c117b6
