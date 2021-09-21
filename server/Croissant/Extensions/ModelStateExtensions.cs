@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Croissant.Extensions
 {
-    public static class ModelStateExtension
+    public static class ModelStateExtensions
     {
         public static IEnumerable<object> GetErrors(this ModelStateDictionary dict)
         {

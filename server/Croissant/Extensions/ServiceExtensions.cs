@@ -1,12 +1,16 @@
 using System;
+using System.Text;
 using Croissant.ActionFilters;
+using Croissant.Authentication;
 using Croissant.Data;
 using Croissant.Data.Repository;
 using Entities.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace Croissant.Extensions
@@ -18,8 +22,7 @@ namespace Croissant.Extensions
             services.AddCors(options =>
                 options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
         }
-
-
+        
         public static void ConfigureSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(options =>
@@ -74,6 +77,34 @@ namespace Croissant.Extensions
 
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
             builder.AddEntityFrameworkStores<DatabaseContext>().AddDefaultTokenProviders();
+        }
+
+        public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
+        {
+            var jwtSettings = configuration.GetSection("JwtSettings");
+            var secret = Environment.GetEnvironmentVariable("JWTSECRET");
+
+            services.AddScoped<IAuthenticationManager, AuthenticationManager>();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+
+                    ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
+                    ValidAudience = jwtSettings.GetSection("validAudience").Value,
+
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret!))
+                };
+            });
         }
     }
 }

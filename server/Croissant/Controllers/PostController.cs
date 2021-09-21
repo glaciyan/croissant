@@ -6,6 +6,7 @@ using Croissant.ActionFilters;
 using Croissant.Data.Repository;
 using Entities.DataTransferObject;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Croissant.Controllers
@@ -24,6 +25,7 @@ namespace Croissant.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetPosts()
         {
             // TODO paging

@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Croissant.ActionFilters;
+using Croissant.Authentication;
 using Entities.DataTransferObject;
 using Entities.Models;
 using Microsoft.AspNetCore.Identity;
@@ -17,13 +18,15 @@ namespace Croissant.Controllers
         private readonly ILogger<AuthenticationController> _logger;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
+        private readonly IAuthenticationManager _authManager;
 
         public AuthenticationController(ILogger<AuthenticationController> logger, IMapper mapper,
-            UserManager<User> userManager)
+            UserManager<User> userManager, IAuthenticationManager authManager)
         {
             _logger = logger;
             _mapper = mapper;
             _userManager = userManager;
+            _authManager = authManager;
         }
 
         [HttpPost("register")]
@@ -32,14 +35,16 @@ namespace Croissant.Controllers
         {
             _logger.LogInformation("User is registering: Username: {Username}, Email: {Email}",
                 userForRegistration.UserName, userForRegistration.Email);
-            
+
             var user = _mapper.Map<User>(userForRegistration);
 
             var registerResult = await _userManager.CreateAsync(user, userForRegistration.Password);
 
             if (registerResult.Succeeded)
             {
-                // await _userManager.AddToRoleAsync(user, "GeneralUser");
+                _logger.LogInformation("User registration was a success for: {Username} {Email}", user.UserName,
+                    user.Email);
+                
                 return StatusCode(Status201Created);
             }
 
@@ -49,6 +54,23 @@ namespace Croissant.Controllers
             }
 
             return BadRequest(ModelState);
+        }
+
+        [HttpPost("login")]
+        [ServiceFilter(typeof(ValidateBodyFilter))]
+        public async Task<IActionResult> LoginUser([FromBody] UserForLoginDto userForLogin)
+        {
+            _logger.LogInformation("Login attempted with email: {Email}", userForLogin.Email);
+
+            var user = await _authManager.AuthenticateUser(userForLogin);
+            
+            if (user == null)
+            {
+                _logger.LogWarning("User login failed for {Email}", userForLogin.Email);
+                return Unauthorized("Email or password incorrect");
+            }
+
+            return Ok(await _authManager.CreateJwt(user));
         }
     }
 }

@@ -1,0 +1,95 @@
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
+using Entities.DataTransferObject;
+using Entities.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
+
+namespace Croissant.Authentication
+{
+    class AuthenticationManager : IAuthenticationManager
+    {
+        private readonly UserManager<User> _userManager;
+        private readonly ILogger<AuthenticationManager> _logger;
+        private readonly IConfiguration _configuration;
+
+        public AuthenticationManager(UserManager<User> userManager, ILogger<AuthenticationManager> logger,
+            IConfiguration configuration)
+        {
+            _userManager = userManager;
+            _logger = logger;
+            _configuration = configuration;
+        }
+
+        /// <summary>
+        /// Authenticates the user with email and password
+        /// </summary>
+        /// <param name="userForLogin">User</param>
+        /// <returns>Null if authentication failed otherwise the user</returns>
+        public async Task<User> AuthenticateUser(UserForLoginDto userForLogin)
+        {
+            var user = await _userManager.FindByEmailAsync(userForLogin.Email);
+            var correctPassword = await _userManager.CheckPasswordAsync(user, userForLogin.Password);
+
+            if (user == null || !correctPassword) return null;
+
+            return user;
+        }
+
+        public async Task<string> CreateJwt(User user)
+        {
+            var credentials = GetSigningCredentials();
+            var claims = await GetClaimsAsync(user);
+            var tokenOptions = GenerateTokenOptions(credentials, claims);
+
+            return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+        }
+
+        private SigningCredentials GetSigningCredentials()
+        {
+            var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWTSECRET")!);
+            var secret = new SymmetricSecurityKey(key);
+
+            return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
+        }
+
+        private async Task<List<Claim>> GetClaimsAsync(User user)
+        {
+            var claims = new List<Claim>
+            {
+                new(JwtRegisteredClaimNames.Sub, user.UserName),
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new(ApplicationClaimNames.UserId, user.Id)
+            };
+
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim("roles", role));
+            }
+
+            return claims;
+        }
+
+        private JwtSecurityToken GenerateTokenOptions(SigningCredentials credentials, List<Claim> claims)
+        {
+            var jwtSettings = _configuration.GetSection("JwtSettings");
+
+            var issuer = jwtSettings.GetSection("validIssuer").Value;
+            var audience = jwtSettings.GetSection("validAudience").Value;
+            var expires = jwtSettings.GetSection("expires").Value;
+
+            var tokenOptions = new JwtSecurityToken(issuer, audience, claims,
+                expires: DateTime.Now.AddMinutes(Convert.ToDouble(expires)), signingCredentials: credentials);
+
+            return tokenOptions;
+        }
+    }
+}

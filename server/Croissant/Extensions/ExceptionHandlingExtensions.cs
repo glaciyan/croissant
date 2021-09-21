@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Croissant.Extensions
 {
-    public static class ExceptionHandlingExtension
+    public static class ExceptionHandlingExtensions
     {
         public static void UseGlobalExceptionHandler(this IApplicationBuilder app)
         {
