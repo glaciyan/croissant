@@ -1,11 +1,11 @@
 _type: export
 __export_format: 4
-__export_date: 2021-09-19T13:56:18.898Z
+__export_date: 2021-09-21T14:12:32.796Z
 __export_source: insomnia.desktop.app:v2021.5.3
 resources:
   - _id: req_cdb4c0d56092466a8bd70ea605212e59
     parentId: fld_9f0aa6a7ee4741f2b14237fd1e0e2570
-    modified: 1631954187095
+    modified: 1632233515044
     created: 1631900581088
     url: "{{ _.base_url }}/post"
     name: Get all posts
@@ -14,7 +14,10 @@ resources:
     body: {}
     parameters: []
     headers: []
-    authentication: {}
+    authentication:
+      type: bearer
+      token: "{% response 'raw', 'req_1372789f735a414ba8c836d64bdcdb7b', '',
+        'when-expired', 180 %}"
     metaSortKey: -1631900581132
     isPrivate: false
     settingStoreCookies: true
@@ -44,16 +47,19 @@ resources:
     _type: workspace
   - _id: req_90e767d8b3af4cd19ac11f15bde0af84
     parentId: fld_9f0aa6a7ee4741f2b14237fd1e0e2570
-    modified: 1631955670438
+    modified: 1632233472966
     created: 1631954197872
-    url: "{{ _.base_url }}/post/62eb1990-b49f-4c03-bcef-d0639c36810e"
+    url: "{{ _.base_url }}/post/0994bfd0-823f-4bf8-991f-691ddefc23dd"
     name: Get post by id
     description: ""
     method: GET
     body: {}
     parameters: []
     headers: []
-    authentication: {}
+    authentication:
+      type: bearer
+      token: "{% response 'raw', 'req_1372789f735a414ba8c836d64bdcdb7b', '',
+        'when-expired', 180 %}"
     metaSortKey: -1631954197872
     isPrivate: false
     settingStoreCookies: true
@@ -65,7 +71,7 @@ resources:
     _type: request
   - _id: req_1e23e5f8aab94dca946d86a047d65468
     parentId: fld_9f0aa6a7ee4741f2b14237fd1e0e2570
-    modified: 1632057492502
+    modified: 1632233396538
     created: 1631956317284
     url: "{{ _.base_url }}/post"
     name: Create Post
@@ -83,7 +89,10 @@ resources:
       - name: Content-Type
         value: application/json
         id: pair_1456ee2f312d4cb3bff39dd2311b2033
-    authentication: {}
+    authentication:
+      type: bearer
+      token: "{% response 'raw', 'req_1372789f735a414ba8c836d64bdcdb7b', '',
+        'when-expired', 180 %}"
     metaSortKey: -1631956317284
     isPrivate: false
     settingStoreCookies: true
@@ -95,9 +104,9 @@ resources:
     _type: request
   - _id: req_1f8fa5c79917444f8291eb8f709332aa
     parentId: fld_9f0aa6a7ee4741f2b14237fd1e0e2570
-    modified: 1631963510091
+    modified: 1632233500278
     created: 1631959891273
-    url: "{{ _.base_url }}/post/f5ea3807-0d32-41bd-ba76-62044d82f677"
+    url: "{{ _.base_url }}/post/0994bfd0-823f-4bf8-991f-691ddefc23dd"
     name: Update post
     description: ""
     method: PUT
@@ -105,7 +114,7 @@ resources:
       mimeType: application/json
       text: |-
         {
-        	"title": "",
+        	"title": "Ultra Mega TITLE",
         	"content": "Updated content"
         }
     parameters: []
@@ -113,8 +122,106 @@ resources:
       - name: Content-Type
         value: application/json
         id: pair_f0a5228c711848b1b6749e5f6bfc2205
-    authentication: {}
+    authentication:
+      type: bearer
+      token: "{% response 'raw', 'req_1372789f735a414ba8c836d64bdcdb7b', '',
+        'when-expired', 180 %}"
     metaSortKey: -1631900581082
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_527c638bf5344bc59e6d0944816cb068
+    parentId: fld_95046833129c420c99fd093ad8eb6207
+    modified: 1632231725348
+    created: 1632063849107
+    url: "{{ _.base_url }}/auth/register"
+    name: Register
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"username": "jdOE",
+        	"email": "jdoe@mail.com",
+        	"password": "Password100"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_1ea8721c91374867a7c448729ead3fab
+    authentication: {}
+    metaSortKey: -1632230572504
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_95046833129c420c99fd093ad8eb6207
+    parentId: wrk_ad47eac231e04060bf3a0576f9c117b6
+    modified: 1632063845350
+    created: 1632063845350
+    name: User
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1632063845350
+    _type: request_group
+  - _id: req_1372789f735a414ba8c836d64bdcdb7b
+    parentId: fld_95046833129c420c99fd093ad8eb6207
+    modified: 1632231725995
+    created: 1632219857629
+    url: "{{ _.base_url }}/auth/login"
+    name: Login
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"email": "jdoe@mail.com",
+        	"password": "Password100"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_b75df707d5ee497f8f42272686abfe40
+    authentication: {}
+    metaSortKey: -1632230572479
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_1279db9dfab1462a85fc3d7bbe07ed05
+    parentId: fld_95046833129c420c99fd093ad8eb6207
+    modified: 1632233417039
+    created: 1632230572454
+    url: "{{ _.base_url }}/user/me"
+    name: Me
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication:
+      type: bearer
+      token: "{% response 'raw', 'req_1372789f735a414ba8c836d64bdcdb7b', '',
+        'when-expired', 180 %}"
+    metaSortKey: -1632230572454
     isPrivate: false
     settingStoreCookies: true
     settingSendCookies: true
@@ -154,7 +261,7 @@ resources:
     _type: api_spec
   - _id: env_9cc76ffd1f1044eb9a93e5f56963169c
     parentId: env_f9da91cd57978ac170388931a4e35e8998a7e7ed
-    modified: 1632055058145
+    modified: 1632233411911
     created: 1631900451075
     name: Development
     data:
