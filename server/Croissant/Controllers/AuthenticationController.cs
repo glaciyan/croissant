@@ -12,6 +12,7 @@ using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace Croissant.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/auth")]
     public class AuthenticationController : ControllerBase
@@ -30,7 +31,6 @@ namespace Croissant.Controllers
             _authManager = authManager;
         }
 
-        [AllowAnonymous]
         [HttpPost("register")]
         [ServiceFilter(typeof(ValidateBodyFilter))]
         public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
@@ -58,7 +58,6 @@ namespace Croissant.Controllers
             return BadRequest(ModelState);
         }
 
-        [AllowAnonymous]
         [HttpPost("login")]
         [ServiceFilter(typeof(ValidateBodyFilter))]
         public async Task<IActionResult> LoginUser([FromBody] UserForLoginDto userForLogin)
