@@ -4,9 +4,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Croissant.Configurations;
 using Entities.DataTransferObject;
 using Entities.Models;
 using JetBrains.Annotations;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -61,16 +63,25 @@ namespace Croissant.Authentication
             var expires = Convert.ToDouble(jwtSettings.GetSection("refreshExpires").Value);
 
             var credentials = GetSigningCredentials();
-            
+
             var claims = new List<Claim>
             {
                 new("uid", uid),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
-            
+
             var tokenOptions = GenerateTokenOptions(credentials, claims, expires);
 
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+        }
+
+        public void RotateRefreshToken(HttpContext httpContext, string oldToken, string newToken)
+        {
+            httpContext.Response.Cookies.Append(CookieConfiguration.RefreshTokenCookieKey,
+                newToken,
+                CookieConfiguration.RefreshTokenConfig);
+            
+            // TODO refresh token invalidation
         }
 
         /// <summary>

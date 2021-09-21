@@ -100,15 +100,11 @@ namespace Croissant.Controllers
                 return Unauthorized("Refresh token is invalid");
             }
 
-            // TODO old refresh token invalidation
-
             var user = await _userManager.FindByIdAsync(userId);
 
             var newAccess = await _authManager.CreateJwt(user);
 
-            HttpContext.Response.Cookies.Append(CookieConfiguration.RefreshTokenCookieKey,
-                _authManager.CreateRefreshJwt(user.Id),
-                CookieConfiguration.RefreshTokenConfig);
+            _authManager.RotateRefreshToken(HttpContext, refreshToken, _authManager.CreateRefreshJwt(user.Id));
 
             return Ok(newAccess);
         }
