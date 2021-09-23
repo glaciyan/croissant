@@ -86,11 +86,13 @@ namespace Croissant.Controllers
             var hasToken =
                 HttpContext.Request.Cookies.TryGetValue(CookieConfiguration.RefreshTokenCookieKey,
                     out var refreshToken);
-            if (!hasToken || refreshToken == null) return BadRequest("No refresh token cookie");
+            if (!hasToken || refreshToken == null) return Unauthorized("No refresh token");
 
             var claims = _authManager.GetClaimsFromRefreshToken(refreshToken);
-
             var user = await _authManager.GetUserFromRefreshTokenClaims(claims);
+
+            if (user == null || !_authManager.CorrectRefreshTokenVersion(claims, user))
+                return Unauthorized("Invalid refresh token");
 
             var newAccess = await _authManager.CreateJwt(user);
 

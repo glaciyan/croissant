@@ -16,5 +16,7 @@ namespace Croissant.Authentication
 
         public void RotateRefreshToken(HttpContext httpContext, string oldToken, ClaimsPrincipal oldTokenClaims,
             string newToken);
+
+        bool CorrectRefreshTokenVersion(ClaimsPrincipal claims, User user);
     }
 }

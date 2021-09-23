@@ -98,7 +98,7 @@ namespace Croissant.Authentication
 
         public async Task<User> GetUserFromRefreshTokenClaims(ClaimsPrincipal claims)
         {
-            // TODO check if refreshToken has been invalidate
+            // TODO check if refreshToken has been invalidated
 
             var userId = claims?.FindFirst("uid")?.Value;
 
@@ -124,8 +124,18 @@ namespace Croissant.Authentication
             // save the oldToken to a redis database set to expire at the expiration date + a few hours just to be sure
         }
 
+        public bool CorrectRefreshTokenVersion(ClaimsPrincipal claims, User user)
+        {
+            // TODO untested
+            var tokenVersion = claims.FindFirst("uver");
+            if (tokenVersion == null) return false;
 
-        private SigningCredentials GetSigningCredentials()
+            var userVersion = user.RefreshTokenVersion;
+
+            return userVersion == tokenVersion.Value;
+        }
+
+        private static SigningCredentials GetSigningCredentials()
         {
             var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWTSECRET")!);
             var secret = new SymmetricSecurityKey(key);
