@@ -7,9 +7,9 @@ namespace Croissant.Authentication
 {
     public class JwtValidationManager
     {
-        public string Issuer { get; set; }
-        public string Audience { get; set; }
-        public SymmetricSecurityKey Secret { get; set; }
+        private string Issuer { get; }
+        private string Audience { get; }
+        private SymmetricSecurityKey Secret { get; }
         
         public JwtValidationManager(IConfiguration configuration)
         {

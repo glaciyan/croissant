@@ -81,8 +81,6 @@ namespace Croissant.Extensions
 
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
         {
-            var validationSettings = new JwtValidationManager(configuration);
-
             services.AddScoped<IAuthenticationManager, AuthenticationManager>();
 
             services.AddAuthentication(options =>
@@ -91,7 +89,7 @@ namespace Croissant.Extensions
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = validationSettings.TokenValidationParameters;
+                options.TokenValidationParameters = new JwtValidationManager(configuration).TokenValidationParameters;
             });
         }
     }
