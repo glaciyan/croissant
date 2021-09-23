@@ -1,6 +1,6 @@
 _type: export
 __export_format: 4
-__export_date: 2021-09-21T17:04:27.472Z
+__export_date: 2021-09-23T10:15:49.053Z
 __export_source: insomnia.desktop.app:v2021.5.3
 resources:
   - _id: req_cdb4c0d56092466a8bd70ea605212e59
@@ -204,9 +204,9 @@ resources:
     _type: request
   - _id: req_1279db9dfab1462a85fc3d7bbe07ed05
     parentId: fld_95046833129c420c99fd093ad8eb6207
-    modified: 1632242627887
+    modified: 1632390580685
     created: 1632230572454
-    url: "{{ _.base_url }}/user/me"
+    url: "{{ _.base_url }}/users/me"
     name: Me
     description: ""
     method: GET
@@ -246,6 +246,29 @@ resources:
     settingRebuildPath: true
     settingFollowRedirects: global
     _type: request
+  - _id: req_b70bca79b36b49f3a27666716c113f0c
+    parentId: fld_95046833129c420c99fd093ad8eb6207
+    modified: 1632390598434
+    created: 1632390344719
+    url: "{{ _.base_url }}/users/me/logout"
+    name: Invalidate all Refresh Tokens
+    description: ""
+    method: POST
+    body: {}
+    parameters: []
+    headers: []
+    authentication:
+      type: bearer
+      token: "{{ _.bearer }}"
+    metaSortKey: -1632230572404
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
   - _id: env_f9da91cd57978ac170388931a4e35e8998a7e7ed
     parentId: wrk_ad47eac231e04060bf3a0576f9c117b6
     modified: 1632242461502
@@ -267,21 +290,10 @@ resources:
     _type: environment
   - _id: jar_f9da91cd57978ac170388931a4e35e8998a7e7ed
     parentId: wrk_ad47eac231e04060bf3a0576f9c117b6
-    modified: 1632242839006
+    modified: 1632391582335
     created: 1631900442496
     name: Default Jar
-    cookies:
-      - key: refresh_token
-        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJjZDM1MmFlNC0yYzViLTRlOTctOGY4ZC04YjUyMjQ0ZDViYTAiLCJqdGkiOiIzYTViODNmZi0xNDUxLTQ4NTEtYjFkMi1hZTVhMDgxOGI4ZjMiLCJleHAiOjE2MzI2NzQ4MzksImlzcyI6IkNyb2lzc2FudEFwaSIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjUwMDEifQ.8hmz0RMphi6ZOJOyxwGxQV7f2nVzG_0I4YqLiJ8xYD8
-        maxAge: 432000
-        domain: localhost
-        path: /
-        secure: true
-        httpOnly: true
-        hostOnly: false
-        creation: 2021-09-21T15:07:11.686Z
-        lastAccessed: 2021-09-21T16:47:19.005Z
-        id: "5683073912377665"
+    cookies: []
     _type: cookie_jar
   - _id: spc_a3a0b15e8a5f4643bee4510b4a31c776
     parentId: wrk_ad47eac231e04060bf3a0576f9c117b6
