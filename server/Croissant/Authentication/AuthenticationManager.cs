@@ -130,6 +130,7 @@ namespace Croissant.Authentication
 
         public async Task<bool> TokenHasBeenInvalidated(string tokenRaw)
         {
+            if (string.IsNullOrWhiteSpace(tokenRaw)) return true;
             var token = new JsonWebToken(tokenRaw);
 
             var db = _redis.GetDatabase();
