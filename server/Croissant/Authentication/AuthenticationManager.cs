@@ -69,7 +69,7 @@ namespace Croissant.Authentication
                 new("uid", user.Id),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 // Refresh token version (user version)
-                new("uver", user.RefreshTokenVersion)
+                new(ApplicationClaimNames.RefreshTokenVersion, user.RefreshTokenVersion)
             };
 
             var tokenOptions = GenerateTokenOptions(credentials, claims, expires);
@@ -127,7 +127,7 @@ namespace Croissant.Authentication
         public bool CorrectRefreshTokenVersion(ClaimsPrincipal claims, User user)
         {
             // TODO untested
-            var tokenVersion = claims.FindFirst("uver");
+            var tokenVersion = claims.FindFirst(ApplicationClaimNames.RefreshTokenVersion);
             if (tokenVersion == null) return false;
 
             var userVersion = user.RefreshTokenVersion;
@@ -153,7 +153,7 @@ namespace Croissant.Authentication
             };
 
             var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles) claims.Add(new Claim("roles", role));
+            foreach (var role in roles) claims.Add(new Claim(ApplicationClaimNames.Roles, role));
 
             return claims;
         }
