@@ -41,6 +41,8 @@ namespace Croissant.Controllers
             _authManager.UpdateRefreshTokenVersion(user);
             await _userManager.UpdateAsync(user);
 
+            HttpContext.Response.Cookies.Delete(CookieConfiguration.RefreshTokenCookieKey);
+
             return NoContent();
         }
     }
