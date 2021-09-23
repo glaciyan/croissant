@@ -72,7 +72,7 @@ namespace Croissant.Controllers
                 _logger.LogWarning("User login failed for {Email}", userForLogin.Email);
                 return Unauthorized("Email or password incorrect");
             }
-
+            
             HttpContext.Response.Cookies.Append(CookieConfiguration.RefreshTokenCookieKey,
                 _authManager.CreateRefreshJwt(user),
                 CookieConfiguration.RefreshTokenConfig(_configuration));
@@ -80,23 +80,29 @@ namespace Croissant.Controllers
             return Ok(new {token = await _authManager.CreateJwt(user)});
         }
 
+        // TODO check if i could do something with [Authorize] here because the user requires a cookie
+        // or copy the cookie auth code from the official implementation
         [HttpGet("token")]
         public async Task<IActionResult> GetToken()
         {
+            // Get the refresh token
             var hasToken =
                 HttpContext.Request.Cookies.TryGetValue(CookieConfiguration.RefreshTokenCookieKey,
                     out var refreshToken);
             if (!hasToken || refreshToken == null) return Unauthorized("No refresh token");
 
+            if (await _authManager.TokenHasBeenInvalidated(refreshToken)) return Unauthorized("Invalid refresh token");
+
             var claims = _authManager.GetClaimsFromRefreshToken(refreshToken);
             var user = await _authManager.GetUserFromRefreshTokenClaims(claims);
 
-            if (user == null || !_authManager.CorrectRefreshTokenVersion(claims, user))
+            if (user == null || !_authManager.IsCorrectRefreshTokenVersion(claims, user))
                 return Unauthorized("Invalid refresh token");
 
             var newAccess = await _authManager.CreateJwt(user);
 
-            _authManager.RotateRefreshToken(HttpContext, refreshToken, claims, _authManager.CreateRefreshJwt(user));
+            await _authManager.RotateRefreshToken(HttpContext, refreshToken, claims,
+                _authManager.CreateRefreshJwt(user));
 
             return Ok(new {token = newAccess});
         }

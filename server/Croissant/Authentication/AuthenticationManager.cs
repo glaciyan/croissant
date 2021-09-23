@@ -12,7 +12,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace Croissant.Authentication
@@ -20,15 +22,17 @@ namespace Croissant.Authentication
     internal class AuthenticationManager : IAuthenticationManager
     {
         private readonly IConfiguration _configuration;
+        private readonly IConnectionMultiplexer _redis;
         private readonly ILogger<AuthenticationManager> _logger;
         private readonly UserManager<User> _userManager;
 
         public AuthenticationManager(UserManager<User> userManager, ILogger<AuthenticationManager> logger,
-            IConfiguration configuration)
+            IConfiguration configuration, IConnectionMultiplexer redis)
         {
             _userManager = userManager;
             _logger = logger;
             _configuration = configuration;
+            _redis = redis;
         }
 
         /// <summary>
@@ -113,18 +117,38 @@ namespace Croissant.Authentication
             return user;
         }
 
-        public void RotateRefreshToken(HttpContext httpContext, string oldToken, ClaimsPrincipal oldTokenClaims,
+        public async Task RotateRefreshToken(HttpContext httpContext, string oldTokenRaw,
+            ClaimsPrincipal oldTokenClaims,
             string newToken)
         {
             httpContext.Response.Cookies.Append(CookieConfiguration.RefreshTokenCookieKey,
                 newToken,
                 CookieConfiguration.RefreshTokenConfig(_configuration));
 
-            // TODO refresh token invalidation
-            // save the oldToken to a redis database set to expire at the expiration date + a few hours just to be sure
+            await InvalidateToken(oldTokenRaw);
         }
 
-        public bool CorrectRefreshTokenVersion(ClaimsPrincipal claims, User user)
+        public async Task<bool> TokenHasBeenInvalidated(string tokenRaw)
+        {
+            var token = new JsonWebToken(tokenRaw);
+
+            var db = _redis.GetDatabase();
+            var val = await db.StringGetAsync(token.Id);
+
+            return val.HasValue;
+        }
+
+        private async Task InvalidateToken(string oldTokenRaw)
+        {
+            var oldToken = new JsonWebToken(oldTokenRaw);
+
+            var db = _redis.GetDatabase();
+            var expiry = oldToken.ValidTo - DateTime.UtcNow;
+            await db.StringSetAsync(oldToken.Id, oldToken.GetClaim(ApplicationClaimNames.RefreshTokenVersion).Value,
+                expiry);
+        }
+
+        public bool IsCorrectRefreshTokenVersion(ClaimsPrincipal claims, User user)
         {
             // TODO untested
             var tokenVersion = claims.FindFirst(ApplicationClaimNames.RefreshTokenVersion);
@@ -133,6 +157,11 @@ namespace Croissant.Authentication
             var userVersion = user.RefreshTokenVersion;
 
             return userVersion == tokenVersion.Value;
+        }
+
+        public void UpdateRefreshTokenVersion(User user)
+        {
+            user.RefreshTokenVersion = Guid.NewGuid().ToString();
         }
 
         private static SigningCredentials GetSigningCredentials()

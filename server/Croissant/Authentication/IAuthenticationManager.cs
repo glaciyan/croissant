@@ -14,9 +14,12 @@ namespace Croissant.Authentication
         public ClaimsPrincipal GetClaimsFromRefreshToken(string refreshToken);
         public Task<User> GetUserFromRefreshTokenClaims(ClaimsPrincipal claims);
 
-        public void RotateRefreshToken(HttpContext httpContext, string oldToken, ClaimsPrincipal oldTokenClaims,
+        public Task RotateRefreshToken(HttpContext httpContext, string oldToken, ClaimsPrincipal oldTokenClaims,
             string newToken);
 
-        bool CorrectRefreshTokenVersion(ClaimsPrincipal claims, User user);
+        public Task<bool> TokenHasBeenInvalidated(string tokenRaw);
+
+        bool IsCorrectRefreshTokenVersion(ClaimsPrincipal claims, User user);
+        void UpdateRefreshTokenVersion(User user);
     }
 }
