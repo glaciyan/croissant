@@ -10,8 +10,10 @@ namespace Croissant.Authentication
     {
         Task<User> AuthenticateUser(UserForLoginDto user);
         Task<string> CreateJwt(User user);
-        string CreateRefreshJwt(string uid);
+        string CreateRefreshJwt(User user);
         public ClaimsPrincipal GetClaimsFromRefreshToken(string refreshToken);
-        public void RotateRefreshToken(HttpContext httpContext, string oldToken, string newToken);
+        public Task<User> GetUserFromRefreshTokenClaims(ClaimsPrincipal claims);
+        public void RotateRefreshToken(HttpContext httpContext, string oldToken, ClaimsPrincipal oldTokenClaims,
+            string newToken);
     }
 }

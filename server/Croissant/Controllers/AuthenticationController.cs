@@ -77,7 +77,7 @@ namespace Croissant.Controllers
             }
 
             HttpContext.Response.Cookies.Append(CookieConfiguration.RefreshTokenCookieKey,
-                _authManager.CreateRefreshJwt(user.Id),
+                _authManager.CreateRefreshJwt(user),
                 CookieConfiguration.RefreshTokenConfig);
 
             return Ok(new {token = await _authManager.CreateJwt(user)});
@@ -93,18 +93,11 @@ namespace Croissant.Controllers
 
             var claims = _authManager.GetClaimsFromRefreshToken(refreshToken);
 
-            var userId = claims?.FindFirst("uid")?.Value;
-            if (userId == null)
-            {
-                _logger.LogWarning("An attempt to refresh a token has failed because userId was null");
-                return Unauthorized("Refresh token is invalid");
-            }
-
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _authManager.GetUserFromRefreshTokenClaims(claims);
 
             var newAccess = await _authManager.CreateJwt(user);
 
-            _authManager.RotateRefreshToken(HttpContext, refreshToken, _authManager.CreateRefreshJwt(user.Id));
+            _authManager.RotateRefreshToken(HttpContext, refreshToken, claims, _authManager.CreateRefreshJwt(user));
 
             return Ok(new {token = newAccess});
         }

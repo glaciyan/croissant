@@ -57,7 +57,7 @@ namespace Croissant.Authentication
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
 
-        public string CreateRefreshJwt(string uid)
+        public string CreateRefreshJwt(User user)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
             var expires = Convert.ToDouble(jwtSettings.GetSection("refreshExpires").Value);
@@ -66,8 +66,10 @@ namespace Croissant.Authentication
 
             var claims = new List<Claim>
             {
-                new("uid", uid),
-                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new("uid", user.Id),
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                // Refresh token version (user version)
+                new("uver", user.RefreshTokenVersion)
             };
 
             var tokenOptions = GenerateTokenOptions(credentials, claims, expires);
@@ -83,19 +85,11 @@ namespace Croissant.Authentication
         public ClaimsPrincipal GetClaimsFromRefreshToken(string refreshToken)
         {
             // TODO check if refreshToken has been invalidated
-            
-            var jwtSettings = _configuration.GetSection("JwtSettings");
-
-            var issuer = jwtSettings.GetSection("validIssuer").Value;
-            var audience = jwtSettings.GetSection("validAudience").Value;
-
-            var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWTSECRET")!);
-            var secret = new SymmetricSecurityKey(key);
 
             try
             {
                 return new JwtSecurityTokenHandler().ValidateToken(refreshToken,
-                    TokenValidationParameters(issuer, audience, secret), out _);
+                    new JwtValidationManager(_configuration).TokenValidationParameters(), out _);
             }
             catch (SecurityTokenValidationException ex)
             {
@@ -104,30 +98,32 @@ namespace Croissant.Authentication
             }
         }
 
-        public void RotateRefreshToken(HttpContext httpContext, string oldToken, string newToken)
+        public async Task<User> GetUserFromRefreshTokenClaims(ClaimsPrincipal claims)
+        {
+            var userId = claims?.FindFirst("uid")?.Value;
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                _logger.LogWarning("An attempt to refresh a token has failed because userId was null");
+                return null;
+            }
+
+            return user;
+        }
+
+        public void RotateRefreshToken(HttpContext httpContext, string oldToken, ClaimsPrincipal oldTokenClaims,
+            string newToken)
         {
             httpContext.Response.Cookies.Append(CookieConfiguration.RefreshTokenCookieKey,
                 newToken,
                 CookieConfiguration.RefreshTokenConfig);
-            
+
             // TODO refresh token invalidation
             // save the oldToken to a redis database set to expire at the expiration date + a few hours just to be sure
         }
 
-        public static TokenValidationParameters TokenValidationParameters(string issuer, string audience,
-            SymmetricSecurityKey secret) =>
-            new()
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-
-                ValidIssuer = issuer,
-                ValidAudience = audience,
-
-                IssuerSigningKey = secret
-            };
 
         private SigningCredentials GetSigningCredentials()
         {

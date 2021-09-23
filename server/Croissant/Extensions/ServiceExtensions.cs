@@ -81,8 +81,7 @@ namespace Croissant.Extensions
 
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
         {
-            var jwtSettings = configuration.GetSection("JwtSettings");
-            var secret = Environment.GetEnvironmentVariable("JWTSECRET");
+            var validationSettings = new JwtValidationManager(configuration);
 
             services.AddScoped<IAuthenticationManager, AuthenticationManager>();
 
@@ -92,10 +91,7 @@ namespace Croissant.Extensions
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = AuthenticationManager.TokenValidationParameters(
-                    jwtSettings.GetSection("validIssuer").Value,
-                    jwtSettings.GetSection("validAudience").Value,
-                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret!)));
+                options.TokenValidationParameters = validationSettings.TokenValidationParameters();
             });
         }
     }
