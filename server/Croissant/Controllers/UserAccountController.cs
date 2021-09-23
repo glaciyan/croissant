@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Croissant.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/users/me")]
     public class UserAccountController : ControllerBase
@@ -23,7 +24,6 @@ namespace Croissant.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetMe()
         {
             var user = await HttpContext.GetUser(_userManager);
@@ -32,9 +32,7 @@ namespace Croissant.Controllers
             return Ok($"{user.UserName} {user.Email}");
         }
 
-        // TODO remove, this is just for testing
         [HttpPost("logout")]
-        [Authorize]
         public async Task<IActionResult> InvalidateAllRefreshTokens()
         {
             var user = await HttpContext.GetUser(_userManager);
