@@ -18,7 +18,8 @@ namespace Croissant.Configurations
                 Domain = "localhost",
                 MaxAge = TimeSpan.FromMinutes(expires),
                 HttpOnly = true,
-                Secure = true
+                Secure = true,
+                Path = "/api/auth/token"
             };
         }
     }
