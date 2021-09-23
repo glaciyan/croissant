@@ -22,7 +22,7 @@ namespace Croissant.Authentication
             Secret = new SymmetricSecurityKey(key);
         }
         
-        public TokenValidationParameters TokenValidationParameters() =>
+        public TokenValidationParameters TokenValidationParameters =>
             new()
             {
                 ValidateIssuer = true,

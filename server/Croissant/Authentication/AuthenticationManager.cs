@@ -89,7 +89,7 @@ namespace Croissant.Authentication
             try
             {
                 return new JwtSecurityTokenHandler().ValidateToken(refreshToken,
-                    new JwtValidationManager(_configuration).TokenValidationParameters(), out _);
+                    new JwtValidationManager(_configuration).TokenValidationParameters, out _);
             }
             catch (SecurityTokenValidationException ex)
             {

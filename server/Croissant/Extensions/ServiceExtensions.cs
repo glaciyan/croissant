@@ -91,7 +91,7 @@ namespace Croissant.Extensions
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = validationSettings.TokenValidationParameters();
+                options.TokenValidationParameters = validationSettings.TokenValidationParameters;
             });
         }
     }
