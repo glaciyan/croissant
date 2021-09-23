@@ -18,13 +18,14 @@ namespace Croissant.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet("me"), Authorize]
+        [HttpGet("me")]
+        [Authorize]
         public async Task<IActionResult> GetMe()
         {
             var user = await HttpContext.GetUser(_userManager);
-            
+
             if (user == null) return BadRequest();
-            else return Ok($"{user.UserName} {user.Email}");
+            return Ok($"{user.UserName} {user.Email}");
         }
     }
 }

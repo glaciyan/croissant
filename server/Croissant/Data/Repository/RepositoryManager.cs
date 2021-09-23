@@ -25,7 +25,7 @@ namespace Croissant.Data.Repository
                     entity.State is EntityState.Added or EntityState.Modified)
                 {
                     var now = DateTime.UtcNow;
-                    
+
                     switch (entity.State)
                     {
                         case EntityState.Added:

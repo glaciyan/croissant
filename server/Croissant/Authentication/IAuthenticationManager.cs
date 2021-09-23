@@ -13,6 +13,7 @@ namespace Croissant.Authentication
         string CreateRefreshJwt(User user);
         public ClaimsPrincipal GetClaimsFromRefreshToken(string refreshToken);
         public Task<User> GetUserFromRefreshTokenClaims(ClaimsPrincipal claims);
+
         public void RotateRefreshToken(HttpContext httpContext, string oldToken, ClaimsPrincipal oldTokenClaims,
             string newToken);
     }

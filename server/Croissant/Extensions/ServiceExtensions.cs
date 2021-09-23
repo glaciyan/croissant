@@ -1,5 +1,4 @@
 using System;
-using System.Text;
 using Croissant.ActionFilters;
 using Croissant.Authentication;
 using Croissant.Data;
@@ -10,7 +9,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace Croissant.Extensions
@@ -89,7 +87,8 @@ namespace Croissant.Extensions
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = new JwtValidationManager(configuration).TokenValidationParameters;
+                options.TokenValidationParameters =
+                    new JwtValidationManager(configuration).TokenValidationParameters;
             });
         }
     }

@@ -1,5 +1,3 @@
-using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using AutoMapper;
 using Croissant.ActionFilters;
@@ -8,7 +6,6 @@ using Croissant.Configurations;
 using Entities.DataTransferObject;
 using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -22,11 +19,11 @@ namespace Croissant.Controllers
     [Route("api/auth")]
     public class AuthenticationController : ControllerBase
     {
+        private readonly IAuthenticationManager _authManager;
+        private readonly IConfiguration _configuration;
         private readonly ILogger<AuthenticationController> _logger;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
-        private readonly IAuthenticationManager _authManager;
-        private readonly IConfiguration _configuration;
 
         public AuthenticationController(ILogger<AuthenticationController> logger, IMapper mapper,
             UserManager<User> userManager, IAuthenticationManager authManager, IConfiguration configuration)
@@ -57,10 +54,7 @@ namespace Croissant.Controllers
                 return StatusCode(Status201Created);
             }
 
-            foreach (var error in registerResult.Errors)
-            {
-                ModelState.TryAddModelError(error.Code, error.Description);
-            }
+            foreach (var error in registerResult.Errors) ModelState.TryAddModelError(error.Code, error.Description);
 
             return BadRequest(ModelState);
         }

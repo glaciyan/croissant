@@ -17,11 +17,11 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 
 namespace Croissant.Authentication
 {
-    class AuthenticationManager : IAuthenticationManager
+    internal class AuthenticationManager : IAuthenticationManager
     {
-        private readonly UserManager<User> _userManager;
-        private readonly ILogger<AuthenticationManager> _logger;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<AuthenticationManager> _logger;
+        private readonly UserManager<User> _userManager;
 
         public AuthenticationManager(UserManager<User> userManager, ILogger<AuthenticationManager> logger,
             IConfiguration configuration)
@@ -32,7 +32,7 @@ namespace Croissant.Authentication
         }
 
         /// <summary>
-        /// Authenticates the user with email and password
+        ///     Authenticates the user with email and password
         /// </summary>
         /// <returns>Null if authentication failed otherwise the user</returns>
         public async Task<User> AuthenticateUser(UserForLoginDto userForLogin)
@@ -78,7 +78,7 @@ namespace Croissant.Authentication
         }
 
         /// <summary>
-        /// Validates the refreshToken and returns the user id of the refreshToken
+        ///     Validates the refreshToken and returns the user id of the refreshToken
         /// </summary>
         /// <returns>Null if refresh token is invalid</returns>
         [CanBeNull]
@@ -143,10 +143,7 @@ namespace Croissant.Authentication
             };
 
             var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim("roles", role));
-            }
+            foreach (var role in roles) claims.Add(new Claim("roles", role));
 
             return claims;
         }

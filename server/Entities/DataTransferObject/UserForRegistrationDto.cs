@@ -12,7 +12,7 @@ namespace Entities.DataTransferObject
         [Required]
         [MaxLength(64, ErrorMessage = "Maximum allowed length for a password is 64 character")]
         public string Password { get; set; }
-        
+
         [EmailAddress]
         [Required]
         [MaxLength(128, ErrorMessage = "Email can't be longer than 128 characters")]

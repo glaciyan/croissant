@@ -14,11 +14,8 @@ namespace Croissant.Extensions
         {
             var userClaims = httpContext.User;
             var uidClaim = userClaims.FindFirst(ApplicationClaimNames.UserId);
-            
-            if (uidClaim == null)
-            {
-                return null;
-            }
+
+            if (uidClaim == null) return null;
 
             var user = await userManager.FindByIdAsync(uidClaim.Value);
             return user;

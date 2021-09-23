@@ -35,9 +35,10 @@ namespace Croissant.ActionFilters
 
             if (!context.ModelState.IsValid)
             {
-                _logger.LogWarning("{Origin}: Invalid model state for object sent from client {@ModelStateErrors}", origin,
+                _logger.LogWarning("{Origin}: Invalid model state for object sent from client {@ModelStateErrors}",
+                    origin,
                     context.ModelState.GetErrors());
-                
+
                 context.Result = new UnprocessableEntityObjectResult(context.ModelState);
             }
         }

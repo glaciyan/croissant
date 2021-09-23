@@ -6,11 +6,13 @@ namespace Croissant.Configurations
 {
     public static class CookieConfiguration
     {
+        public const string RefreshTokenCookieKey = "refresh_token";
+
         public static CookieOptions RefreshTokenConfig(IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
             var expires = Convert.ToDouble(jwtSettings.GetSection("refreshExpires").Value);
-            
+
             return new CookieOptions
             {
                 Domain = "localhost",
@@ -19,7 +21,5 @@ namespace Croissant.Configurations
                 Secure = true
             };
         }
-
-        public const string RefreshTokenCookieKey = "refresh_token";
     }
 }
