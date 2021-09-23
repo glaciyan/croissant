@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 
 namespace Croissant.Extensions
 {
@@ -90,6 +91,12 @@ namespace Croissant.Extensions
                 options.TokenValidationParameters =
                     new JwtValidationManager(configuration).TokenValidationParameters;
             });
+        }
+
+        public static void ConfigureRedis(this IServiceCollection services)
+        {
+            var multiplexer = ConnectionMultiplexer.Connect("localhost");
+            services.AddSingleton<IConnectionMultiplexer>(multiplexer);
         }
     }
 }
