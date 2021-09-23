@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
@@ -25,14 +26,16 @@ namespace Croissant.Controllers
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
         private readonly IAuthenticationManager _authManager;
+        private readonly IConfiguration _configuration;
 
         public AuthenticationController(ILogger<AuthenticationController> logger, IMapper mapper,
-            UserManager<User> userManager, IAuthenticationManager authManager)
+            UserManager<User> userManager, IAuthenticationManager authManager, IConfiguration configuration)
         {
             _logger = logger;
             _mapper = mapper;
             _userManager = userManager;
             _authManager = authManager;
+            _configuration = configuration;
         }
 
         [HttpPost("register")]
@@ -78,7 +81,7 @@ namespace Croissant.Controllers
 
             HttpContext.Response.Cookies.Append(CookieConfiguration.RefreshTokenCookieKey,
                 _authManager.CreateRefreshJwt(user),
-                CookieConfiguration.RefreshTokenConfig);
+                CookieConfiguration.RefreshTokenConfig(_configuration));
 
             return Ok(new {token = await _authManager.CreateJwt(user)});
         }

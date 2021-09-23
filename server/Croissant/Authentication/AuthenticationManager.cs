@@ -84,8 +84,6 @@ namespace Croissant.Authentication
         [CanBeNull]
         public ClaimsPrincipal GetClaimsFromRefreshToken(string refreshToken)
         {
-            // TODO check if refreshToken has been invalidated
-
             try
             {
                 return new JwtSecurityTokenHandler().ValidateToken(refreshToken,
@@ -100,13 +98,15 @@ namespace Croissant.Authentication
 
         public async Task<User> GetUserFromRefreshTokenClaims(ClaimsPrincipal claims)
         {
+            // TODO check if refreshToken has been invalidate
+
             var userId = claims?.FindFirst("uid")?.Value;
 
             var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
             {
-                _logger.LogWarning("An attempt to refresh a token has failed because userId was null");
+                _logger.LogWarning("An attempt to refresh a token has failed because user was null");
                 return null;
             }
 
@@ -118,7 +118,7 @@ namespace Croissant.Authentication
         {
             httpContext.Response.Cookies.Append(CookieConfiguration.RefreshTokenCookieKey,
                 newToken,
-                CookieConfiguration.RefreshTokenConfig);
+                CookieConfiguration.RefreshTokenConfig(_configuration));
 
             // TODO refresh token invalidation
             // save the oldToken to a redis database set to expire at the expiration date + a few hours just to be sure

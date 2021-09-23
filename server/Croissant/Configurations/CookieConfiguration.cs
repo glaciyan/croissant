@@ -1,18 +1,25 @@
 using System;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace Croissant.Configurations
 {
     public static class CookieConfiguration
     {
-        public static CookieOptions RefreshTokenConfig => new CookieOptions
+        public static CookieOptions RefreshTokenConfig(IConfiguration configuration)
         {
-            Domain = "localhost",
-            MaxAge = TimeSpan.FromDays(5),
-            HttpOnly = true,
-            Secure = true
-        };
-        
+            var jwtSettings = configuration.GetSection("JwtSettings");
+            var expires = Convert.ToDouble(jwtSettings.GetSection("refreshExpires").Value);
+            
+            return new CookieOptions
+            {
+                Domain = "localhost",
+                MaxAge = TimeSpan.FromMinutes(expires),
+                HttpOnly = true,
+                Secure = true
+            };
+        }
+
         public const string RefreshTokenCookieKey = "refresh_token";
     }
 }
