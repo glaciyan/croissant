@@ -15,6 +15,7 @@ namespace Croissant
 
             // User
             CreateMap<UserForRegistrationDto, User>();
+            CreateMap<User, UserDto>();
         }
     }
 }

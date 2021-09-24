@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using Entities;
+using Entities.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Croissant.Data.Repository
@@ -8,15 +10,19 @@ namespace Croissant.Data.Repository
     public class RepositoryManager : IRepositoryManager
     {
         private readonly DatabaseContext _context;
+        private readonly UserManager<User> _userManager;
 
         private PostRepository _postRepository;
+        private UserRepository _userRepository;
 
-        public RepositoryManager(DatabaseContext context)
+        public RepositoryManager(DatabaseContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public PostRepository Posts => _postRepository ??= new PostRepository(_context);
+        public UserRepository Users => _userRepository ??= new UserRepository(_userManager);
 
         public async Task SaveAsync()
         {
