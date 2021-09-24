@@ -6,21 +6,26 @@ using Croissant.ActionFilters;
 using Croissant.Data.Repository;
 using Entities.DataTransferObject;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Croissant.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/post")]
     public class PostController : ControllerBase
     {
         private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
         private readonly IRepositoryManager _repo;
 
-        public PostController(IRepositoryManager repo, IMapper mapper)
+        public PostController(IRepositoryManager repo, IMapper mapper, UserManager<User> userManager)
         {
             _repo = repo;
             _mapper = mapper;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -46,7 +51,12 @@ namespace Croissant.Controllers
         [ServiceFilter(typeof(ValidateBodyFilter))]
         public async Task<IActionResult> CreatePost([FromBody] PostForCreationDto postForCreation)
         {
+            var userId = _userManager.GetUserId(User);
+            _userManager.
+            
             var post = _mapper.Map<Post>(postForCreation);
+            post.PosterId = userId;
+            
             _repo.Posts.CreatePost(post);
             await _repo.SaveAsync();
 

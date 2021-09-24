@@ -72,6 +72,8 @@ namespace Croissant.Extensions
                 options.User.RequireUniqueEmail = true;
                 options.User.AllowedUserNameCharacters =
                     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-";
+
+                options.ClaimsIdentity.UserIdClaimType = ApplicationClaimNames.UserId;
             });
 
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);

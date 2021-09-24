@@ -27,5 +27,10 @@ namespace Croissant.Data.Repository
         {
             return await FindByCondition(p => p.Id.Equals(id), trackChanges).SingleOrDefaultAsync();
         }
+
+        public async Task<IEnumerable<Post>> GetPostsFromUserAsync(string userId, bool trackChanges = false)
+        {
+            return await FindByCondition(p => p.PosterId.Equals(userId), trackChanges).ToListAsync();
+        }
     }
 }

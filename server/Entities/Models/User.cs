@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
 namespace Entities.Models
@@ -11,5 +12,7 @@ namespace Entities.Models
         }
 
         public string RefreshTokenVersion { get; set; }
+
+        [PersonalData] public ICollection<Post> Posts { get; set; }
     }
 }
