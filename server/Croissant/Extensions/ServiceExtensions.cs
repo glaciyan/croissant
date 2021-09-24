@@ -56,6 +56,7 @@ namespace Croissant.Extensions
         {
             services.AddScoped<AssurePostFilter>();
             services.AddScoped<ValidateBodyFilter>();
+            services.AddScoped<NewTokenFilter>();
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)
