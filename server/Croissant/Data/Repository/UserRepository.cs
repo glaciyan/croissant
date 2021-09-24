@@ -16,17 +16,16 @@ namespace Croissant.Data.Repository
             _userManager = userManager;
         }
 
-        public async Task<User> GetUserWithRecentPosts(Guid userId, bool trackChanges = false)
+        public async Task<User> GetUserWithRecentPosts(Guid userId)
         {
-            var query =
-                _userManager.Users
-                    .Where(u => u.Id == userId.ToString())
-                    .Include(u =>
-                        u.Posts
-                            .OrderBy(p => p.CreatedAt)
-                            .Take(3));
-
-            return !trackChanges ? await query.AsNoTracking().FirstOrDefaultAsync() : await query.FirstOrDefaultAsync();
+            return await _userManager.Users
+                .Where(u => u.Id == userId.ToString())
+                .Include(u =>
+                    u.Posts
+                        .OrderBy(p => p.CreatedAt)
+                        .Take(3))
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
         }
     }
 }
