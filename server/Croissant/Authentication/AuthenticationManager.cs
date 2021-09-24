@@ -197,7 +197,7 @@ namespace Croissant.Authentication
             var audience = jwtSettings.GetSection("validAudience").Value;
 
             var tokenOptions = new JwtSecurityToken(issuer, audience, claims,
-                expires: DateTime.Now.AddMinutes(expires), signingCredentials: credentials);
+                expires: DateTime.Now.AddSeconds(expires), signingCredentials: credentials);
 
             return tokenOptions;
         }

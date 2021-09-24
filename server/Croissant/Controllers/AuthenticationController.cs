@@ -72,7 +72,7 @@ namespace Croissant.Controllers
                 _logger.LogWarning("User login failed for {Email}", userForLogin.Email);
                 return Unauthorized("Email or password incorrect");
             }
-            
+
             HttpContext.Response.Cookies.Append(CookieConfiguration.RefreshTokenCookieKey,
                 _authManager.CreateRefreshJwt(user),
                 CookieConfiguration.RefreshTokenConfig(_configuration));

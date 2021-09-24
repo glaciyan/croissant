@@ -16,7 +16,7 @@ namespace Croissant.Configurations
             return new CookieOptions
             {
                 Domain = "localhost",
-                MaxAge = TimeSpan.FromMinutes(expires),
+                MaxAge = TimeSpan.FromSeconds(expires),
                 HttpOnly = true,
                 Secure = true,
                 Path = "/api/auth/token"
