@@ -101,8 +101,8 @@ namespace Croissant.Controllers
 
             var newAccess = await _authManager.CreateJwt(user);
 
-            // await _authManager.RotateRefreshToken(HttpContext, refreshToken, claims,
-            // _authManager.CreateRefreshJwt(user));
+            await _authManager.RotateRefreshToken(HttpContext, refreshToken, claims,
+                _authManager.CreateRefreshJwt(user));
 
             return Ok(new {token = newAccess});
         }
