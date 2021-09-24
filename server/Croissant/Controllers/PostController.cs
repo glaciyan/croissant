@@ -52,7 +52,6 @@ namespace Croissant.Controllers
         public async Task<IActionResult> CreatePost([FromBody] PostForCreationDto postForCreation)
         {
             var userId = _userManager.GetUserId(User);
-            _userManager.
             
             var post = _mapper.Map<Post>(postForCreation);
             post.PosterId = userId;

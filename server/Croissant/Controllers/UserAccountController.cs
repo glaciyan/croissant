@@ -34,7 +34,7 @@ namespace Croissant.Controllers
         [HttpGet]
         public async Task<IActionResult> GetMe()
         {
-            var user = await HttpContext.GetUser(_userManager);
+            var user = await _userManager.GetUserAsync(User);
 
             if (user == null) return BadRequest();
             return Ok($"{user.UserName} {user.Email}");
@@ -43,7 +43,7 @@ namespace Croissant.Controllers
         [HttpPost("new_token")]
         public async Task<IActionResult> InvalidateAllRefreshTokens()
         {
-            var user = await HttpContext.GetUser(_userManager);
+            var user = await _userManager.GetUserAsync(User);
             _authManager.UpdateRefreshTokenVersion(user);
             await _userManager.UpdateAsync(user);
 
