@@ -130,7 +130,6 @@ namespace Croissant.Authentication
 
         public async Task<bool> TokenHasBeenInvalidated(string tokenRaw)
         {
-            if (string.IsNullOrWhiteSpace(tokenRaw)) return true;
             var token = new JsonWebToken(tokenRaw);
 
             var db = _redis.GetDatabase();
@@ -146,6 +145,9 @@ namespace Croissant.Authentication
             var db = _redis.GetDatabase();
             var expiry = oldToken.ValidTo - DateTime.UtcNow;
             await db.StringSetAsync(oldToken.Id, oldToken.GetClaim(ApplicationClaimNames.RefreshTokenVersion).Value,
+                expiry);
+
+            _logger.LogInformation("Token with id {TokenId} has been invalidated for {InvalidUntil}", oldToken.Id,
                 expiry);
         }
 

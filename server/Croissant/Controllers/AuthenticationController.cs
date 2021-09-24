@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using Croissant.ActionFilters;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.JsonWebTokens;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace Croissant.Controllers
@@ -80,8 +82,7 @@ namespace Croissant.Controllers
             return Ok(new {token = await _authManager.CreateJwt(user)});
         }
 
-        // TODO check if i could do something with [Authorize] here because the user requires a cookie
-        // or copy the cookie auth code from the official implementation
+        // TODO clean this function it's an absolute mess
         [HttpGet("token")]
         public async Task<IActionResult> GetToken()
         {
@@ -89,15 +90,38 @@ namespace Croissant.Controllers
             var hasToken =
                 HttpContext.Request.Cookies.TryGetValue(CookieConfiguration.RefreshTokenCookieKey,
                     out var refreshToken);
-            if (!hasToken || refreshToken == null) return Unauthorized("No refresh token");
+            if (!hasToken || string.IsNullOrWhiteSpace(refreshToken)) return Unauthorized("No refresh token");
 
-            if (await _authManager.TokenHasBeenInvalidated(refreshToken)) return Unauthorized("Invalid refresh token");
+            JsonWebToken token;
+
+            // try to serialize the token
+            try
+            {
+                token = new JsonWebToken(refreshToken);
+            }
+            catch (ArgumentException)
+            {
+                _logger.LogWarning("Invalid refresh token could not be serialized");
+                return Unauthorized("Invalid refresh token");
+            }
+
+            // check if the token is in the redis blacklist
+            if (await _authManager.TokenHasBeenInvalidated(refreshToken))
+            {
+                _logger.LogWarning("Invalid refresh token has been invalidated already, Id: {Id}", token.Id);
+                return Unauthorized("Invalid refresh token");
+            }
 
             var claims = _authManager.GetClaimsFromRefreshToken(refreshToken);
             var user = await _authManager.GetUserFromRefreshTokenClaims(claims);
 
+            // check with user if the token has the allowed version
             if (user == null || !_authManager.IsCorrectRefreshTokenVersion(claims, user))
+            {
+                _logger.LogWarning("Invalid refresh token has the incorrect version, Id: {Id}, Version: {Version}",
+                    token.Id, token.GetClaim("uver").Value);
                 return Unauthorized("Invalid refresh token");
+            }
 
             var newAccess = await _authManager.CreateJwt(user);
 
