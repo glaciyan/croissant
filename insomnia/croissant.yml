@@ -1,6 +1,6 @@
 _type: export
 __export_format: 4
-__export_date: 2021-09-24T13:05:03.140Z
+__export_date: 2021-09-24T13:26:09.047Z
 __export_source: insomnia.desktop.app:v2021.5.3
 resources:
   - _id: req_cdb4c0d56092466a8bd70ea605212e59
@@ -240,7 +240,7 @@ resources:
     _type: request_group
   - _id: req_1372789f735a414ba8c836d64bdcdb7b
     parentId: fld_60a96d7db1c04c919259288fdadcdae3
-    modified: 1632487018005
+    modified: 1632489821756
     created: 1632219857629
     url: "{{ _.base_url }}/auth/login"
     name: Login
@@ -250,7 +250,7 @@ resources:
       mimeType: application/json
       text: |-
         {
-        	"email": "maxi@mail.com",
+        	"email": "jdoe@mail.com",
         	"password": "Password100"
         }
     parameters: []
@@ -337,12 +337,12 @@ resources:
     _type: request
   - _id: env_f9da91cd57978ac170388931a4e35e8998a7e7ed
     parentId: wrk_ad47eac231e04060bf3a0576f9c117b6
-    modified: 1632242461502
+    modified: 1632489965588
     created: 1631900442493
     name: Base Environment
     data:
       base_url: "{{ _.default_scheme }}://{{ _.default_host }}{{ _.default_path }}"
-      bearer: "{% response 'body', 'req_eb2cb5933a83477cb8eafdb0b64b5af2',
+      bearer: "{% response 'body', 'req_1372789f735a414ba8c836d64bdcdb7b',
         'b64::JC50b2tlbg==::46b', 'when-expired', _.token_expiry %}"
       token_expiry: 1800
     dataPropertyOrder:
@@ -356,21 +356,21 @@ resources:
     _type: environment
   - _id: jar_f9da91cd57978ac170388931a4e35e8998a7e7ed
     parentId: wrk_ad47eac231e04060bf3a0576f9c117b6
-    modified: 1632487636834
+    modified: 1632489823219
     created: 1631900442496
     name: Default Jar
     cookies:
       - key: refresh_token
-        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI4NDI2NTE0Ni04NGZjLTQ2N2ItYTQ0YS1jYmU5NjM3NmFhM2UiLCJqdGkiOiJkY2NhNmU1Yi1lZjU5LTQ2NGItODBmMy1lN2VmODIzNmVhMjMiLCJ1dmVyIjoiOTkzZDkwZWQtZTEwMS00MDI1LWEwNmUtNzM1OTg0OTkwMjBkIiwiZXhwIjoxNjMyOTE5NjM2LCJpc3MiOiJDcm9pc3NhbnRBcGkiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo1MDAxIn0.w3I7tHdyVFGNY7hgsPaPh3_84w8_jl0aKy0Yi8u_9qc
-        maxAge: 432000
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIwNjRhOTlkYy04MmYxLTQ3YzAtOWM3Zi04NDQxOTkyZTk0ZTYiLCJqdGkiOiJlM2NmMDliZC0xOTQwLTQwNWUtYTg0My1jMDNmZWYwYzE4YWIiLCJ1dmVyIjoiYzFlYWFlZTMtNmQ3OS00YmU0LThlNDQtMzc4NGM3YWFiNDVmIiwiZXhwIjoxNjMyNjYyNjIzLCJpc3MiOiJDcm9pc3NhbnRBcGkiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo1MDAxIn0.wGwGI_qVvzRQDHvCYacct32iTgYgQ36iAZE2JxC2i5g
+        maxAge: 172800
         domain: localhost
         path: /api/auth/token
         secure: true
         httpOnly: true
         hostOnly: false
         creation: 2021-09-24T11:32:56.181Z
-        lastAccessed: 2021-09-24T12:47:16.833Z
-        id: "8259508200440748"
+        lastAccessed: 2021-09-24T13:23:43.218Z
+        id: "048124778125581136"
     _type: cookie_jar
   - _id: spc_a3a0b15e8a5f4643bee4510b4a31c776
     parentId: wrk_ad47eac231e04060bf3a0576f9c117b6
