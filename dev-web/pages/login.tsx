@@ -21,9 +21,19 @@ const login: React.FC = () => {
                         setresponse("Access token: " + response.data.token);
                     }}
                 >
-                    <Form className={`text-black`}>
-                        <Field id="email" name="email" placeholder="Email" />
-                        <Field id="password" name="password" placeholder="Password" />
+                    <Form className={`text-black mt-2`}>
+                        <Field
+                            className={`p-2 mr-2 rounded`}
+                            id="email"
+                            name="email"
+                            placeholder="Email"
+                        />
+                        <Field
+                            className={`p-2 mr-4 rounded`}
+                            id="password"
+                            name="password"
+                            placeholder="Password"
+                        />
                         <button
                             className={`bg-gscale-dark-background-secondary text-gscale-dark-text-secondary px-4 py-2 rounded`}
                             type="submit"
