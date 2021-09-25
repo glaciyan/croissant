@@ -15,11 +15,10 @@ namespace Croissant.Configurations
 
             return new CookieOptions
             {
-                Domain = "localhost",
                 MaxAge = TimeSpan.FromSeconds(expires),
                 HttpOnly = true,
-                Secure = false, // TODO true on production
-                Path = "/api/auth/token"
+                Secure = false,
+                SameSite = SameSiteMode.Lax
             };
         }
     }
