@@ -11,7 +11,7 @@ export type LayoutProps = {
 
 const nav = [
     { name: "Home", href: "/" },
-    { name: "Test", href: "/" },
+    { name: "Test", href: "/login" },
 ];
 
 export const Layout: React.FC<LayoutProps> = ({ children, title, currentPageName }) => {
