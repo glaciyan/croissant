@@ -28,6 +28,7 @@ namespace Croissant.Controllers
             _userManager = userManager;
         }
 
+        [AllowAnonymous] // TODO remove for production
         [HttpGet]
         public async Task<IActionResult> GetPosts()
         {

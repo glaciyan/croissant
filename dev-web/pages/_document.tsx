@@ -8,7 +8,7 @@ class MyDocument extends Document {
 
     render() {
         return (
-            <Html lang="en">
+            <Html lang="en" className="bg-gscale-dark-background-ternary">
                 <Head />
                 <body>
                     <Main />
