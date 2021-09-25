@@ -14,11 +14,8 @@ const login: React.FC = () => {
                     initialValues={{ email: "", password: "" }}
                     onSubmit={async (values) => {
                         var response = await axios.post(
-                            "https://localhost:5001/api/auth/login",
-                            values,
-                            {
-                                withCredentials: true,
-                            }
+                            "http://localhost/api/auth/login",
+                            values
                         );
 
                         setresponse("Access token: " + response.data.token);

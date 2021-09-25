@@ -1,6 +1,7 @@
 using Croissant.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -55,11 +56,16 @@ namespace Croissant
 
             app.UseSerilogRequestLogging();
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseCors("CorsPolicy");
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+            
+            // app.UseCors("CorsPolicy");
 
             app.UseAuthentication();
             app.UseAuthorization();
