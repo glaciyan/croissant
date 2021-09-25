@@ -15,7 +15,7 @@ namespace Croissant.Data.Repository
 
         public async Task<IEnumerable<Post>> GetPostsAsync(bool trackChanges = false)
         {
-            return await GetAll(trackChanges).OrderBy(post => post.Title).ToListAsync();
+            return await GetAll(trackChanges).OrderByDescending(post => post.CreatedAt).ToListAsync();
         }
 
         public void CreatePost(Post post)
