@@ -17,7 +17,7 @@ namespace Croissant.Configurations
             {
                 MaxAge = TimeSpan.FromSeconds(expires),
                 HttpOnly = true,
-                Secure = false,
+                Secure = true,
                 SameSite = SameSiteMode.Lax
             };
         }

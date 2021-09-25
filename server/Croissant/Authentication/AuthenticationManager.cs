@@ -102,8 +102,6 @@ namespace Croissant.Authentication
 
         public async Task<User> GetUserFromRefreshTokenClaims(ClaimsPrincipal claims)
         {
-            // TODO check if refreshToken has been invalidated
-
             var userId = claims?.FindFirst("uid")?.Value;
 
             var user = await _userManager.FindByIdAsync(userId);
@@ -153,7 +151,6 @@ namespace Croissant.Authentication
 
         public bool IsCorrectRefreshTokenVersion(ClaimsPrincipal claims, User user)
         {
-            // TODO untested
             var tokenVersion = claims.FindFirst(ApplicationClaimNames.RefreshTokenVersion);
             if (tokenVersion == null) return false;
 

@@ -55,7 +55,7 @@ namespace Croissant
 
             app.UseSerilogRequestLogging();
 
-            // app.UseHttpsRedirection(); //TODO dev
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 

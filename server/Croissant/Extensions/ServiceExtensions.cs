@@ -21,7 +21,7 @@ namespace Croissant.Extensions
             services.AddCors(options =>
                 options.AddPolicy("CorsPolicy",
                     builder => builder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader()
-                        .AllowCredentials())); // TODO dev
+                        .AllowCredentials()));
         }
 
         public static void ConfigureSwagger(this IServiceCollection services)
