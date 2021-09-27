@@ -1,10 +1,8 @@
-import React, {ButtonHTMLAttributes} from "react";
+import React, { ButtonHTMLAttributes } from "react";
 
-export type ButtonProps = {
-    text: string;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
+export type ButtonProps = {} & ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const Button: React.FC<ButtonProps> = ({text, ...rest}) => {
+export const Button: React.FC<ButtonProps> = ({ children, ...rest }) => {
     return (
         <button
             {...rest}
@@ -12,7 +10,7 @@ export const Button: React.FC<ButtonProps> = ({text, ...rest}) => {
                 rest.className ?? ""
             }`}
         >
-            {text}
+            {children}
         </button>
     );
 };

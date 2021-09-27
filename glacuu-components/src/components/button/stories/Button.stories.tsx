@@ -1,17 +1,12 @@
-import React from "react";
-import {Story} from "@storybook/react";
+import { Story } from "@storybook/react";
 
-import {Button, ButtonProps} from "../src/Button";
+import { Button, ButtonProps } from "../src/Button";
 
 export default {
     title: "Button",
     component: Button,
 };
 
-const Template: Story<ButtonProps> = (args) => <Button {...args} />;
+const Template: Story<ButtonProps> = (args) => <Button {...args}>Click me</Button>;
 
 export const Default = Template.bind({});
-Default.args = {text: "Click this button"};
-
-export const Other = Template.bind({});
-Other.args = {text: "This is another button"};
