@@ -98,9 +98,9 @@ namespace Croissant.Extensions
             });
         }
 
-        public static void ConfigureRedis(this IServiceCollection services)
+        public static void ConfigureRedis(this IServiceCollection services, IConfiguration configuration)
         {
-            var multiplexer = ConnectionMultiplexer.Connect("localhost");
+            var multiplexer = ConnectionMultiplexer.Connect(configuration.GetConnectionString("redisConnection"));
             services.AddSingleton<IConnectionMultiplexer>(multiplexer);
         }
     }

@@ -142,6 +142,7 @@ namespace Croissant.Authentication
 
             var db = _redis.GetDatabase();
             var expiry = oldToken.ValidTo - DateTime.UtcNow;
+            
             await db.StringSetAsync(oldToken.Id, oldToken.GetClaim(ApplicationClaimNames.RefreshTokenVersion).Value,
                 expiry);
 
