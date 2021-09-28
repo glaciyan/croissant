@@ -24,7 +24,7 @@ export const ButtonBase: React.FC<ButtonProps> = ({
             <button
                 disabled={disabled || isLoading}
                 className={cn(
-                    `flex items-center justify-center px-3 py-2 rounded transition-colors focus:outline-none hover:bg-opacity-90 active:bg-opacity-70 disabled:bg-opacity-50`,
+                    `nol flex items-center justify-center px-3 py-2 rounded transition-colors disabled:bg-opacity-50`,
                     className
                 )}
                 {...rest}

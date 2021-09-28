@@ -7,9 +7,10 @@ export const Username: React.FC<ClassName> = ({ className }: ClassName) => {
         <CField
             autoFocus={true}
             className={className}
+            spellCheck={false}
             name="username"
             placeholder="Username"
-            type="username"
+            type="new-username"
         />
     );
 };

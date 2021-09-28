@@ -24,5 +24,10 @@ module.exports = {
     variants: {
         extend: {},
     },
-    plugins: [require("tailwindcss-question-mark")],
+    plugins: [
+        require("tailwindcss-question-mark"),
+        require("@tailwindcss/forms")({
+            strategy: "class",
+        }),
+    ],
 };
