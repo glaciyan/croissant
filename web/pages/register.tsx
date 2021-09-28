@@ -1,7 +1,10 @@
 import { Form, Formik } from "formik";
 import React from "react";
-import { CField } from "../components/Field";
+import { CField } from "../components/fields/Field";
 import { ConfirmButton } from "../components/button/ConfirmButton";
+import { Email } from "../components/fields/Email";
+import { Username } from "../components/fields/Username";
+import { Password } from "../components/fields/Password";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -24,28 +27,14 @@ const Login: React.FC = () => {
                     >
                         {({ isSubmitting }) => (
                             <Form className={`p-8 pt-0`}>
-                                <CField
-                                    name="email"
-                                    placeholder="Email"
-                                    type="email"
-                                    className={`rounded mb-4`}
-                                />
-                                <CField
-                                    name="username"
-                                    placeholder="Username"
-                                    type="username"
-                                    className={`rounded mb-4`}
-                                />
-                                <CField
-                                    name="password"
-                                    placeholder="Password"
-                                    type="password"
-                                    className={`rounded`}
-                                />
+                                <Username className={`mb-4`} />
+                                <Email className={`mb-4`} />
+                                <Password className={``} />
+
                                 <ConfirmButton
                                     isLoading={isSubmitting}
                                     type={"submit"}
-                                    className={`w-full mt-10 text-white`}
+                                    className={`w-full mt-10 text-white font-bold`}
                                 >
                                     Register
                                 </ConfirmButton>
