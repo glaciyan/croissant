@@ -1,43 +1,7 @@
 import React from "react";
-import "./button.css";
 
-interface ButtonProps {
-    /**
-     * Is this the principal call to action on the page?
-     */
-    primary?: boolean;
-    /**
-     * What background color to use
-     */
-    backgroundColor?: string;
-    /**
-     * How large should the button be?
-     */
-    size?: "small" | "medium" | "large";
-    /**
-     * Button contents
-     */
-    label: string;
-    /**
-     * Optional click handler
-     */
-    onClick?: () => void;
-}
+export type ButtonProps = {};
 
-/**
- * Primary UI component for user interaction
- */
-export const Button = ({
-    primary = false,
-    size = "medium",
-    backgroundColor,
-    label,
-    ...props
-}: ButtonProps) => {
-    const mode = primary ? "storybook-button--primary" : "storybook-button--secondary";
-    return (
-        <button className={`p-2 bg-blue-400`} {...props}>
-            {label}
-        </button>
-    );
+export const Button: React.FC<ButtonProps> = ({ children }) => {
+    return <button>{children}</button>;
 };
