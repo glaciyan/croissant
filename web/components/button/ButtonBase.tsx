@@ -1,6 +1,7 @@
 import React, { ButtonHTMLAttributes } from "react";
 import { If } from "../If";
 import { CircleSpinner } from "../spinner/CircleSpinner";
+import cn from "classnames";
 
 export type ButtonProps = {
     isLoading?: boolean;
@@ -22,10 +23,10 @@ export const ButtonBase: React.FC<ButtonProps> = ({
         <>
             <button
                 disabled={disabled || isLoading}
-                className={
-                    `flex items-center justify-center px-3 py-1.5 rounded transition-colors focus:(outline-none) hover:(bg-opacity-90) active:(bg-opacity-70) disabled:(bg-opacity-50) ` +
+                className={cn(
+                    `flex items-center justify-center px-3 py-2 rounded transition-colors focus:outline-none hover:bg-opacity-90 active:bg-opacity-70 disabled:bg-opacity-50`,
                     className
-                }
+                )}
                 {...rest}
             >
                 <If condition={isLoading && spinnerLeft}>{spinner}</If>
@@ -34,7 +35,7 @@ export const ButtonBase: React.FC<ButtonProps> = ({
                     _else={
                         <If
                             condition={!spinnerLeft && !spinnerRight}
-                            _else={<span className={`ml-1`}>{children}</span>}
+                            _else={<span className={`mx-1`}>{children}</span>}
                         >
                             <CircleSpinner />
                         </If>
