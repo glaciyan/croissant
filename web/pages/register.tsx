@@ -13,7 +13,7 @@ const Login: React.FC = () => {
                         <Field
                             type="email"
                             name="email"
-                            className={`focus:(outline-none ring ring-blue-400/60)`}
+                            className={`focus:outline-none focus:ring-2 ring-inset ring-blue-400/60 transition-shadow`}
                         />
                     </Form>
                 </Formik>
