@@ -10,3 +10,7 @@
     outline: 2px solid transparent;
     outline-offset: 2px;
 }
+
+.nornd {
+    @apply rounded-none;
+}

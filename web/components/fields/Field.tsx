@@ -12,7 +12,7 @@ export const CField: React.FC<FieldProps> = ({ name, className, ...rest }) => {
     return (
         <Field
             className={cn(
-                "form-focus rounded transition-shadow py-2 px-3 bg-gray-100 block w-full",
+                "form-input border-none form-focus rounded transition-shadow py-2 px-3 bg-gray-100 placeholder-gray-400 block w-full",
                 className
             )}
             id={name}

@@ -24,7 +24,7 @@ export const Password: React.FC<ClassName> = ({ className }: ClassName) => {
             <div className="flex items-center mt-4">
                 <input
                     id="showPassword"
-                    className={`nol mr-2 text-blue-400 form-checkbox h-5 w-5 rounded-sm`}
+                    className={`nol mr-2 text-blue-400 form-checkbox h-4 w-4 rounded-sm`}
                     type="checkbox"
                     checked={showPassword}
                     onChange={() => setShowPassword(!showPassword)}
