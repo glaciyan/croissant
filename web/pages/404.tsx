@@ -1,6 +1,6 @@
-import React from "react";
+import type { NextPage } from "next";
 
-const NotFound: React.FC = ({}) => {
+const NotFound: NextPage = () => {
     return <div>404 Not Found</div>;
 };
 

@@ -7,10 +7,11 @@ import { Username } from "../components/fields/Username";
 import { Password } from "../components/fields/Password";
 import * as Yup from "yup";
 import { BrandLogo } from "../components/BrandLogo";
+import type { NextPage } from "next";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-const Login: React.FC = () => {
+const Login: NextPage = () => {
     return (
         <div
             className={`absolute inset-0 flex items-center justify-center text-gray-700`}

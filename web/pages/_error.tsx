@@ -1,6 +1,6 @@
-import React from "react";
+import type { NextPage } from "next";
 
-const Error: React.FC = ({}) => {
+const Error: NextPage = () => {
     return <div>An error has occured</div>;
 };
 
