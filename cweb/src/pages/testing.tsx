@@ -1,8 +1,12 @@
 import type {NextPage} from "next";
 import {Text} from "@chakra-ui/react";
+import {Title} from "../components/Title";
 
 const Testing: NextPage = () => {
-    return (<Text>testing</Text>);
+    return (<>
+        <Title>Testing</Title>
+        <Text>testing</Text>
+    </>);
 }
 
 export default Testing;
