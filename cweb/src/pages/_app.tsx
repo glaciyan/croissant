@@ -1,6 +1,6 @@
 import {ChakraProvider} from "@chakra-ui/react";
 
-import theme from "../theme";
+import theme from "../configuration/theme";
 import {AppProps} from "next/app";
 import {Layout} from "../components/Layout";
 import "tailwindcss/tailwind.css"

@@ -1,6 +1,6 @@
 import {Container} from "@chakra-ui/layout";
 import {Box, Flex, Text} from "@chakra-ui/react";
-import navigation from "../navigation";
+import navigation from "../configuration/navigation";
 import {NavLink} from "./NavLink";
 import React from "react";
 
