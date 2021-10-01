@@ -1,11 +1,10 @@
-import { Text } from "@chakra-ui/layout";
-import { Container } from "../components/Container";
-import { DarkModeSwitch } from "../components/DarkModeSwitch";
+import {Text} from "@chakra-ui/layout";
+import {DarkModeSwitch} from "../components/DarkModeSwitch";
 
 const Index = () => (
     <>
         <Text>Home</Text>
-        <DarkModeSwitch />
+        <DarkModeSwitch/>
     </>
 );
 
