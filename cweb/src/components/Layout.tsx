@@ -1,10 +1,14 @@
-import {Container} from "@chakra-ui/layout";
 import React from "react";
+import {Box} from "@chakra-ui/react";
+import {Header} from "./Header";
+import {Footer} from "./Footer";
 
 export const Layout: React.FC = ({children}) => {
     return (
-        <Container as="main" maxW="container.lg">
-            {children}
-        </Container>
+        <>
+            <Header/>
+            <Box as="main">{children}</Box>
+            <Footer/>
+        </>
     );
 };
