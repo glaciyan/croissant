@@ -1,16 +1,9 @@
 import type { NextPage } from "next";
-import {
-    Button,
-    Center,
-    FormControl,
-    FormErrorMessage,
-    FormLabel,
-    Input,
-} from "@chakra-ui/react";
+import { Button, Center } from "@chakra-ui/react";
 import { Title } from "../components/Title";
 import { Container } from "@chakra-ui/layout";
-import { Field, Form, Formik } from "formik";
-import { FormTextInput } from "../components/FormTextInput";
+import { Form, Formik } from "formik";
+import { FormTextInput } from "../components/form/FormTextInput";
 
 const SignUp: NextPage = () => {
     return (
@@ -29,7 +22,11 @@ const SignUp: NextPage = () => {
                     >
                         {({ isSubmitting }) => (
                             <Form>
-                                <FormTextInput nameId={"username"} label={"Username"} />
+                                <FormTextInput
+                                    nameId={"username"}
+                                    label={"Username"}
+                                    inputProps={{ type: "text", autoCapitalize: "off" }}
+                                />
                                 <Button mt={4} type={"submit"} isLoading={isSubmitting}>
                                     Sign up
                                 </Button>
