@@ -3,7 +3,9 @@ import { Button, Center } from "@chakra-ui/react";
 import { Title } from "../components/Title";
 import { Container } from "@chakra-ui/layout";
 import { Form, Formik } from "formik";
-import { FormTextInput } from "../components/form/FormTextInput";
+import { UsernameInput } from "../components/form/UsernameInput";
+import { EmailInput } from "../components/form/EmailInput";
+import { PasswordInput } from "../components/form/PasswordInput";
 
 const SignUp: NextPage = () => {
     return (
@@ -22,11 +24,10 @@ const SignUp: NextPage = () => {
                     >
                         {({ isSubmitting }) => (
                             <Form>
-                                <FormTextInput
-                                    nameId={"username"}
-                                    label={"Username"}
-                                    inputProps={{ type: "text", autoCapitalize: "off" }}
-                                />
+                                <UsernameInput label />
+                                <EmailInput mt={4} label />
+                                <PasswordInput mt={4} label />
+
                                 <Button mt={4} type={"submit"} isLoading={isSubmitting}>
                                     Sign up
                                 </Button>
