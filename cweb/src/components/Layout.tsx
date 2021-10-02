@@ -1,14 +1,16 @@
 import React from "react";
-import {Box} from "@chakra-ui/react";
-import {Header} from "./Header";
-import {Footer} from "./Footer";
+import { Box } from "@chakra-ui/react";
+import { Header } from "./Header";
+import { Footer } from "./Footer";
 
-export const Layout: React.FC = ({children}) => {
-    return (
-        <>
-            <Header/>
-            <Box as="main" minH={"100vh"}>{children}</Box>
-            <Footer/>
-        </>
-    );
+export const Layout: React.FC = ({ children }) => {
+  return (
+    <>
+      <Header />
+      <Box as="main" minH={"100vh"}>
+        {children}
+      </Box>
+      <Footer />
+    </>
+  );
 };
