@@ -4,13 +4,13 @@ import { Header } from "./Header";
 import { Footer } from "./Footer";
 
 export const Layout: React.FC = ({ children }) => {
-  return (
-    <>
-      <Header />
-      <Box as="main" minH={"100vh"}>
-        {children}
-      </Box>
-      <Footer />
-    </>
-  );
+    return (
+        <>
+            <Header />
+            <Box as="main" minH={"100vh"}>
+                {children}
+            </Box>
+            <Footer />
+        </>
+    );
 };
