@@ -12,13 +12,13 @@ const breakpoints = createBreakpoints({
 });
 
 const colors = {
-    black: "#16161D,
+    black: "#16161D",
 };
 
 const theme = extendTheme({
     colors,
     fonts,
-    breakpoints
+    breakpoints,
 });
 
 export default theme;
