@@ -1,5 +1,5 @@
 import { Container } from "@chakra-ui/layout";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Flex, Text } from "@chakra-ui/react";
 import navigation from "../configuration/navigation";
 import { NavLink } from "./NavLink";
 import React from "react";
@@ -24,14 +24,14 @@ export function Header() {
                             );
                         })}
                     </Flex>
-                    <NextLink href={"/signup"}>
-                        <Button variant={"outline"} mr={4}>
-                            Sign up
-                        </Button>
-                    </NextLink>
-                    <NextLink href={"/login"}>
-                        <Button variant={"ghost"}>Login</Button>
-                    </NextLink>
+                    <ButtonGroup spacing={4}>
+                        <NextLink href={"/signup"}>
+                            <Button variant={"outline"}>Sign up</Button>
+                        </NextLink>
+                        <NextLink href={"/login"}>
+                            <Button variant={"ghost"}>Login</Button>
+                        </NextLink>
+                    </ButtonGroup>
                 </Flex>
             </Container>
         </Box>
