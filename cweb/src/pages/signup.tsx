@@ -10,6 +10,7 @@ import {
 import { Title } from "../components/Title";
 import { Container } from "@chakra-ui/layout";
 import { Field, Form, Formik } from "formik";
+import { FormTextInput } from "../components/FormTextInput";
 
 const SignUp: NextPage = () => {
     return (
@@ -26,30 +27,10 @@ const SignUp: NextPage = () => {
                             }, 1000);
                         }}
                     >
-                        {(props) => (
+                        {({ isSubmitting }) => (
                             <Form>
-                                <Field name={"username"}>
-                                    {({ field, form }) => (
-                                        <FormControl
-                                            isInvalid={
-                                                form.errors.name && form.touched.name
-                                            }
-                                        >
-                                            <FormLabel htmlFor={"username"}>
-                                                Username
-                                            </FormLabel>
-                                            <Input {...field} id={"username"} />
-                                            <FormErrorMessage>
-                                                {form.errors.name}
-                                            </FormErrorMessage>
-                                        </FormControl>
-                                    )}
-                                </Field>
-                                <Button
-                                    mt={4}
-                                    type={"submit"}
-                                    isLoading={props.isSubmitting}
-                                >
+                                <FormTextInput nameId={"username"} label={"Username"} />
+                                <Button mt={4} type={"submit"} isLoading={isSubmitting}>
                                     Sign up
                                 </Button>
                             </Form>
