@@ -3,18 +3,18 @@ import { FormTextInput, FormTextInputProps } from "./FormTextInput";
 
 export type GeneralInputProps = FormTextInputProps & {
     descriptor: string;
-    showLabel: boolean;
+    showLabel?: boolean;
 };
 
 export const GeneralInput: React.FC<GeneralInputProps> = ({
-    showLabel,
+    showLabel = false,
     descriptor,
     ...rest
 }) => {
     return (
         <FormTextInput
-            placeholder={!showLabel && descriptor}
-            label={showLabel && descriptor}
+            placeholder={!showLabel ? descriptor : undefined}
+            label={showLabel ? descriptor : undefined}
             {...rest}
         />
     );

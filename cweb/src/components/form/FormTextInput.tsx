@@ -6,6 +6,7 @@ import {
     FormLabel,
     Input,
     InputProps,
+    useColorModeValue,
 } from "@chakra-ui/react";
 import { Field } from "formik";
 
@@ -25,6 +26,8 @@ export const FormTextInput: React.FC<FormTextInputProps> = ({
     inputProps,
     ...rest
 }) => {
+    const colorModeVariant = useColorModeValue("outline", "filled");
+
     return (
         <Field name={nameId}>
             {({ field, form }) => (
@@ -34,6 +37,7 @@ export const FormTextInput: React.FC<FormTextInputProps> = ({
                         {...field}
                         {...inputProps}
                         id={id ? id : nameId}
+                        variant={colorModeVariant}
                         placeholder={placeholder}
                     />
                     <FormErrorMessage>{form.errors.name}</FormErrorMessage>
