@@ -79,7 +79,7 @@ namespace Croissant.Controllers
                 _authManager.CreateRefreshJwt(user),
                 CookieConfiguration.RefreshTokenConfig(_configuration));
 
-            return Ok(new {token = await _authManager.CreateJwt(user)});
+            return Ok(new AuthenticatedResponse {Token = await _authManager.CreateJwt(user)});
         }
 
         [HttpGet("token")]
@@ -95,7 +95,7 @@ namespace Croissant.Controllers
             await _authManager.RotateRefreshToken(HttpContext, token!.EncodedToken, claims,
                 _authManager.CreateRefreshJwt(user));
 
-            return Ok(new {token = newAccess});
+            return Ok(new AuthenticatedResponse {Token = newAccess});
         }
     }
 }
