@@ -6,12 +6,13 @@ import { PasswordInput } from "../components/form/PasswordInput";
 import { EmailInput } from "../components/form/EmailInput";
 import { useContext } from "react";
 import { Token } from "../components/Token";
-import { loginUser } from "../lib/croissantApi";
 import router from "next/router";
+import { useApi } from "../lib/useApi";
 
 const Login: Page = () => {
     const backgroundColor = useColorModeValue([null, "gray.100"], "gray.700");
     const [, updateToken] = useContext(Token);
+    const client = useApi();
 
     return (
         <>
@@ -33,7 +34,7 @@ const Login: Page = () => {
                         initialValues={{ email: "", password: "" }}
                         onSubmit={async (values, actions) => {
                             try {
-                                const response = await loginUser(
+                                const response = await client().loginUser(
                                     values.email,
                                     values.password
                                 );

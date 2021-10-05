@@ -2,18 +2,16 @@ import { Container } from "@chakra-ui/layout";
 import { Box, Button, ButtonGroup, Flex, Spacer, Text } from "@chakra-ui/react";
 import navigation from "../configuration/navigation";
 import { NavLink } from "./NavLink";
-import React, { useContext } from "react";
+import React from "react";
 import NextLink from "next/link";
 import { DarkModeSwitch } from "./DarkModeSwitch";
-import { Token } from "./Token";
-import { fetcher, setAccessToken } from "../lib/apiClient";
 import useSWR from "swr";
 import { UserDto } from "../types/dto/userDto";
+import { useApi } from "../lib/useApi";
 
 export const Header: React.FC = ({}) => {
-    const [token] = useContext(Token);
-    setAccessToken(token);
-    const { data, error } = useSWR<UserDto>("api/users/me", fetcher);
+    const client = useApi();
+    const { data, error } = useSWR<UserDto>("api/users/me", client().fetcher());
 
     return (
         <Box as={"header"}>
