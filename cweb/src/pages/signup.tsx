@@ -1,4 +1,3 @@
-import type { NextPage } from "next";
 import { Button, Center, Flex, Heading, useColorModeValue } from "@chakra-ui/react";
 import { Title } from "../components/Title";
 import { Form, Formik } from "formik";
@@ -6,8 +5,9 @@ import { UsernameInput } from "../components/form/UsernameInput";
 import { EmailInput } from "../components/form/EmailInput";
 import { PasswordInput } from "../components/form/PasswordInput";
 import { GeneralInput } from "../components/form/GeneralInput";
+import { Page } from "../types/page";
 
-const SignUp: NextPage = () => {
+const SignUp: Page = () => {
     const backgroundColor = useColorModeValue([null, "gray.100"], "gray.700");
     return (
         <>
@@ -66,5 +66,7 @@ const SignUp: NextPage = () => {
         </>
     );
 };
+
+SignUp.layout = null;
 
 export default SignUp;

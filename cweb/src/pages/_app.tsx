@@ -4,13 +4,20 @@ import theme from "../configuration/theme";
 import { AppProps } from "next/app";
 import { Layout } from "../components/Layout";
 import "tailwindcss/tailwind.css";
+import React from "react";
 
 function MyApp({ Component, pageProps }: AppProps) {
+    // @ts-ignore
+    let layout: any = Component.layout;
+    if (layout === undefined) layout = Layout;
+
     return (
         <ChakraProvider resetCSS theme={theme}>
-            <Layout>
+            {layout !== null ? (
+                React.createElement(layout, null, <Component {...pageProps} />)
+            ) : (
                 <Component {...pageProps} />
-            </Layout>
+            )}
         </ChakraProvider>
     );
 }
