@@ -3,7 +3,9 @@
     "scripts": {
         "dev": "next",
         "build": "next build",
-        "start": "next start"
+        "start": "next start",
+        "dto": "dotnet cs2ts ../server/Entities/DataTransferObject -o ./src/types/dto -i Simple",
+        "dtoBase": "dotnet cs2ts ../server/Entities/ObjectBases -o ./src/types/dto -i Simple"
     },
     "dependencies": {
         "@chakra-ui/icons": "^1.0.5",
@@ -17,7 +19,8 @@
         "framer-motion": "^4.0.3",
         "next": "latest",
         "react": "^17.0.2",
-        "react-dom": "^17.0.2"
+        "react-dom": "^17.0.2",
+        "swr": "^1.0.1"
     },
     "devDependencies": {
         "@types/node": "^14.6.0",
