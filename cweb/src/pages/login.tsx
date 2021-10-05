@@ -10,7 +10,7 @@ const Login: Page = () => {
     const backgroundColor = useColorModeValue([null, "gray.100"], "gray.700");
     return (
         <>
-            <Title>Sign up</Title>
+            <Title>Login</Title>
             <Center h={{ md: "60vh" }}>
                 <Flex
                     direction={"column"}

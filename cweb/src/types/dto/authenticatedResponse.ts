@@ -1,3 +1,3 @@
 export interface AuthenticatedResponse {
-    Token: string;
+    token: string;
 }
