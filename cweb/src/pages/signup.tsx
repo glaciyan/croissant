@@ -9,6 +9,7 @@ import { Page } from "../types/page";
 
 const SignUp: Page = () => {
     const backgroundColor = useColorModeValue([null, "gray.100"], "gray.700");
+
     return (
         <>
             <Title>Sign up</Title>
@@ -27,17 +28,14 @@ const SignUp: Page = () => {
                     </Heading>
                     <Formik
                         initialValues={{ username: "", email: "", password: "" }}
-                        onSubmit={(values, actions) => {
-                            setTimeout(() => {
-                                alert("sign up");
-                                actions.setSubmitting(false);
-                            }, 1000);
+                        onSubmit={async (values, actions) => {
+                            console.log(values);
                         }}
                     >
                         {({ isSubmitting }) => (
                             <Form>
-                                <UsernameInput />
-                                <EmailInput mt={4} />
+                                <EmailInput />
+                                <UsernameInput mt={4} />
                                 <Flex mt={4} direction={["column", "row"]}>
                                     <PasswordInput />
                                     <GeneralInput
@@ -66,7 +64,5 @@ const SignUp: Page = () => {
         </>
     );
 };
-
-SignUp.layout = null;
 
 export default SignUp;

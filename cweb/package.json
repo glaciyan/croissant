@@ -4,6 +4,7 @@
         "dev": "next",
         "build": "next build",
         "start": "next start",
+        "prod": "next build && next start",
         "dto": "dotnet cs2ts ../server/Entities/DataTransferObject -o ./src/types/dto -i Simple",
         "dtoBase": "dotnet cs2ts ../server/Entities/ObjectBases -o ./src/types/dto -i Simple"
     },

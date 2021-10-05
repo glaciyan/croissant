@@ -3,11 +3,15 @@ import { Title } from "../components/Title";
 import { Page } from "../types/page";
 import { Form, Formik } from "formik";
 import { PasswordInput } from "../components/form/PasswordInput";
-import { getMe, loginUser } from "../lib/api";
 import { EmailInput } from "../components/form/EmailInput";
+import { useContext } from "react";
+import { Token } from "../components/Token";
+import { loginUser } from "../lib/croissantApi";
 
 const Login: Page = () => {
     const backgroundColor = useColorModeValue([null, "gray.100"], "gray.700");
+    const [, updateToken] = useContext(Token);
+
     return (
         <>
             <Title>Login</Title>
@@ -32,6 +36,8 @@ const Login: Page = () => {
                                     values.email,
                                     values.password
                                 );
+
+                                updateToken(response.data.token);
                             } catch (err) {
                                 console.log(err.response.data);
                                 actions.setErrors(err.response.data);
@@ -55,14 +61,7 @@ const Login: Page = () => {
                             </Form>
                         )}
                     </Formik>
-                    <Button
-                        isFullWidth
-                        mt={2}
-                        onClick={async () => {
-                            const response = await getMe();
-                            console.log(response.data);
-                        }}
-                    >
+                    <Button isFullWidth mt={2} onClick={async () => {}}>
                         Get Me
                     </Button>
                 </Flex>
@@ -70,7 +69,5 @@ const Login: Page = () => {
         </>
     );
 };
-
-Login.layout = null;
 
 export default Login;

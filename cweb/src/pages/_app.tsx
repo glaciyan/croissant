@@ -5,6 +5,7 @@ import { AppProps } from "next/app";
 import { Layout } from "../components/Layout";
 import "tailwindcss/tailwind.css";
 import React from "react";
+import { TokenProvider } from "../components/Token";
 
 function MyApp({ Component, pageProps }: AppProps) {
     // @ts-ignore
@@ -12,13 +13,15 @@ function MyApp({ Component, pageProps }: AppProps) {
     if (layout === undefined) layout = Layout;
 
     return (
-        <ChakraProvider resetCSS theme={theme}>
-            {layout !== null ? (
-                React.createElement(layout, null, <Component {...pageProps} />)
-            ) : (
-                <Component {...pageProps} />
-            )}
-        </ChakraProvider>
+        <TokenProvider>
+            <ChakraProvider resetCSS theme={theme}>
+                {layout !== null ? (
+                    React.createElement(layout, null, <Component {...pageProps} />)
+                ) : (
+                    <Component {...pageProps} />
+                )}
+            </ChakraProvider>
+        </TokenProvider>
     );
 }
 
