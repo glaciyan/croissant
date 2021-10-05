@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "workspaces": [
+    "cweb"
+  ],
+  "scripts": {
+    "cs2st": "dotnet cs2ts"
+  }
+}

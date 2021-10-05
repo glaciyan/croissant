@@ -3,7 +3,7 @@ import { Title } from "../components/Title";
 import { Page } from "../types/page";
 import { Form, Formik } from "formik";
 import { PasswordInput } from "../components/form/PasswordInput";
-import { loginUser } from "../lib/api";
+import { getMe, loginUser } from "../lib/api";
 import { EmailInput } from "../components/form/EmailInput";
 
 const Login: Page = () => {
@@ -55,6 +55,16 @@ const Login: Page = () => {
                             </Form>
                         )}
                     </Formik>
+                    <Button
+                        isFullWidth
+                        mt={2}
+                        onClick={async () => {
+                            const response = await getMe();
+                            console.log(response.data);
+                        }}
+                    >
+                        Get Me
+                    </Button>
                 </Flex>
             </Center>
         </>
