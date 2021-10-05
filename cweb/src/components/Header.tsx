@@ -6,37 +6,35 @@ import React from "react";
 import NextLink from "next/link";
 import { DarkModeSwitch } from "./DarkModeSwitch";
 
-export function Header() {
-    return (
-        <Box as={"header"}>
-            <Container maxW={"container.xl"} py={6}>
-                <Flex align={"baseline"}>
-                    <Text mr={8}>Croissant</Text>
-                    <Flex as={"nav"} align={"baseline"}>
-                        {navigation.map((i, index, array) => {
-                            return (
-                                <NavLink
-                                    key={i.href}
-                                    href={i.href}
-                                    rightLine={index < array.length - 1}
-                                >
-                                    {i.name}
-                                </NavLink>
-                            );
-                        })}
-                    </Flex>
-                    <Spacer />
-                    <DarkModeSwitch />
-                    <ButtonGroup spacing={4}>
-                        <NextLink href={"/signup"}>
-                            <Button variant={"outline"}>Sign up</Button>
-                        </NextLink>
-                        <NextLink href={"/login"}>
-                            <Button variant={"ghost"}>Login</Button>
-                        </NextLink>
-                    </ButtonGroup>
+export const Header: React.FC = () => (
+    <Box as={"header"}>
+        <Container maxW={"container.xl"} py={6}>
+            <Flex align={"baseline"}>
+                <Text mr={8}>Croissant</Text>
+                <Flex as={"nav"} align={"baseline"}>
+                    {navigation.map((i, index, array) => {
+                        return (
+                            <NavLink
+                                key={i.href}
+                                href={i.href}
+                                rightLine={index < array.length - 1}
+                            >
+                                {i.name}
+                            </NavLink>
+                        );
+                    })}
                 </Flex>
-            </Container>
-        </Box>
-    );
-}
+                <Spacer />
+                <DarkModeSwitch />
+                <ButtonGroup spacing={4}>
+                    <NextLink href={"/signup"}>
+                        <Button variant={"outline"}>Sign up</Button>
+                    </NextLink>
+                    <NextLink href={"/login"}>
+                        <Button variant={"ghost"}>Login</Button>
+                    </NextLink>
+                </ButtonGroup>
+            </Flex>
+        </Container>
+    </Box>
+);
