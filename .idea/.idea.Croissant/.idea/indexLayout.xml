@@ -2,6 +2,7 @@
 <project version="4">
   <component name="UserContentModel">
     <attachedFolders>
+      <Path>cweb</Path>
       <Path>dev-web</Path>
     </attachedFolders>
     <explicitIncludes />
