@@ -7,6 +7,7 @@ import { EmailInput } from "../components/form/EmailInput";
 import { useContext } from "react";
 import { Token } from "../components/Token";
 import { loginUser } from "../lib/croissantApi";
+import router from "next/router";
 
 const Login: Page = () => {
     const backgroundColor = useColorModeValue([null, "gray.100"], "gray.700");
@@ -38,6 +39,7 @@ const Login: Page = () => {
                                 );
 
                                 updateToken(response.data.token);
+                                router.push("/");
                             } catch (err) {
                                 console.log(err.response.data);
                                 actions.setErrors(err.response.data);
@@ -69,5 +71,7 @@ const Login: Page = () => {
         </>
     );
 };
+
+Login.layout = null;
 
 export default Login;

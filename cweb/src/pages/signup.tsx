@@ -65,4 +65,6 @@ const SignUp: Page = () => {
     );
 };
 
+SignUp.layout = null;
+
 export default SignUp;
