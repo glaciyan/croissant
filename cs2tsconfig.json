@@ -1,6 +1,6 @@
 {
   "$schema": "https://adrianwilczynski.github.io/CSharpToTypeScript/cs2tsconfig.json",
-  "input": "server/Entities/DataTransferObject",
+  "input": "server/Entities",
   "output": "cweb/src/types/dto",
   "useTabs": false,
   "tabSize": 4,
@@ -10,11 +10,11 @@
   "clearOutputDirectory": false,
   "angularMode": false,
   "partialOverride": false,
-  "preserveCasing": false,
+  "preserveCasing": true,
   "preserveInterfacePrefix": false,
   "convertDatesTo": "string",
   "convertNullablesTo": "null",
-  "importGeneration": "none",
+  "importGeneration": "simple",
   "quotationMark": "double",
   "appendNewLine": false
 }
