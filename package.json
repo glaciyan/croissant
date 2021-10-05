@@ -3,5 +3,8 @@
   "workspaces": [
     "cweb"
   ],
-  "scripts": {}
+  "scripts": {
+    "dto": "dotnet cs2ts ./server/Entities/DataTransferObject -o ./cweb/src/types/dto -i Simple",
+    "dtoBase": "dotnet cs2ts ./server/Entities/ObjectBases -o ./cweb/src/types/dto -i Simple"
+  }
 }
