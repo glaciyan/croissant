@@ -1,14 +1,19 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
+import { Button, Flex, Heading, useToast } from "@chakra-ui/react";
 import { PageTitle } from "../components/PageTitle";
 import { Page } from "../types/page";
 import { FocusBox } from "../components/FocusBox";
 import { Form, Formik } from "formik";
-import { EmailInput } from "../components/form/EmailInput";
-import { PasswordInput } from "../components/form/PasswordInput";
 import { FormCheckbox } from "../components/form/FormCheckbox";
 import NextLink from "next/link";
+import api, { toFormikError } from "../lib/api";
+import { useRouter } from "next/router";
+import { StatusCodes } from "../lib/statusCodes";
+import { FormTextInput } from "../components/form/FormTextInput";
 
 const Login: Page = () => {
+    const toast = useToast();
+    const router = useRouter();
+
     return (
         <>
             <PageTitle>Login</PageTitle>
@@ -17,21 +22,54 @@ const Login: Page = () => {
                     Welcome back
                 </Heading>
                 <Formik
-                    initialValues={{ email: "", password: "", rememberMe: false }}
-                    onSubmit={(values, actions) => {
-                        setTimeout(() => {
-                            alert("sign up");
-                            actions.setSubmitting(false);
-                        }, 1000);
+                    initialValues={{ email: "", password: "", rememberMe: true }}
+                    onSubmit={async (values, actions) => {
+                        const errorResponse = await api.login(
+                            values.email,
+                            values.password,
+                            values.rememberMe
+                        );
+
+                        if (errorResponse) {
+                            if (
+                                errorResponse.status === StatusCodes.Status401Unauthorized
+                            ) {
+                                toast({
+                                    title: "Login failed",
+                                    description: "Email or password is incorrect",
+                                    status: "error",
+                                    duration: 5000,
+                                    isClosable: true,
+                                    position: "top",
+                                });
+                            } else if (
+                                errorResponse.status ===
+                                StatusCodes.Status422UnprocessableEntity
+                            ) {
+                                actions.setErrors(toFormikError(errorResponse.data));
+                            }
+                        } else {
+                            // await router.push("/");
+                        }
                     }}
                 >
                     {({ isSubmitting }) => (
                         <Form>
-                            <EmailInput />
-                            <PasswordInput mt={4} />
+                            <FormTextInput
+                                name={"email"}
+                                placeholder={"Email"}
+                                type={"email"}
+                            />
+                            <FormTextInput
+                                mt={4}
+                                name={"password"}
+                                placeholder={"Password"}
+                                type={"password"}
+                            />
+
                             <Flex justify={"end"}>
                                 <NextLink href={"/forgot-password"}>
-                                    <a className={`hover:underline`}>Forgot password?</a>
+                                    <a className={`hover:underline`}>Forgot password</a>
                                 </NextLink>
                             </Flex>
 
@@ -39,6 +77,7 @@ const Login: Page = () => {
                                 mt={2}
                                 nameId={"rememberMe"}
                                 label={"Remember me"}
+                                checkBoxProps={{ defaultChecked: true }}
                             />
                             <Button
                                 mt={4}
