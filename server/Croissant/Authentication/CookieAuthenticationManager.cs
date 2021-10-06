@@ -18,7 +18,7 @@ namespace Croissant.Authentication
             throw new NotImplementedException();
         }
 
-        public void UpdateSessionVersion(User user)
+        public void Logout(User user)
         {
             throw new NotImplementedException();
         }

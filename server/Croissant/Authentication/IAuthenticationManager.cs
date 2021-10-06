@@ -9,6 +9,6 @@ namespace Croissant.Authentication
     {
         Task<User> AuthenticateUser(UserForLoginDto user);
         Task SignInUser(HttpContext context, User user);
-        void UpdateSessionVersion(User user);
+        void Logout(User user);
     }
 }
