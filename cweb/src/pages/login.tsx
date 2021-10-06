@@ -9,6 +9,7 @@ import api, { toFormikError } from "../lib/api";
 import { useRouter } from "next/router";
 import { StatusCodes } from "../lib/statusCodes";
 import { FormTextInput } from "../components/form/FormTextInput";
+import * as Yup from "yup";
 
 const Login: Page = () => {
     const toast = useToast();
@@ -23,6 +24,14 @@ const Login: Page = () => {
                 </Heading>
                 <Formik
                     initialValues={{ email: "", password: "", rememberMe: true }}
+                    validationSchema={Yup.object().shape({
+                        email: Yup.string()
+                            .email("Enter a valid email")
+                            .required("An email is required"),
+                        password: Yup.string().required("Enter a password"),
+                    })}
+                    validateOnChange={false}
+                    validateOnBlur={true}
                     onSubmit={async (values, actions) => {
                         const errorResponse = await api.login(
                             values.email,

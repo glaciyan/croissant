@@ -20,13 +20,13 @@ export type FormTextInputProps = InputHTMLAttributes<HTMLInputElement> &
 
 export const FormTextInput: React.FC<FormTextInputProps> = ({ label, ...props }) => {
     const colorModeVariant = useColorModeValue("outline", "filled");
-    const [field, { error }] = useField(props);
+    const [field, { error, touched }] = useField(props);
 
     return (
-        <FormControl isInvalid={!!error}>
+        <FormControl isInvalid={!!error && touched}>
             {label && <FormLabel htmlFor={field.name}>{label}</FormLabel>}
             <Input {...field} {...props} id={field.name} variant={colorModeVariant} />
-            <FormErrorMessage>{error}</FormErrorMessage>
+            {touched && <FormErrorMessage mt={0}>{error}</FormErrorMessage>}
         </FormControl>
     );
 };
