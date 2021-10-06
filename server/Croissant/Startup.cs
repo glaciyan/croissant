@@ -46,11 +46,11 @@ namespace Croissant
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(s => { s.SwaggerEndpoint("/swagger/v1/swagger.json", "Croissant Api V1"); });
-            }
+            app.UseDeveloperExceptionPage();
+            // app.UseSwagger();
+            // app.UseSwaggerUI(s => { s.SwaggerEndpoint("/swagger/v1/swagger.json", "Croissant Api V1"); });
+            else
+                app.UseHsts();
 
             app.UseGlobalExceptionHandler();
 
