@@ -1,10 +1,6 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
+import { Button, Heading } from "@chakra-ui/react";
 import { PageTitle } from "../components/PageTitle";
 import { Form, Formik } from "formik";
-import { UsernameInput } from "../components/form/UsernameInput";
-import { EmailInput } from "../components/form/EmailInput";
-import { PasswordInput } from "../components/form/PasswordInput";
-import { GeneralInput } from "../components/form/GeneralInput";
 import { Page } from "../types/page";
 import { FocusBox } from "../components/FocusBox";
 
@@ -27,18 +23,18 @@ const SignUp: Page = () => {
                 >
                     {({ isSubmitting }) => (
                         <Form>
-                            <UsernameInput />
-                            <EmailInput mt={4} />
-                            <Flex mt={4} direction={["column", "row"]}>
-                                <PasswordInput />
-                                <GeneralInput
-                                    ml={[0, 4]}
-                                    mt={[2, 0]}
-                                    nameId={"confirmPassword"}
-                                    descriptor={"Confirm"}
-                                    inputProps={{ type: "password" }}
-                                />
-                            </Flex>
+                            {/*<UsernameInput />*/}
+                            {/*<EmailInput mt={4} />*/}
+                            {/*<Flex mt={4} direction={["column", "row"]}>*/}
+                            {/*    <PasswordInput />*/}
+                            {/*    <GeneralInput*/}
+                            {/*        ml={[0, 4]}*/}
+                            {/*        mt={[2, 0]}*/}
+                            {/*        nameId={"confirmPassword"}*/}
+                            {/*        descriptor={"Confirm"}*/}
+                            {/*        inputProps={{ type: "password" }}*/}
+                            {/*    />*/}
+                            {/*</Flex>*/}
 
                             <Button
                                 mt={12}
