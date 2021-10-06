@@ -4,8 +4,9 @@ using Croissant.Authentication;
 using Croissant.Data;
 using Croissant.Data.Repository;
 using Entities.Models;
-using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -86,23 +87,34 @@ namespace Croissant.Extensions
 
         public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IAuthenticationManager<string>, JwtAuthenticationManager>();
+            services.AddScoped<IAuthenticationManager, CookieAuthenticationManager>();
 
+            services.ConfigureCookie(configuration);
+        }
+
+        private static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
+        {
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).ConfigureJwt(configuration);
-        }
-
-        private static void ConfigureJwt(this AuthenticationBuilder builder, IConfiguration configuration)
-        {
-            builder.AddJwtBearer(options =>
+            }).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters =
                     new JwtValidationManager(configuration).TokenValidationParameters;
             });
         }
+
+        private static void ConfigureCookie(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.SameSite = SameSiteMode.Lax;
+                    options.Cookie.HttpOnly = true;
+                });
+        }
+        
 
         public static void ConfigureRedis(this IServiceCollection services, IConfiguration configuration)
         {

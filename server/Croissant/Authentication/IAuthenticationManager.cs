@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Http;
 
 namespace Croissant.Authentication
 {
-    public interface IAuthenticationManager<T>
+    public interface IAuthenticationManager
     {
         Task<User> AuthenticateUser(UserForLoginDto user);
-        Task<T> SignInUser(HttpContext context, User user);
+        Task SignInUser(HttpContext context, User user);
         void UpdateSessionVersion(User user);
     }
 }

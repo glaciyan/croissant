@@ -1,12 +1,17 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Entities.DataTransferObject;
 using Entities.Models;
 using Microsoft.AspNetCore.Http;
 
 namespace Croissant.Authentication
 {
-    public interface IJwtAuthenticationManager<T> : IAuthenticationManager<T>, IRefreshingAuthenticationManager<T>
+    public interface IJwtAuthenticationManager<T> : IRefreshingAuthenticationManager<T>
     {
+        Task<T> SignInUser(HttpContext context, User user);
+        Task<User> AuthenticateUser(UserForLoginDto user);
+        void UpdateSessionVersion(User user);
+        
         Task<T> CreateJwt(User user);
         T CreateRefreshJwt(User user);
         public ClaimsPrincipal GetClaimsFromRefreshToken(T refreshToken);

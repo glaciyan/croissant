@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Croissant.ActionFilters;
@@ -10,7 +9,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.JsonWebTokens;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace Croissant.Controllers
@@ -20,14 +18,14 @@ namespace Croissant.Controllers
     [Route("api/auth")]
     public class AuthenticationController : ControllerBase
     {
-        private readonly IAuthenticationManager<string> _authManager;
+        private readonly IAuthenticationManager _authManager;
         private readonly IConfiguration _configuration;
         private readonly ILogger<AuthenticationController> _logger;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
 
         public AuthenticationController(ILogger<AuthenticationController> logger, IMapper mapper,
-            UserManager<User> userManager, IAuthenticationManager<string> authManager, IConfiguration configuration)
+            UserManager<User> userManager, IAuthenticationManager authManager, IConfiguration configuration)
         {
             _logger = logger;
             _mapper = mapper;
@@ -59,9 +57,8 @@ namespace Croissant.Controllers
 
             return BadRequest(ModelState);
         }
-
+        
         [HttpPost("login")]
-        [ServiceFilter(typeof(ValidateBodyFilter))]
         public async Task<IActionResult> LoginUser([FromBody] UserForLoginDto userForLogin)
         {
             _logger.LogInformation("Login attempted with email: {Email}", userForLogin.Email);
@@ -71,28 +68,54 @@ namespace Croissant.Controllers
             if (user == null)
             {
                 _logger.LogWarning("User login failed for {Email}", userForLogin.Email);
-                return Unauthorized("Email or password incorrect");
+                return Unauthorized("Email or password is incorrect");
             }
 
-            return Ok(new {token = await _authManager.SignInUser(HttpContext, user)});
+            await _authManager.SignInUser(HttpContext, user);
+            return NoContent();
         }
 
-        [HttpGet("token")]
-        [ServiceFilter(typeof(NewTokenFilter))]
-        public async Task<IActionResult> GetToken()
-        {
-            var user = HttpContext.Items["user"] as User;
-            var claims = HttpContext.Items["claims"] as ClaimsPrincipal;
-            var token = HttpContext.Items["token"] as JsonWebToken;
+        #region jwt login
 
-            if (_authManager is IJwtAuthenticationManager<string> jwtAuthenticationManager)
-                return Ok(new
-                {
-                    token = await jwtAuthenticationManager.RefreshAuthentication(user, HttpContext, token!.EncodedToken,
-                        claims)
-                });
+        // [HttpPost("login")]
+        // [ServiceFilter(typeof(ValidateBodyFilter))]
+        // public async Task<IActionResult> LoginUser([FromBody] UserForLoginDto userForLogin)
+        // {
+        //     _logger.LogInformation("Login attempted with email: {Email}", userForLogin.Email);
+        //
+        //     var user = await _authManager.AuthenticateUser(userForLogin);
+        //
+        //     if (user == null)
+        //     {
+        //         _logger.LogWarning("User login failed for {Email}", userForLogin.Email);
+        //         return Unauthorized("Email or password incorrect");
+        //     }
+        //
+        //     return Ok(new {token = await _authManager.SignInUser(HttpContext, user)});
+        // }
 
-            return BadRequest("Server not configured to handle this endpoint");
-        }
+        #endregion
+
+        #region token
+
+        // [HttpGet("token")]
+        // [ServiceFilter(typeof(NewTokenFilter))]
+        // public async Task<IActionResult> GetToken()
+        // {
+        //     var user = HttpContext.Items["user"] as User;
+        //     var claims = HttpContext.Items["claims"] as ClaimsPrincipal;
+        //     var token = HttpContext.Items["token"] as JsonWebToken;
+        //
+        //     if (_authManager is IJwtAuthenticationManager<string> jwtAuthenticationManager)
+        //         return Ok(new
+        //         {
+        //             token = await jwtAuthenticationManager.RefreshAuthentication(user, HttpContext, token!.EncodedToken,
+        //                 claims)
+        //         });
+        //
+        //     return BadRequest("Server not configured to handle this endpoint");
+        // }
+
+        #endregion
     }
 }
