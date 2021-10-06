@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Button, Flex, Heading } from "@chakra-ui/react";
 import { PageTitle } from "../components/PageTitle";
 import { Page } from "../types/page";
 import { FocusBox } from "../components/FocusBox";
@@ -35,21 +35,20 @@ const Login: Page = () => {
                                 </NextLink>
                             </Flex>
 
-                            <Box mt={2}>
-                                <FormCheckbox
-                                    nameId={"rememberMe"}
-                                    label={"Remember me"}
-                                />
-                                <Button
-                                    mt={4}
-                                    isFullWidth={true}
-                                    colorScheme={"blue"}
-                                    type={"submit"}
-                                    isLoading={isSubmitting}
-                                >
-                                    Login
-                                </Button>
-                            </Box>
+                            <FormCheckbox
+                                mt={2}
+                                nameId={"rememberMe"}
+                                label={"Remember me"}
+                            />
+                            <Button
+                                mt={4}
+                                isFullWidth={true}
+                                colorScheme={"blue"}
+                                type={"submit"}
+                                isLoading={isSubmitting}
+                            >
+                                Login
+                            </Button>
                         </Form>
                     )}
                 </Formik>
