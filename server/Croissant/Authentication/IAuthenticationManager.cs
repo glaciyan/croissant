@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Entities.DataTransferObject;
 using Entities.Models;
@@ -9,6 +10,7 @@ namespace Croissant.Authentication
     {
         Task<User> AuthenticateUser(UserForLoginDto user);
         Task SignInUser(HttpContext context, User user);
-        void Logout(User user);
+        Task Logout(HttpContext context, User user);
+        Task InvalidateSessions(Guid userId);
     }
 }

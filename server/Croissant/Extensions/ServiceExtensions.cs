@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using Croissant.ActionFilters;
 using Croissant.Authentication;
 using Croissant.Data;
@@ -109,17 +108,16 @@ namespace Croissant.Extensions
 
         private static void ConfigureCookie(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddScoped<CustomCookieAuthenticationEvents>();
+            
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
                     options.Cookie.Name = "pid";
                     options.Cookie.SameSite = SameSiteMode.Lax;
                     options.Cookie.HttpOnly = true;
-                    options.Events.OnRedirectToLogin = context =>
-                    {
-                        context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                        return Task.CompletedTask;
-                    };
+
+                    options.EventsType = typeof(CustomCookieAuthenticationEvents);
                 });
         }
         
