@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
 import { Text } from "@chakra-ui/react";
-import { Title } from "../components/Title";
+import { PageTitle } from "../components/PageTitle";
 
 const Login: NextPage = () => {
     return (
         <>
-            <Title>Login</Title>
+            <PageTitle>Login</PageTitle>
             <Text>Log in</Text>
         </>
     );

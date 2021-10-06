@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
 import { Text } from "@chakra-ui/react";
-import { Title } from "../components/Title";
+import { PageTitle } from "../components/PageTitle";
 
 const Testing: NextPage = () => {
     return (
         <>
-            <Title>Testing</Title>
+            <PageTitle>Testing</PageTitle>
             <Text>testing</Text>
         </>
     );

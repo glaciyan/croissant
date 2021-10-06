@@ -3,7 +3,10 @@
     "scripts": {
         "dev": "next",
         "build": "next build",
-        "start": "next start"
+        "start": "next start",
+        "prod": "next build && next start",
+        "dto": "dotnet cs2ts ../server/Entities/DataTransferObject -o ./src/types/dto -i Simple",
+        "dtoBase": "dotnet cs2ts ../server/Entities/ObjectBases -o ./src/types/dto -i Simple"
     },
     "dependencies": {
         "@chakra-ui/icons": "^1.0.5",
