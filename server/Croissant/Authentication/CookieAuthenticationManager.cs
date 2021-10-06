@@ -74,7 +74,7 @@ namespace Croissant.Authentication
                 // CookieAuthenticationOptions set with AddCookie.
 
                 //IsPersistent = true,
-                // Whether the authentication session is persisted across 
+                // TODO Whether the authentication session is persisted across 
                 // multiple requests. When used with cookies, controls
                 // whether the cookie's lifetime is absolute (matching the
                 // lifetime of the authentication ticket) or session-based.
