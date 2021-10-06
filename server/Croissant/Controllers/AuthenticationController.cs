@@ -59,6 +59,7 @@ namespace Croissant.Controllers
         }
         
         [HttpPost("login")]
+        [ServiceFilter(typeof(ValidateBodyFilter))]
         public async Task<IActionResult> LoginUser([FromBody] UserForLoginDto userForLogin)
         {
             _logger.LogInformation("Login attempted with email: {Email}", userForLogin.Email);
