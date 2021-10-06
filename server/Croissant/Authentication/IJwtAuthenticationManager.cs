@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Croissant.Authentication
 {
-    public interface IAuthenticationManager
+    public interface IJwtAuthenticationManager
     {
         Task<User> AuthenticateUser(UserForLoginDto user);
         Task<string> CreateJwt(User user);

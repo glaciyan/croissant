@@ -19,14 +19,14 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 
 namespace Croissant.Authentication
 {
-    internal class AuthenticationManager : IAuthenticationManager
+    internal class JwtAuthenticationManager : IJwtAuthenticationManager
     {
         private readonly IConfiguration _configuration;
         private readonly IConnectionMultiplexer _redis;
-        private readonly ILogger<AuthenticationManager> _logger;
+        private readonly ILogger<JwtAuthenticationManager> _logger;
         private readonly UserManager<User> _userManager;
 
-        public AuthenticationManager(UserManager<User> userManager, ILogger<AuthenticationManager> logger,
+        public JwtAuthenticationManager(UserManager<User> userManager, ILogger<JwtAuthenticationManager> logger,
             IConfiguration configuration, IConnectionMultiplexer redis)
         {
             _userManager = userManager;

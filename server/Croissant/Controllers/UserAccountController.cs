@@ -18,11 +18,11 @@ namespace Croissant.Controllers
     public class UserAccountController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
-        private readonly IAuthenticationManager _authManager;
+        private readonly IJwtAuthenticationManager _authManager;
         private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
 
-        public UserAccountController(UserManager<User> userManager, IAuthenticationManager authManager,
+        public UserAccountController(UserManager<User> userManager, IJwtAuthenticationManager authManager,
             IRepositoryManager repository, IMapper mapper)
         {
             _userManager = userManager;

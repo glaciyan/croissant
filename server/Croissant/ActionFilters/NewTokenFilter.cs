@@ -14,9 +14,9 @@ namespace Croissant.ActionFilters
         private const string InvalidRefreshToken = "Invalid refresh token";
 
         private readonly ILogger<NewTokenFilter> _logger;
-        private readonly IAuthenticationManager _authManager;
+        private readonly IJwtAuthenticationManager _authManager;
 
-        public NewTokenFilter(ILogger<NewTokenFilter> logger, IAuthenticationManager authManager)
+        public NewTokenFilter(ILogger<NewTokenFilter> logger, IJwtAuthenticationManager authManager)
         {
             _logger = logger;
             _authManager = authManager;

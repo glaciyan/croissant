@@ -21,14 +21,14 @@ namespace Croissant.Controllers
     [Route("api/auth")]
     public class AuthenticationController : ControllerBase
     {
-        private readonly IAuthenticationManager _authManager;
+        private readonly IJwtAuthenticationManager _authManager;
         private readonly IConfiguration _configuration;
         private readonly ILogger<AuthenticationController> _logger;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
 
         public AuthenticationController(ILogger<AuthenticationController> logger, IMapper mapper,
-            UserManager<User> userManager, IAuthenticationManager authManager, IConfiguration configuration)
+            UserManager<User> userManager, IJwtAuthenticationManager authManager, IConfiguration configuration)
         {
             _logger = logger;
             _mapper = mapper;
