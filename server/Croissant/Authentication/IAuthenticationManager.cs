@@ -9,7 +9,7 @@ namespace Croissant.Authentication
     public interface IAuthenticationManager
     {
         Task<User> AuthenticateUser(UserForLoginDto user);
-        Task SignInUser(HttpContext context, User user);
+        Task SignInUser(HttpContext context, User user, bool rememberMe);
         Task Logout(HttpContext context, User user);
         Task InvalidateSessions(Guid userId);
     }

@@ -71,7 +71,7 @@ namespace Croissant.Controllers
                 return Unauthorized("Email or password is incorrect");
             }
 
-            await _authManager.SignInUser(HttpContext, user);
+            await _authManager.SignInUser(HttpContext, user, userForLogin.RememberMe);
             return NoContent();
         }
 

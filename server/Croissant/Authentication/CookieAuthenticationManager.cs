@@ -37,7 +37,7 @@ namespace Croissant.Authentication
             return user;
         }
 
-        public async Task SignInUser(HttpContext context, User user)
+        public async Task SignInUser(HttpContext context, User user, bool rememberMe)
         {
             var redis = _redis.GetDatabase();
             var changedIdRedisValue = await redis.StringGetAsync(user.Id);
@@ -73,8 +73,8 @@ namespace Croissant.Authentication
                 // value set here overrides the ExpireTimeSpan option of 
                 // CookieAuthenticationOptions set with AddCookie.
 
-                //IsPersistent = true,
-                // TODO Whether the authentication session is persisted across 
+                IsPersistent = rememberMe
+                // Whether the authentication session is persisted across 
                 // multiple requests. When used with cookies, controls
                 // whether the cookie's lifetime is absolute (matching the
                 // lifetime of the authentication ticket) or session-based.
