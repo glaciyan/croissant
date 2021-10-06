@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Croissant.ActionFilters;
 using Croissant.Authentication;
-using Croissant.Configurations;
 using Entities.DataTransferObject;
 using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -21,14 +20,14 @@ namespace Croissant.Controllers
     [Route("api/auth")]
     public class AuthenticationController : ControllerBase
     {
-        private readonly IJwtAuthenticationManager _authManager;
+        private readonly IAuthenticationManager<string> _authManager;
         private readonly IConfiguration _configuration;
         private readonly ILogger<AuthenticationController> _logger;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
 
         public AuthenticationController(ILogger<AuthenticationController> logger, IMapper mapper,
-            UserManager<User> userManager, IJwtAuthenticationManager authManager, IConfiguration configuration)
+            UserManager<User> userManager, IAuthenticationManager<string> authManager, IConfiguration configuration)
         {
             _logger = logger;
             _mapper = mapper;
@@ -75,11 +74,7 @@ namespace Croissant.Controllers
                 return Unauthorized("Email or password incorrect");
             }
 
-            HttpContext.Response.Cookies.Append(CookieConfiguration.RefreshTokenCookieKey,
-                _authManager.CreateRefreshJwt(user),
-                CookieConfiguration.RefreshTokenConfig(_configuration));
-
-            return Ok(new {token = await _authManager.CreateJwt(user)});
+            return Ok(new {token = await _authManager.SignInUser(HttpContext, user)});
         }
 
         [HttpGet("token")]
@@ -90,12 +85,14 @@ namespace Croissant.Controllers
             var claims = HttpContext.Items["claims"] as ClaimsPrincipal;
             var token = HttpContext.Items["token"] as JsonWebToken;
 
-            var newAccess = await _authManager.CreateJwt(user);
+            if (_authManager is IJwtAuthenticationManager<string> jwtAuthenticationManager)
+                return Ok(new
+                {
+                    token = await jwtAuthenticationManager.RefreshAuthentication(user, HttpContext, token!.EncodedToken,
+                        claims)
+                });
 
-            await _authManager.RotateRefreshToken(HttpContext, token!.EncodedToken, claims,
-                _authManager.CreateRefreshJwt(user));
-
-            return Ok(new {token = newAccess});
+            return BadRequest("Server not configured to handle this endpoint");
         }
     }
 }

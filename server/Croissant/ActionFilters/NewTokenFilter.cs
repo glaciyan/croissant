@@ -14,9 +14,9 @@ namespace Croissant.ActionFilters
         private const string InvalidRefreshToken = "Invalid refresh token";
 
         private readonly ILogger<NewTokenFilter> _logger;
-        private readonly IJwtAuthenticationManager _authManager;
+        private readonly IAuthenticationManager<string> _authManager;
 
-        public NewTokenFilter(ILogger<NewTokenFilter> logger, IJwtAuthenticationManager authManager)
+        public NewTokenFilter(ILogger<NewTokenFilter> logger, IAuthenticationManager<string> authManager)
         {
             _logger = logger;
             _authManager = authManager;
@@ -24,59 +24,66 @@ namespace Croissant.ActionFilters
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            // Get the refresh token
-            var hasToken =
-                context.HttpContext.Request.Cookies.TryGetValue(CookieConfiguration.RefreshTokenCookieKey,
-                    out var refreshToken);
-
-            if (!hasToken || string.IsNullOrWhiteSpace(refreshToken))
+            if (_authManager is IJwtAuthenticationManager<string> authManager)
             {
-                context.Result = new UnauthorizedObjectResult("No refresh token");
-                return;
+                // Get the refresh token
+                var hasToken =
+                    context.HttpContext.Request.Cookies.TryGetValue(CookieConfiguration.RefreshTokenCookieKey,
+                        out var refreshToken);
+
+                if (!hasToken || string.IsNullOrWhiteSpace(refreshToken))
+                {
+                    context.Result = new UnauthorizedObjectResult("No refresh token");
+                    return;
+                }
+
+                JsonWebToken token;
+
+                // try to serialize the token
+                try
+                {
+                    token = new JsonWebToken(refreshToken);
+                }
+                catch (ArgumentException)
+                {
+                    _logger.LogWarning("Invalid refresh token could not be serialized");
+
+                    context.Result = new UnauthorizedObjectResult(InvalidRefreshToken);
+                    return;
+                }
+
+                // check if the token is in the redis blacklist
+                if (await authManager.TokenHasBeenInvalidated(refreshToken))
+                {
+                    _logger.LogWarning("Invalid refresh token has been invalidated already, Id: {Id}", token.Id);
+
+                    context.Result = new UnauthorizedObjectResult(InvalidRefreshToken);
+                    return;
+                }
+
+                var claims = authManager.GetClaimsFromRefreshToken(refreshToken);
+                var user = await authManager.GetUserFromRefreshTokenClaims(claims);
+
+                // check with user if the token has the allowed version
+                if (user == null || !authManager.IsCorrectRefreshTokenVersion(claims, user))
+                {
+                    _logger.LogWarning("Invalid refresh token has the incorrect version, Id: {Id}, Version: {Version}",
+                        token.Id, token.GetClaim("uver").Value);
+
+                    context.Result = new UnauthorizedObjectResult(InvalidRefreshToken);
+                    return;
+                }
+
+                context.HttpContext.Items.Add("claims", claims);
+                context.HttpContext.Items.Add("user", user);
+                context.HttpContext.Items.Add("token", token);
+
+                await next();
             }
-
-            JsonWebToken token;
-
-            // try to serialize the token
-            try
+            else
             {
-                token = new JsonWebToken(refreshToken);
+                context.Result = new BadRequestObjectResult("Server not configured to handle this endpoint");
             }
-            catch (ArgumentException)
-            {
-                _logger.LogWarning("Invalid refresh token could not be serialized");
-
-                context.Result = new UnauthorizedObjectResult(InvalidRefreshToken);
-                return;
-            }
-
-            // check if the token is in the redis blacklist
-            if (await _authManager.TokenHasBeenInvalidated(refreshToken))
-            {
-                _logger.LogWarning("Invalid refresh token has been invalidated already, Id: {Id}", token.Id);
-
-                context.Result = new UnauthorizedObjectResult(InvalidRefreshToken);
-                return;
-            }
-
-            var claims = _authManager.GetClaimsFromRefreshToken(refreshToken);
-            var user = await _authManager.GetUserFromRefreshTokenClaims(claims);
-
-            // check with user if the token has the allowed version
-            if (user == null || !_authManager.IsCorrectRefreshTokenVersion(claims, user))
-            {
-                _logger.LogWarning("Invalid refresh token has the incorrect version, Id: {Id}, Version: {Version}",
-                    token.Id, token.GetClaim("uver").Value);
-
-                context.Result = new UnauthorizedObjectResult(InvalidRefreshToken);
-                return;
-            }
-
-            context.HttpContext.Items.Add("claims", claims);
-            context.HttpContext.Items.Add("user", user);
-            context.HttpContext.Items.Add("token", token);
-
-            await next();
         }
     }
 }

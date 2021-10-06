@@ -18,11 +18,11 @@ namespace Croissant.Controllers
     public class UserAccountController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
-        private readonly IJwtAuthenticationManager _authManager;
+        private readonly IAuthenticationManager<string> _authManager;
         private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
 
-        public UserAccountController(UserManager<User> userManager, IJwtAuthenticationManager authManager,
+        public UserAccountController(UserManager<User> userManager, IAuthenticationManager<string> authManager,
             IRepositoryManager repository, IMapper mapper)
         {
             _userManager = userManager;
@@ -44,7 +44,7 @@ namespace Croissant.Controllers
         public async Task<IActionResult> InvalidateAllRefreshTokens()
         {
             var user = await _userManager.GetUserAsync(User);
-            _authManager.UpdateRefreshTokenVersion(user);
+            _authManager.UpdateSessionVersion(user);
             await _userManager.UpdateAsync(user);
 
             HttpContext.Response.Cookies.Delete(CookieConfiguration.RefreshTokenCookieKey);

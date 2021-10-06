@@ -19,7 +19,7 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 
 namespace Croissant.Authentication
 {
-    internal class JwtAuthenticationManager : IJwtAuthenticationManager
+    internal class JwtAuthenticationManager : IJwtAuthenticationManager<string>
     {
         private readonly IConfiguration _configuration;
         private readonly IConnectionMultiplexer _redis;
@@ -47,6 +47,15 @@ namespace Croissant.Authentication
             if (user == null || !correctPassword) return null;
 
             return user;
+        }
+
+        public async Task<string> SignInUser(HttpContext context, User user)
+        {
+            context.Response.Cookies.Append(CookieConfiguration.RefreshTokenCookieKey,
+                CreateRefreshJwt(user),
+                CookieConfiguration.RefreshTokenConfig(_configuration));
+
+            return await CreateJwt(user);
         }
 
         public async Task<string> CreateJwt(User user)
@@ -165,6 +174,11 @@ namespace Croissant.Authentication
             user.RefreshTokenVersion = Guid.NewGuid().ToString();
         }
 
+        public void UpdateSessionVersion(User user)
+        {
+            UpdateRefreshTokenVersion(user);
+        }
+
         private static SigningCredentials GetSigningCredentials()
         {
             var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWTSECRET")!);
@@ -200,6 +214,17 @@ namespace Croissant.Authentication
                 expires: DateTime.Now.AddSeconds(expires), signingCredentials: credentials);
 
             return tokenOptions;
+        }
+
+        public async Task<string> RefreshAuthentication(User user, HttpContext context, string oldToken,
+            ClaimsPrincipal claims)
+        {
+            var newAccess = await CreateJwt(user);
+
+            await RotateRefreshToken(context, oldToken, claims,
+                CreateRefreshJwt(user));
+
+            return newAccess;
         }
     }
 }

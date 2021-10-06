@@ -85,7 +85,7 @@ namespace Croissant.Extensions
 
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IJwtAuthenticationManager, JwtAuthenticationManager>();
+            services.AddScoped<IAuthenticationManager<string>, JwtAuthenticationManager>();
 
             services.AddAuthentication(options =>
             {
