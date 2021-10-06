@@ -38,7 +38,7 @@ namespace Croissant
 
             services.AddAuthentication();
             services.ConfigureIdentity();
-            services.ConfigureJwt(Configuration);
+            services.ConfigureAuthentication(Configuration);
             services.ConfigureRedis(Configuration);
         }
 
@@ -56,7 +56,7 @@ namespace Croissant
 
             app.UseSerilogRequestLogging();
 
-            // app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 
@@ -64,8 +64,8 @@ namespace Croissant
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-            
-            // app.UseCors("CorsPolicy");
+
+            app.UseCors("CorsPolicy");
 
             app.UseAuthentication();
             app.UseAuthorization();

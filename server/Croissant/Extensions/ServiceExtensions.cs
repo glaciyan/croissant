@@ -4,6 +4,7 @@ using Croissant.Authentication;
 using Croissant.Data;
 using Croissant.Data.Repository;
 using Entities.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -83,7 +84,7 @@ namespace Croissant.Extensions
             builder.AddEntityFrameworkStores<DatabaseContext>().AddDefaultTokenProviders();
         }
 
-        public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IAuthenticationManager<string>, JwtAuthenticationManager>();
 
@@ -91,7 +92,12 @@ namespace Croissant.Extensions
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
+            }).ConfigureJwt(configuration);
+        }
+
+        private static void ConfigureJwt(this AuthenticationBuilder builder, IConfiguration configuration)
+        {
+            builder.AddJwtBearer(options =>
             {
                 options.TokenValidationParameters =
                     new JwtValidationManager(configuration).TokenValidationParameters;
