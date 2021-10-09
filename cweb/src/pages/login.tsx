@@ -5,7 +5,6 @@ import { FocusBox } from "../components/FocusBox";
 import { Form, Formik } from "formik";
 import { FormCheckbox } from "../components/form/FormCheckbox";
 import NextLink from "next/link";
-import api from "../lib/api/api";
 import { toFormikError } from "../lib/api/util";
 import { useRouter } from "next/router";
 import { StatusCodes } from "../lib/statusCodes";
@@ -13,6 +12,7 @@ import { FormTextInput } from "../components/form/FormTextInput";
 import * as Yup from "yup";
 import { User } from "../components/UserManager";
 import { UserDto } from "../types/dto/userDto";
+import authApi from "../lib/api/authApi";
 
 const Login: Page = () => {
     const toast = useToast();
@@ -38,7 +38,7 @@ const Login: Page = () => {
                             validateOnChange={false}
                             validateOnBlur={true}
                             onSubmit={async (values, actions) => {
-                                const apiResponse = await api.login(
+                                const apiResponse = await authApi.login(
                                     values.email,
                                     values.password,
                                     values.rememberMe
