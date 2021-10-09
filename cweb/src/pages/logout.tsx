@@ -14,8 +14,8 @@ const Logout: NextPage = () => {
         setUser(null);
         authApi.logout().then(() => {
             toast({
-                title: "Logged out",
-                status: "info",
+                title: "Successfully logged out!",
+                status: "success",
                 duration: 5000,
                 isClosable: true,
                 position: "top",
