@@ -96,48 +96,5 @@ namespace Croissant.Controllers
 
             return NoContent();
         }
-
-        #region jwt login
-
-        // [HttpPost("login")]
-        // [ServiceFilter(typeof(ValidateBodyFilter))]
-        // public async Task<IActionResult> LoginUser([FromBody] UserForLoginDto userForLogin)
-        // {
-        //     _logger.LogInformation("Login attempted with email: {Email}", userForLogin.Email);
-        //
-        //     var user = await _authManager.AuthenticateUser(userForLogin);
-        //
-        //     if (user == null)
-        //     {
-        //         _logger.LogWarning("User login failed for {Email}", userForLogin.Email);
-        //         return Unauthorized("Email or password incorrect");
-        //     }
-        //
-        //     return Ok(new {token = await _authManager.SignInUser(HttpContext, user)});
-        // }
-
-        #endregion
-
-        #region token
-
-        // [HttpGet("token")]
-        // [ServiceFilter(typeof(NewTokenFilter))]
-        // public async Task<IActionResult> GetToken()
-        // {
-        //     var user = HttpContext.Items["user"] as User;
-        //     var claims = HttpContext.Items["claims"] as ClaimsPrincipal;
-        //     var token = HttpContext.Items["token"] as JsonWebToken;
-        //
-        //     if (_authManager is IJwtAuthenticationManager<string> jwtAuthenticationManager)
-        //         return Ok(new
-        //         {
-        //             token = await jwtAuthenticationManager.RefreshAuthentication(user, HttpContext, token!.EncodedToken,
-        //                 claims)
-        //         });
-        //
-        //     return BadRequest("Server not configured to handle this endpoint");
-        // }
-
-        #endregion
     }
 }

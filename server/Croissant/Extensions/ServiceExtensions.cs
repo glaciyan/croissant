@@ -5,7 +5,6 @@ using Croissant.Data;
 using Croissant.Data.Repository;
 using Entities.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -91,19 +90,6 @@ namespace Croissant.Extensions
             services.AddScoped<IAuthenticationManager, CookieAuthenticationManager>();
 
             services.ConfigureCookie(configuration);
-        }
-
-        private static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters =
-                    new JwtValidationManager(configuration).TokenValidationParameters;
-            });
         }
 
         private static void ConfigureCookie(this IServiceCollection services, IConfiguration configuration)
