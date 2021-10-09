@@ -8,7 +8,11 @@ const Index: Page = () => (
     <Container as={"section"} maxW={"container.xl"}>
         <PageTitle>Home</PageTitle>
 
-        <User>{({ user }) => <div>{user.username}</div>}</User>
+        <User>
+            {({ user }) => {
+                return user ? <div>{user.username}</div> : null;
+            }}
+        </User>
     </Container>
 );
 

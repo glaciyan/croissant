@@ -5,11 +5,14 @@ import { FocusBox } from "../components/FocusBox";
 import { Form, Formik } from "formik";
 import { FormCheckbox } from "../components/form/FormCheckbox";
 import NextLink from "next/link";
-import api, { toFormikError } from "../lib/api";
+import api from "../lib/api/api";
+import { toFormikError } from "../lib/api/util";
 import { useRouter } from "next/router";
 import { StatusCodes } from "../lib/statusCodes";
 import { FormTextInput } from "../components/form/FormTextInput";
 import * as Yup from "yup";
+import { User } from "../components/UserManager";
+import { UserDto } from "../types/dto/userDto";
 
 const Login: Page = () => {
     const toast = useToast();
@@ -22,84 +25,95 @@ const Login: Page = () => {
                 <Heading mb={6} fontSize={"lg"} fontWeight={400} alignSelf={"center"}>
                     Welcome back
                 </Heading>
-                <Formik
-                    initialValues={{ email: "", password: "", rememberMe: true }}
-                    validationSchema={Yup.object().shape({
-                        email: Yup.string()
-                            .email("Enter a valid email")
-                            .required("An email is required"),
-                        password: Yup.string().required("Enter a password"),
-                    })}
-                    validateOnChange={false}
-                    validateOnBlur={true}
-                    onSubmit={async (values, actions) => {
-                        const errorResponse = await api.login(
-                            values.email,
-                            values.password,
-                            values.rememberMe
-                        );
+                <User>
+                    {({ setUser }) => (
+                        <Formik
+                            initialValues={{ email: "", password: "", rememberMe: true }}
+                            validationSchema={Yup.object().shape({
+                                email: Yup.string()
+                                    .email("Enter a valid email")
+                                    .required("An email is required"),
+                                password: Yup.string().required("Enter a password"),
+                            })}
+                            validateOnChange={false}
+                            validateOnBlur={true}
+                            onSubmit={async (values, actions) => {
+                                const apiResponse = await api.login(
+                                    values.email,
+                                    values.password,
+                                    values.rememberMe
+                                );
 
-                        if (errorResponse) {
-                            if (
-                                errorResponse.status === StatusCodes.Status401Unauthorized
-                            ) {
-                                toast({
-                                    title: "Login failed",
-                                    description: "Email or password is incorrect",
-                                    status: "error",
-                                    duration: 5000,
-                                    isClosable: true,
-                                    position: "top",
-                                });
-                            } else if (
-                                errorResponse.status ===
-                                StatusCodes.Status422UnprocessableEntity
-                            ) {
-                                actions.setErrors(toFormikError(errorResponse.data));
-                            }
-                        } else {
-                            // await router.push("/");
-                        }
-                    }}
-                >
-                    {({ isSubmitting }) => (
-                        <Form>
-                            <FormTextInput
-                                name={"email"}
-                                placeholder={"Email"}
-                                type={"email"}
-                            />
-                            <FormTextInput
-                                mt={4}
-                                name={"password"}
-                                placeholder={"Password"}
-                                type={"password"}
-                            />
+                                if (apiResponse.success) {
+                                    const data = apiResponse.response.data as UserDto;
+                                    setUser({ id: data.id, username: data.username });
+                                    await router.push("/");
+                                } else {
+                                    if (
+                                        apiResponse.response.status ===
+                                        StatusCodes.Status401Unauthorized
+                                    ) {
+                                        toast({
+                                            title: "Login failed",
+                                            description: "Email or password is incorrect",
+                                            status: "error",
+                                            duration: 5000,
+                                            isClosable: true,
+                                            position: "top",
+                                        });
+                                    } else if (
+                                        apiResponse.response.status ===
+                                        StatusCodes.Status422UnprocessableEntity
+                                    ) {
+                                        actions.setErrors(
+                                            toFormikError(apiResponse.response.data)
+                                        );
+                                    }
+                                }
+                            }}
+                        >
+                            {({ isSubmitting }) => (
+                                <Form>
+                                    <FormTextInput
+                                        name={"email"}
+                                        placeholder={"Email"}
+                                        type={"email"}
+                                    />
+                                    <FormTextInput
+                                        mt={4}
+                                        name={"password"}
+                                        placeholder={"Password"}
+                                        type={"password"}
+                                    />
 
-                            <Flex justify={"end"}>
-                                <NextLink href={"/forgot-password"}>
-                                    <a className={`hover:underline`}>Forgot password</a>
-                                </NextLink>
-                            </Flex>
+                                    <Flex justify={"end"}>
+                                        <NextLink href={"/forgot-password"}>
+                                            <a className={`hover:underline`}>
+                                                Forgot password
+                                            </a>
+                                        </NextLink>
+                                    </Flex>
 
-                            <FormCheckbox
-                                mt={2}
-                                nameId={"rememberMe"}
-                                label={"Remember me"}
-                                checkBoxProps={{ defaultChecked: true }}
-                            />
-                            <Button
-                                mt={4}
-                                isFullWidth={true}
-                                colorScheme={"blue"}
-                                type={"submit"}
-                                isLoading={isSubmitting}
-                            >
-                                Login
-                            </Button>
-                        </Form>
+                                    <FormCheckbox
+                                        mt={2}
+                                        nameId={"rememberMe"}
+                                        label={"Remember me"}
+                                        checkBoxProps={{ defaultChecked: true }}
+                                    />
+                                    <Button
+                                        mt={4}
+                                        isFullWidth={true}
+                                        colorScheme={"blue"}
+                                        type={"submit"}
+                                        isLoading={isSubmitting}
+                                    >
+                                        Login
+                                    </Button>
+                                </Form>
+                            )}
+                        </Formik>
                     )}
-                </Formik>
+                </User>
             </FocusBox>
         </>
     );
