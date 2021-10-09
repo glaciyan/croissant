@@ -46,7 +46,7 @@ namespace Croissant.Controllers
         public async Task<IActionResult> InvalidateAllRefreshTokens()
         {
             var user = await _userManager.GetUserAsync(User);
-            await _authManager.Logout(HttpContext, user);
+            await _authManager.Logout(HttpContext);
             await _userManager.UpdateAsync(user);
 
             HttpContext.Response.Cookies.Delete(CookieConfiguration.RefreshTokenCookieKey);

@@ -74,7 +74,7 @@ namespace Croissant.Authentication
                 authProperties);
         }
 
-        public async Task Logout(HttpContext context, User user)
+        public async Task Logout(HttpContext context)
         {
             await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using Croissant.ActionFilters;
@@ -76,6 +77,17 @@ namespace Croissant.Controllers
 
             var userToReturn = _mapper.Map<UserDto>(user);
             return Ok(userToReturn);
+        }
+
+        [HttpPost("invalidate")]
+        [Authorize]
+        public async Task<IActionResult> InvalidateSessions()
+        {
+            var userId = _userManager.GetUserId(User);
+            await _authManager.InvalidateSessions(new Guid(userId));
+            // await _authManager.Logout(HttpContext);
+
+            return NoContent();
         }
 
         #region jwt login
