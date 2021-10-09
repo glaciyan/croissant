@@ -37,7 +37,9 @@ namespace Croissant.Controllers
             var user = await _userManager.GetUserAsync(User);
 
             if (user == null) return BadRequest();
-            return Ok($"{user.UserName} {user.Email}");
+
+            var userToReturn = _mapper.Map<UserDto>(user);
+            return Ok(userToReturn);
         }
 
         [HttpPost("new_token")]
