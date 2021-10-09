@@ -7,7 +7,7 @@ import "tailwindcss/tailwind.css";
 import React from "react";
 import { UserManager } from "../components/UserManager";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function Croissant({ Component, pageProps }: AppProps) {
     // @ts-ignore
     let layout: any = Component.layout;
     if (layout === undefined) layout = Layout;
@@ -25,4 +25,4 @@ function MyApp({ Component, pageProps }: AppProps) {
     );
 }
 
-export default MyApp;
+export default Croissant;
