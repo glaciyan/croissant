@@ -25,6 +25,10 @@ export default {
         }
     },
 
+    logout: async () => {
+        await apiClient.post("api/auth/logout");
+    },
+
     me: async (): Promise<ApiResponse<UserDto>> => {
         try {
             const response = await apiClient.get<undefined, AxiosResponse<UserDto>>(
