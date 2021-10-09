@@ -73,7 +73,9 @@ namespace Croissant.Controllers
             }
 
             await _authManager.SignInUser(HttpContext, user, userForLogin.RememberMe);
-            return NoContent();
+
+            var userToReturn = _mapper.Map<UserDto>(user);
+            return Ok(userToReturn);
         }
 
         #region jwt login
