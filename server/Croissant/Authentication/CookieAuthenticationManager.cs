@@ -54,10 +54,8 @@ namespace Croissant.Authentication
 
             var claims = new List<Claim>
             {
-                new(ClaimTypes.Name, user.Email),
-                // new(ClaimTypes.Role, "Administrator"),
                 new(ApplicationClaimNames.UserId, user.Id),
-                new("ChangedId", changedId)
+                new(ApplicationClaimNames.SessionValidationId, changedId)
             };
 
             var claimsIdentity = new ClaimsIdentity(
