@@ -5,6 +5,7 @@ import { NavLink } from "./NavLink";
 import React from "react";
 import NextLink from "next/link";
 import { DarkModeSwitch } from "./DarkModeSwitch";
+import { User } from "./UserManager";
 
 export function Header() {
     return (
@@ -27,14 +28,27 @@ export function Header() {
                     </Flex>
                     <Spacer />
                     <DarkModeSwitch />
-                    <ButtonGroup spacing={4}>
-                        <NextLink href={"/signup"}>
-                            <Button variant={"outline"}>Sign up</Button>
-                        </NextLink>
-                        <NextLink href={"/login"}>
-                            <Button variant={"ghost"}>Login</Button>
-                        </NextLink>
-                    </ButtonGroup>
+                    <User>
+                        {({ user }) =>
+                            user ? (
+                                <ButtonGroup spacing={4}>
+                                    <Button variant={"ghost"}>{user.username}</Button>
+                                    <NextLink href={"/logout"}>
+                                        <Button variant={"outline"}>Logout</Button>
+                                    </NextLink>
+                                </ButtonGroup>
+                            ) : (
+                                <ButtonGroup spacing={4}>
+                                    <NextLink href={"/login"}>
+                                        <Button variant={"ghost"}>Login</Button>
+                                    </NextLink>
+                                    <NextLink href={"/signup"}>
+                                        <Button variant={"outline"}>Sign up</Button>
+                                    </NextLink>
+                                </ButtonGroup>
+                            )
+                        }
+                    </User>
                 </Flex>
             </Container>
         </Box>
