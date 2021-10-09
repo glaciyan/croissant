@@ -79,6 +79,13 @@ namespace Croissant.Controllers
             return Ok(userToReturn);
         }
 
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _authManager.Logout(HttpContext);
+            return NoContent();
+        }
+
         [HttpPost("invalidate")]
         [Authorize]
         public async Task<IActionResult> InvalidateSessions()
