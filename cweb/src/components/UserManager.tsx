@@ -4,7 +4,8 @@ import { UserDto } from "../types/dto/userDto";
 import { userCacheKey } from "../lib/consts";
 import authApi from "../lib/api/authApi";
 
-const UserMan = createContext<{ user: UserDto; setUser: (value: UserDto) => void }>(null);
+export const UserMan =
+    createContext<{ user: UserDto; setUser: (value: UserDto) => void }>(null);
 const UserManProvider = UserMan.Provider;
 export const User = UserMan.Consumer;
 
