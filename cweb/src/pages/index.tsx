@@ -1,18 +1,13 @@
-import { Container } from "@chakra-ui/react";
-import { PageTitle } from "../components/PageTitle";
+import { Container, Text } from "@chakra-ui/react";
 import { Layout } from "../components/Layout";
+import { PageTitle } from "../components/PageTitle";
 import { Page } from "../types/page";
-import { User } from "../components/UserManager";
 
 const Index: Page = () => (
     <Container as={"section"} maxW={"container.xl"}>
         <PageTitle>Home</PageTitle>
 
-        <User>
-            {({ user }) => {
-                return user ? <div>{user.username}</div> : null;
-            }}
-        </User>
+        <Text>Home</Text>
     </Container>
 );
 
