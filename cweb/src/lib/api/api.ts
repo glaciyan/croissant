@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { apiHost } from "../consts";
+import { apiHost, isDev } from "../consts";
 
 export interface ApiResponse<T> {
     success: boolean;
@@ -8,7 +8,7 @@ export interface ApiResponse<T> {
 
 export const apiClient = axios.create({
     baseURL: apiHost,
-    withCredentials: true,
+    withCredentials: isDev,
 });
 
 export const fetcher = (url: string) => apiClient.get(url).then((res) => res.data);
