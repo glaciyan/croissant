@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import { apiHost } from "../consts";
 
 export interface ApiResponse<T> {
     success: boolean;
@@ -6,7 +7,7 @@ export interface ApiResponse<T> {
 }
 
 export const apiClient = axios.create({
-    baseURL: process.env.API_HOST,
+    baseURL: apiHost,
     withCredentials: true,
 });
 
