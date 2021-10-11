@@ -1,7 +1,7 @@
 {
     "private": true,
     "scripts": {
-        "dev": "next",
+        "dev": "NEXT_PUBLIC_API_HOST=\"https://localhost:5001\" next",
         "build": "next build",
         "start": "next start",
         "prod": "next build && next start",
