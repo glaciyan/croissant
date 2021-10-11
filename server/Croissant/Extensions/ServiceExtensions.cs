@@ -5,6 +5,7 @@ using Croissant.Data;
 using Croissant.Data.Repository;
 using Entities.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -85,23 +86,26 @@ namespace Croissant.Extensions
             builder.AddEntityFrameworkStores<DatabaseContext>().AddDefaultTokenProviders();
         }
 
-        public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration,
+            IWebHostEnvironment environment)
         {
             services.AddScoped<IAuthenticationManager, CookieAuthenticationManager>();
 
-            services.ConfigureCookie(configuration);
+            services.ConfigureCookie(configuration, environment);
         }
 
-        private static void ConfigureCookie(this IServiceCollection services, IConfiguration configuration)
+        private static void ConfigureCookie(this IServiceCollection services, IConfiguration configuration,
+            IWebHostEnvironment environment)
         {
             services.AddScoped<CustomCookieAuthenticationEvents>();
             
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.Cookie.Name = "pid";
+                    options.Cookie.Name = configuration.GetSection("CookieSettings")["AuthCookieName"];
                     options.Cookie.SameSite = SameSiteMode.Lax;
                     options.Cookie.HttpOnly = true;
+                    options.Cookie.IsEssential = true;
 
                     options.EventsType = typeof(CustomCookieAuthenticationEvents);
                 });
