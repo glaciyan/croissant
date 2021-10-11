@@ -9,3 +9,15 @@ export const apiClient = axios.create({
     baseURL: "https://localhost:5001",
     withCredentials: true,
 });
+
+export const fetcher = (url: string) => apiClient.get(url).then((res) => res.data);
+
+export async function apiCall<T>(request: () => any): Promise<ApiResponse<T>> {
+    try {
+        const response = await request();
+
+        return { success: true, response };
+    } catch (e) {
+        return { success: false, response: e.response };
+    }
+}
