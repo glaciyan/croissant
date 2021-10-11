@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Croissant.Authentication;
-using Croissant.Configurations;
 using Croissant.Data.Repository;
 using Entities.DataTransferObject;
 using Entities.Models;
@@ -40,18 +39,6 @@ namespace Croissant.Controllers
 
             var userToReturn = _mapper.Map<UserDto>(user);
             return Ok(userToReturn);
-        }
-
-        [HttpPost("new_token")]
-        public async Task<IActionResult> InvalidateAllRefreshTokens()
-        {
-            var user = await _userManager.GetUserAsync(User);
-            await _authManager.Logout(HttpContext);
-            await _userManager.UpdateAsync(user);
-
-            HttpContext.Response.Cookies.Delete(CookieConfiguration.RefreshTokenCookieKey);
-
-            return NoContent();
         }
 
         [HttpGet("posts")]
