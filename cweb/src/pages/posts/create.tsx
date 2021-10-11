@@ -1,15 +1,28 @@
-import { Button, Heading } from "@chakra-ui/react";
+import { Button, Center, Heading, Spinner } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import type { NextPage } from "next";
 import React from "react";
 import { FocusBox } from "../../components/FocusBox";
 import { FormTextInput } from "../../components/form/FormTextInput";
 import { PageTitle } from "../../components/PageTitle";
-import { RequireUser } from "../../components/RequireUser";
+import { useRequireUser } from "../../lib/hooks/requireUser";
 
 const CreatePost: NextPage = () => {
+    const { loggedIn } = useRequireUser();
+
+    if (!loggedIn) {
+        return (
+            <>
+                <PageTitle>Loading</PageTitle>
+                <Center>
+                    <Spinner />
+                </Center>
+            </>
+        );
+    }
+
     return (
-        <RequireUser>
+        <>
             <PageTitle>New Post</PageTitle>
             <FocusBox>
                 <Heading mb={6} fontSize={"lg"} fontWeight={400} alignSelf={"center"}>
@@ -17,7 +30,7 @@ const CreatePost: NextPage = () => {
                 </Heading>
                 <Formik
                     initialValues={{ title: "", content: "" }}
-                    onSubmit={() => console.log("submitting")}
+                    onSubmit={(values) => console.log(values)}
                 >
                     {({ isSubmitting }) => {
                         <Form>
@@ -35,7 +48,7 @@ const CreatePost: NextPage = () => {
                     }}
                 </Formik>
             </FocusBox>
-        </RequireUser>
+        </>
     );
 };
 
