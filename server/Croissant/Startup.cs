@@ -66,7 +66,7 @@ namespace Croissant
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            app.UseCors("CorsPolicy");
+            if (Environment.IsDevelopment()) app.UseCors("CorsPolicy");
 
             app.UseAuthentication();
             app.UseAuthorization();
