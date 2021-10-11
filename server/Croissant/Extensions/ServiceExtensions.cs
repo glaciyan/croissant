@@ -68,11 +68,11 @@ namespace Croissant.Extensions
         {
             var builder = services.AddIdentityCore<User>(options =>
             {
-                options.Password.RequireDigit = true;
+                options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 6;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
-                options.Password.RequiredUniqueChars = 3;
+                options.Password.RequiredUniqueChars = 0;
                 options.Password.RequireNonAlphanumeric = false;
 
                 options.User.RequireUniqueEmail = true;
