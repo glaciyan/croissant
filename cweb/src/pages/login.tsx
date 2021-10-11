@@ -1,18 +1,18 @@
 import { Button, Flex, Heading, useToast } from "@chakra-ui/react";
-import { PageTitle } from "../components/PageTitle";
-import { Page } from "../types/page";
-import { FocusBox } from "../components/FocusBox";
 import { Form, Formik } from "formik";
-import { FormCheckbox } from "../components/form/FormCheckbox";
 import NextLink from "next/link";
-import { toFormikError } from "../lib/api/util";
 import { useRouter } from "next/router";
-import { StatusCodes } from "../lib/statusCodes";
-import { FormTextInput } from "../components/form/FormTextInput";
 import * as Yup from "yup";
+import { FocusBox } from "../components/FocusBox";
+import { FormCheckbox } from "../components/form/FormCheckbox";
+import { FormTextInput } from "../components/form/FormTextInput";
+import { PageTitle } from "../components/PageTitle";
 import { User } from "../components/UserManager";
-import { UserDto } from "../types/dto/userDto";
 import authApi from "../lib/api/authApi";
+import { toFormikError } from "../lib/api/util";
+import { StatusCodes } from "../lib/statusCodes";
+import { UserDto } from "../types/dto/userDto";
+import { Page } from "../types/page";
 
 const Login: Page = () => {
     const toast = useToast();
