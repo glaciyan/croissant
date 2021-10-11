@@ -1,4 +1,4 @@
 export default [
     { name: "Home", href: "/" },
-    { name: "Testing", href: "/testing" },
+    { name: "New Post", href: "/posts/create" },
 ];
