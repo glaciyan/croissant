@@ -6,7 +6,7 @@ export interface ApiResponse<T> {
 }
 
 export const apiClient = axios.create({
-    baseURL: "https://localhost:5001",
+    baseURL: process.env.API_HOST,
     withCredentials: true,
 });
 
